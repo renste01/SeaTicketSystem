@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem.BLL;
 // Project Imports
+import dk.easv.seaticketsystem.DAL.UserRepository;
 import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
 import dk.easv.seaticketsystem.Model.User;
@@ -22,4 +23,13 @@ public class UserService
                 .filter(u -> u.getRole() == UserRole.ADMIN || u.getRole() == UserRole.COORDINATOR)
                 .findFirst();
     }
+    // Brug den her under når der skal bruges database
+    /*
+    private final UserRepository userRepo = new UserRepository();
+
+    public Optional<User> authenticateStaff(String email, String password)
+    {
+        return userRepo.findStaffByEmail(email).filter(u -> u.checkPassword(password));
+    }
+     */
 }
