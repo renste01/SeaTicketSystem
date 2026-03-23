@@ -46,7 +46,8 @@ public class UserRepository
         String password = rs.getString("Password");
         String role = rs.getString("UserRole");
 
-        if ("ADMIN".equalsIgnoreCase(role)){
+        if ("ADMIN".equalsIgnoreCase(role))
+        {
             return new Admin(id, first, last, email, password);
         }
         return new EventCoordinator(id, first, last, email, password);
