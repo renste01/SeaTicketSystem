@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.CreateUserController"
+      spacing="10" padding="18">
+
+    <Label text="Opret ny bruger" styleClass="popup-title"/>
+
+    <GridPane hgap="8" vgap="8">
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" prefWidth="90"/>
+            <ColumnConstraints prefWidth="220"/>
+        </columnConstraints>
+
+        <children>
+            <Label text="Fornavn:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="firstNameField" promptText="Fornavn"
+                       GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Efternavn:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="lastNameField" promptText="Efternavn"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="E-mail:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="emailField" promptText="bruger@sea.dk"
+                       GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Adgangskode:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="passwordField" promptText="••••••••"
+                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="Rolle:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="roleComboBox" promptText="Vælg rolle"
+                      GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        </children>
+    </GridPane>
+
+    <Label fx:id="errorLabel"
+           styleClass="error-label"
+           visible="false"
+           managed="false"
+           wrapText="true"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annuller" onAction="#handleCancel"/>
+        <Button text="Opret" onAction="#handleCreate" defaultButton="true"/>
+    </HBox>
+
+</VBox>
