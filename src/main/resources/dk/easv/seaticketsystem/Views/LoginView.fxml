@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="dk.easv.seaticketsystem.GUI.Controllers.LoginController"
+           styleClass="login-root">
+
+    <VBox alignment="CENTER" maxWidth="440" styleClass="login-card" spacing="0">
+        <VBox alignment="CENTER" spacing="14" styleClass="login-header">
+            <padding><Insets top="36" right="40" bottom="28" left="40"/></padding>
+            <Label text="SEA BILLETSYSTEM" styleClass="login-title"/>
+        </VBox>
+
+        <VBox spacing="14">
+            <padding><Insets top="28" right="40" bottom="36" left="40"/></padding>
+
+            <Label text="E-mail" styleClass="form-label"/>
+            <TextField fx:id="emailField" promptText="din@sea.dk"
+                       styleClass="form-field" onKeyPressed="#handleKeyPress"/>
+
+            <Label text="Adgangskode" styleClass="form-label"/>
+            <PasswordField fx:id="passwordField" promptText="••••••••"
+                           styleClass="form-field" onKeyPressed="#handleKeyPress"/>
+
+            <Label fx:id="errorLabel" styleClass="error-label"
+                   visible="false" managed="false" wrapText="true"/>
+
+            <Button text="Log ind" onAction="#handleLogin"
+                    styleClass="btn-primary" maxWidth="Infinity"
+                    defaultButton="true"/>
+
+            <Label text="Testkonto-hints (kun personale):" styleClass="hint-header"/>
+            <Label text="admin@sea.dk / admin123  •  koordinator@sea.dk / koor123"
+                   styleClass="hint-text" wrapText="true"/>
+        </VBox>
+    </VBox>
+</StackPane>
