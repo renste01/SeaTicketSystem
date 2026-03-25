@@ -1,10 +1,3 @@
-/* ============================================================
-   SEA Billetsystem – Stylesheet
-   Brand: Syddansk Erhvervsakademi (s-e-a.dk)
-   Primær mørk:  #002430   Rød accent:  #db3629   Teal:  #3c7d87
-   ============================================================ */
-
-/* ---- Root / Baggrund ---- */
 .login-root {
     -fx-background-color: linear-gradient(to bottom right, #002430, #004a5a);
 }
