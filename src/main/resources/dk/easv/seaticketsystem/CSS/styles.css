@@ -1,0 +1,479 @@
+/* ============================================================
+   SEA Billetsystem – Stylesheet
+   Brand: Syddansk Erhvervsakademi (s-e-a.dk)
+   Primær mørk:  #002430   Rød accent:  #db3629   Teal:  #3c7d87
+   ============================================================ */
+
+/* ---- Root / Baggrund ---- */
+.login-root {
+    -fx-background-color: linear-gradient(to bottom right, #002430, #004a5a);
+}
+
+/* ---- Login-kort ---- */
+.login-card {
+    -fx-background-color: #002430;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.40), 32, 0, 0, 10);
+}
+.login-header {
+    -fx-background-color: #002430;
+    -fx-background-radius: 14 14 0 0;
+}
+.login-logo-badge {
+    -fx-background-color: #db3629;
+    -fx-background-radius: 10;
+    -fx-padding: 4 14 4 14;
+}
+.login-logo-badge-text {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI";
+}
+.login-logo {
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI";
+}
+.login-logo-s {
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #db3629;
+    -fx-font-family: "Segoe UI";
+}
+.login-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(255,255,255,0.55);
+    -fx-letter-spacing: 1px;
+}
+.login-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #db3629;
+}
+.hint-header {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #888;
+}
+.hint-text {
+    -fx-font-size: 11px;
+    -fx-text-fill: #aaa;
+}
+
+/* ---- Formular ---- */
+.form-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+}
+.form-field {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #d0d8e0;
+    -fx-border-width: 1;
+    -fx-padding: 9 12 9 12;
+    -fx-font-size: 13px;
+    -fx-background-color: white;
+}
+.form-field:focused {
+    -fx-border-color: #db3629;
+    -fx-border-width: 2;
+}
+.error-label {
+    -fx-text-fill: #db3629;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.info-label {
+    -fx-text-fill: #454b50;
+    -fx-font-size: 13px;
+}
+
+/* ---- Knapper ---- */
+.btn-primary {
+    -fx-background-color: #db3629;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 24 10 24;
+    -fx-cursor: hand;
+}
+.btn-primary:hover   { -fx-background-color: #c42f1e; }
+.btn-primary:pressed { -fx-background-color: #a82518; }
+
+.btn-secondary {
+    -fx-background-color: white;
+    -fx-text-fill: #002430;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 24 10 24;
+    -fx-border-color: #002430;
+    -fx-border-radius: 25;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+.btn-secondary:hover { -fx-background-color: #f0f4f6; }
+
+.btn-teal {
+    -fx-background-color: #3c7d87;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 24 10 24;
+    -fx-cursor: hand;
+}
+.btn-teal:hover { -fx-background-color: #2f6670; }
+
+.btn-danger {
+    -fx-background-color: #db3629;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 24 10 24;
+    -fx-cursor: hand;
+}
+.btn-danger:hover { -fx-background-color: #a82518; }
+
+/* ---- Sidebar ---- */
+.main-root { -fx-background-color: #f4f7f8; }
+
+.sidebar {
+    -fx-background-color: #002430;
+    -fx-min-width: 245px;
+}
+.sidebar-logo { -fx-background-color: #001a24; }
+.sidebar-logo-text {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.sidebar-logo-s {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #db3629;
+}
+.sidebar-logo-sub {
+    -fx-font-size: 10px;
+    -fx-text-fill: rgba(255,255,255,0.45);
+    -fx-letter-spacing: 1px;
+}
+.sidebar-user { -fx-background-color: #002430; }
+.sidebar-username {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.sidebar-role {
+    -fx-font-size: 11px;
+    -fx-text-fill: #db3629;
+    -fx-font-weight: bold;
+}
+.sidebar-separator { -fx-background-color: rgba(255,255,255,0.1); -fx-pref-height: 1; }
+.sidebar-section-label {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgba(255,255,255,0.38);
+    -fx-padding: 10 4 4 4;
+    -fx-letter-spacing: 1.5px;
+}
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255,255,255,0.75);
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 8;
+    -fx-padding: 10 14 10 14;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+.sidebar-btn:hover   { -fx-background-color: rgba(219,54,41,0.18); -fx-text-fill: white; }
+.sidebar-btn:pressed { -fx-background-color: rgba(219,54,41,0.32); }
+.sidebar-btn-logout  { -fx-text-fill: rgba(219,54,41,0.8); }
+.sidebar-btn-logout:hover { -fx-background-color: rgba(219,54,41,0.22); -fx-text-fill: #ff8070; }
+
+/* ---- Indholdsarea ---- */
+.content-area  { -fx-background-color: #f4f7f8; }
+.page-scroll   { -fx-background-color: transparent; -fx-background: #f4f7f8; }
+.page          { -fx-background-color: #f4f7f8; }
+
+/* ---- Sidetitler ---- */
+.page-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+}
+.page-title-sub {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3c7d87;
+}
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+}
+
+/* ---- Tabeller ---- */
+.sea-table {
+    -fx-background-color: white;
+    -fx-border-color: #e4e8ec;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+.sea-table .column-header-background {
+    -fx-background-color: #002430;
+}
+.sea-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+.sea-table .table-row-cell:odd  { -fx-background-color: #f7fafb; }
+.sea-table .table-row-cell:even { -fx-background-color: white; }
+.sea-table .table-row-cell:selected { -fx-background-color: #fde8e6; }
+
+/* ---- Billekort (ticket-detail) ---- */
+.ticket-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e4e8ec;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 14, 0, 0, 3);
+}
+.ticket-label-header {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #db3629;
+    -fx-letter-spacing: 2px;
+}
+.ticket-school {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+}
+.detail-key {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #888;
+    -fx-min-width: 130px;
+}
+.detail-value {
+    -fx-font-size: 13px;
+    -fx-text-fill: #002430;
+    -fx-max-width: 220px;
+}
+.ticket-number {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+    -fx-font-family: "Courier New";
+}
+.detail-issued {
+    -fx-font-size: 11px;
+    -fx-text-fill: #aaa;
+}
+.qr-hint {
+    -fx-font-size: 11px;
+    -fx-text-fill: #aaa;
+}
+
+/* ---- Statistik-kort (admin – legacy) ---- */
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #e4e8ec;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 2);
+}
+.stat-card-accent { -fx-border-color: #db3629; -fx-border-width: 2; }
+.stat-number {
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+}
+.stat-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #454b50;
+}
+
+/* ---- Profil-side ---- */
+.profile-header-box {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e4e8ec;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+.avatar-circle {
+    -fx-fill: #002430;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 8, 0, 0, 2);
+}
+.avatar-initials {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.profile-name {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+}
+.profile-role {
+    -fx-font-size: 13px;
+    -fx-text-fill: #db3629;
+    -fx-font-weight: bold;
+}
+
+/* ---- Event-detalje-kort (legacy) ---- */
+.event-detail-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #e4e8ec;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.09), 12, 0, 0, 3);
+}
+.event-image-container  { -fx-background-color: #edf1f3; -fx-background-radius: 10 0 0 10; }
+.event-image-placeholder { -fx-background-color: #edf1f3; }
+.event-detail-info      { -fx-background-color: white; }
+.event-detail-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+}
+.event-detail-meta  { -fx-font-size: 13px; -fx-text-fill: #454b50; }
+.event-status-badge {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 4 12 4 12;
+    -fx-max-width: 180px;
+}
+.desc-pane  { -fx-background-color: white; }
+.desc-area  {
+    -fx-background-color: #f7fafb;
+    -fx-border-color: #e4e8ec;
+    -fx-font-size: 13px;
+    -fx-text-fill: #454b50;
+}
+
+/* ---- Event-liste kort ---- */
+.event-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e4e8ec;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,36,48,0.08), 10, 0, 0, 3);
+}
+.event-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(219,54,41,0.18), 16, 0, 0, 5);
+    -fx-border-color: #db3629;
+}
+.event-card-selected {
+    -fx-border-color: #db3629;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(219,54,41,0.30), 18, 0, 0, 6);
+}
+.event-card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+    -fx-wrap-text: true;
+}
+.event-card-meta {
+    -fx-font-size: 13px;
+    -fx-text-fill: #454b50;
+}
+.event-card-desc {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8a9099;
+    -fx-wrap-text: true;
+}
+
+/* ---- Billet-liste kort ---- */
+.ticket-card-list {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e4e8ec;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,36,48,0.07), 10, 0, 0, 2);
+}
+.ticket-card-list:hover {
+    -fx-effect: dropshadow(gaussian, rgba(219,54,41,0.16), 14, 0, 0, 4);
+    -fx-border-color: #db3629;
+}
+.ticket-list-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #002430;
+}
+.ticket-list-meta {
+    -fx-font-size: 13px;
+    -fx-text-fill: #454b50;
+}
+.ticket-list-number {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Courier New";
+    -fx-text-fill: #002430;
+}
+
+/* ---- Admin Dashboard ---- */
+.admin-hero {
+    -fx-background-color: linear-gradient(to right, #002430, #004a5a);
+}
+.admin-welcome {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.admin-welcome-sub {
+    -fx-font-size: 13px;
+    -fx-text-fill: rgba(255,255,255,0.55);
+}
+.admin-stat-card {
+    -fx-background-radius: 12;
+    -fx-padding: 20 24 20 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 10, 0, 0, 3);
+    -fx-min-width: 160;
+    -fx-pref-width: 185;
+}
+/* SEA primær rød */
+.admin-stat-blue   { -fx-background-color: linear-gradient(to bottom right, #002430, #004a5a); }
+.admin-stat-orange { -fx-background-color: linear-gradient(to bottom right, #b82d22, #db3629); }
+.admin-stat-green  { -fx-background-color: linear-gradient(to bottom right, #2a606a, #3c7d87); }
+.admin-stat-purple { -fx-background-color: linear-gradient(to bottom right, #1a3d44, #256370); }
+.admin-stat-icon {
+    -fx-font-size: 30px;
+    -fx-text-fill: #db3629;
+}
+.admin-stat-num {
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #db3629;
+}
+.admin-stat-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #db3629;
+    -fx-font-weight: bold;
+}
+.admin-section-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e4e8ec;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
