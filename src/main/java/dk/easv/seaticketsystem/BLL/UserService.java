@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem.BLL;
 
+import dk.easv.seaticketsystem.DAL.UserRepository;
 import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
 import dk.easv.seaticketsystem.Model.User;
@@ -10,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserService {
+
+    // TIL CREATE USER DATABASEN
+    private final UserRepository userDAO = new UserRepository();
 
     private final List<User> staffUsers = new ArrayList<>(List.of(
             new Admin("admin-001", "System", "Administrator", "admin@sea.dk", "admin123"),
@@ -24,7 +28,7 @@ public class UserService {
                 .findFirst();
     }
 
-    public void createUser(User newUser) {
+    public void createUserTest(User newUser) {
         boolean exists = staffUsers.stream()
                 .anyMatch(u -> u.getEmail().equalsIgnoreCase(newUser.getEmail()));
 
@@ -35,15 +39,25 @@ public class UserService {
         staffUsers.add(newUser);
     }
 
+
     public List<User> getAllUsers() {
-        return List.copyOf(staffUsers);
+        return userDAO.getAllUsers();
     }
 
-    public void deleteUser(String id) {
-        boolean removed = staffUsers.removeIf(u -> u.getId().equalsIgnoreCase(id));
+    public void createUser(User newUser) {
+        try {
+            userDAO.createUser(newUser);
+        } catch (Exception e) {
+            throw new RuntimeException("Kunne ikke oprette bruger i databasen", e);
+        }
+    }
 
-        if (!removed) {
-            throw new IllegalArgumentException("Ingen bruger med ID: " + id);
+
+    public void deleteUser(String userId) {
+        try {
+            userDAO.deleteUser(userId);
+        } catch (Exception e) {
+            throw new RuntimeException("Kunne ikke slette bruger", e);
         }
     }
 }
