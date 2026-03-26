@@ -54,7 +54,7 @@ public class CreateUserController implements Initializable {
                 ? new Admin(fn, ln, email, pw)
                 : new EventCoordinator(fn, ln, email, pw);
 
-        userService.createUser(newUser);
+        userService.createUserTest(newUser);
         closeWindow();
     }
 
