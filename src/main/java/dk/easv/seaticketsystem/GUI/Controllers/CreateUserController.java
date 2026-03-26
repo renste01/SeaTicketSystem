@@ -1,15 +1,17 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+// Project Imports
 import dk.easv.seaticketsystem.BLL.UserService;
 import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
 import dk.easv.seaticketsystem.Model.User;
 import dk.easv.seaticketsystem.Model.UserRole;
+
+// Java Imports
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
