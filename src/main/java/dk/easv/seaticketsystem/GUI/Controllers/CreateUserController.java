@@ -29,6 +29,7 @@ public class CreateUserController implements Initializable {
         roleComboBox.getItems().addAll(UserRole.ADMIN, UserRole.COORDINATOR);
     }
 
+
     @FXML
     private void handleCreate() {
         String fn = firstNameField.getText().trim();
@@ -54,7 +55,8 @@ public class CreateUserController implements Initializable {
                 ? new Admin(fn, ln, email, pw)
                 : new EventCoordinator(fn, ln, email, pw);
 
-        userService.createUserTest(newUser);
+        userService.createUser(newUser); // ← DENNE ER VIGTIG
+
         closeWindow();
     }
 

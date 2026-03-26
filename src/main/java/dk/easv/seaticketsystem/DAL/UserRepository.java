@@ -20,7 +20,7 @@ public class UserRepository
                """
                SELECT UserId, FirstName, LastName, Email, [Password], UserRole
                From dbo.Users
-               WHERE Email = ? AND IsActive = 1 AND UserRole IN ('Admin', 'COORDINATOR')
+               WHERE Email = ? AND UserRole IN ('Admin', 'COORDINATOR')
                """;
        try
        {
