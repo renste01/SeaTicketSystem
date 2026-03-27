@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.EventDetailsController"
+      spacing="16">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Event Detaljer" styleClass="page-title"/>
+
+    <VBox spacing="8">
+        <Label text="Titel:" styleClass="detail-key"/>
+        <Label fx:id="titleLabel" styleClass="detail-value"/>
+
+        <Label text="Dato:" styleClass="detail-key"/>
+        <Label fx:id="dateLabel" styleClass="detail-value"/>
+
+        <Label text="Sted:" styleClass="detail-key"/>
+        <Label fx:id="locationLabel" styleClass="detail-value"/>
+
+        <Label text="Beskrivelse:" styleClass="detail-key"/>
+        <TextArea fx:id="descriptionArea"
+                  editable="false"
+                  wrapText="true"
+                  prefRowCount="6"/>
+    </VBox>
+
+    <Button text="Tilbage" onAction="#handleBack" styleClass="btn-secondary"/>
+
+</VBox>

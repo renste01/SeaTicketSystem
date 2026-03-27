@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 // Project Imports
+import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import dk.easv.seaticketsystem.Model.Event;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -27,6 +28,16 @@ public class EventListController implements Initializable {
         colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
         colLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
 
+        eventTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Event selected = eventTable.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    EventDetailsController.setEvent(selected);
+                    ViewManager.getInstance().loadView("EventDetailsView.fxml");
+                }
+            }
+        });
+
         loadDummyEvents();
     }
 
@@ -38,8 +49,21 @@ public class EventListController implements Initializable {
 
     private void loadDummyEvents() {
         if (events.isEmpty()) {
-            events.add(new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12)));
-            events.add(new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3)));
+            events.add(new Event(
+                    "1",
+                    "Koncert i Havnen",
+                    "Esbjerg Havn",
+                    LocalDate.of(2025, 6, 12),
+                    "En stor koncert ved havnen med lokale bands."
+            ));
+
+            events.add(new Event(
+                    "2",
+                    "Sommerfestival",
+                    "Musikhuset",
+                    LocalDate.of(2025, 7, 3),
+                    "En hyggelig sommerfestival med madboder og musik."
+            ));
         }
         eventTable.getItems().setAll(events);
     }
