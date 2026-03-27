@@ -71,4 +71,10 @@ public class MainLayoutController implements Initializable {
         ViewManager.getInstance().loadView("AdminUserView.fxml");
     }
 
+    @FXML
+    private void openEvents() {
+        ViewManager.getInstance().loadView("EventListView.fxml");
+    }
+
+
 }
