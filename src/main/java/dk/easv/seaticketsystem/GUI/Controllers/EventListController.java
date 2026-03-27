@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -29,12 +30,18 @@ public class EventListController implements Initializable {
         loadDummyEvents();
     }
 
-    private void loadDummyEvents() {
-        List<Event> dummy = List.of(
-                new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12)),
-                new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3))
-        );
+    private static final List<Event> events = new ArrayList<>();
 
-        eventTable.getItems().setAll(dummy);
+    public static void addEvent(Event e) {
+        events.add(e);
     }
+
+    private void loadDummyEvents() {
+        if (events.isEmpty()) {
+            events.add(new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12)));
+            events.add(new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3)));
+        }
+        eventTable.getItems().setAll(events);
+    }
+
 }

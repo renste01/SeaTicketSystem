@@ -51,7 +51,8 @@
                 <Button text="📋  Mine Events"
                         maxWidth="Infinity" styleClass="sidebar-btn"/>
                 <Button text="➕  Opret Event"
-                        maxWidth="Infinity" styleClass="sidebar-btn"/>
+                        maxWidth="Infinity" styleClass="sidebar-btn"
+                        onAction="#openCreateEvent"/>
                 <Button text="🎁  Fribilletter"
                         maxWidth="Infinity" styleClass="sidebar-btn"/>
             </VBox>
