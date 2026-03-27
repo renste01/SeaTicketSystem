@@ -22,21 +22,35 @@
 
         <children>
             <Label text="Titel:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <TextField fx:id="titleField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <TextField fx:id="titleField"
+                       promptText="Event titel"
+                       GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
             <Label text="Sted:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextField fx:id="locationField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <TextField fx:id="locationField"
+                       promptText="Hvor afholdes eventet?"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
             <Label text="Dato:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <DatePicker fx:id="datePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <DatePicker fx:id="datePicker"
+                        GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Beskrivelse:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextArea fx:id="descriptionField"
+                      promptText="Kort beskrivelse af eventet"
+                      wrapText="true"
+                      prefRowCount="4"
+                      GridPane.rowIndex="3" GridPane.columnIndex="1"/>
         </children>
     </GridPane>
 
-    <Label fx:id="errorLabel" styleClass="error-label"
-           visible="false" managed="false"/>
+    <Label fx:id="errorLabel"
+           styleClass="error-label"
+           visible="false"
+           managed="false"/>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button text="Annuller" onAction="#handleCancel"/>
+        <Button text="Annuller" onAction="#handleCancel" styleClass="btn-secondary"/>
         <Button text="Opret Event" onAction="#handleCreate" styleClass="btn-primary"/>
     </HBox>
 
