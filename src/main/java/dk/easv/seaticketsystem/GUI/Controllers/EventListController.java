@@ -46,6 +46,14 @@ public class EventListController implements Initializable {
     public static void addEvent(Event e) {
         events.add(e);
     }
+    public static void updateEvent(String id, String title, String location, LocalDate date, String description) {
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getId().equals(id)) {
+                events.set(i, new Event(id, title, location, date, description));
+                break;
+            }
+        }
+    }
 
     private void loadDummyEvents() {
         if (events.isEmpty()) {
