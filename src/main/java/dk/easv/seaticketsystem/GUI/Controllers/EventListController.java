@@ -70,12 +70,8 @@ public class EventListController implements Initializable {
         commentArea.setPrefRowCount(3);
 
         Label commentLabel = new Label("Begrundelse (påkrævet):");
-        Label errorLabel = new Label("Du skal angive en begrundelse.");
-        errorLabel.setStyle("-fx-text-fill: red;");
-        errorLabel.setVisible(false);
-        errorLabel.setManaged(false);
 
-        javafx.scene.layout.VBox content = new javafx.scene.layout.VBox(8, commentLabel, commentArea, errorLabel);
+        javafx.scene.layout.VBox content = new javafx.scene.layout.VBox(8, commentLabel, commentArea);
         content.setPrefWidth(400);
         dialog.getDialogPane().setContent(content);
 
@@ -96,16 +92,19 @@ public class EventListController implements Initializable {
         result.ifPresent(comment -> {
             events.remove(event);
             eventTable.getItems().remove(event);
-            System.out.println("Event '" + event.getTitle() + "' slettet. Begrundelse: " + comment);
+            System.out.println("Event '" + event.getTitle() + "' deleted. Reason: " + comment);
         });
     }
 
     public static void addEvent(Event e) {
         events.add(e);
     }
+
     public static void updateEvent(String id, String title, String location, LocalDate date, String description) {
         for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getId().equals(id)) {
+            Event existingEvent = events.get(i);
+
+            if (existingEvent.getId().equals(id)) {
                 events.set(i, new Event(id, title, location, date, description));
                 break;
             }
