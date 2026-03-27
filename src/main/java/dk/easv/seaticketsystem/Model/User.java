@@ -8,7 +8,7 @@ public abstract class User {
     private String email;
     private String password;
     private final UserRole role;
-    private String profileImagePath;   // null = brug initialer-avatar
+    private String profileImagePath;   // null = Using initials as avatar
 
     protected User(String id, String firstName, String lastName, String email, String password, UserRole role)
     {

@@ -1,12 +1,12 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
-
+// Project Imports
 import dk.easv.seaticketsystem.Model.Event;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
+// Java Imports
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
