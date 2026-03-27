@@ -23,7 +23,7 @@ public class MainApp extends Application {
     }
 
 
-    //Klasse til at udskifter den aktive scene med et nyt FXML.
+    // Class to switch active scene with a new FXML
 
     public static void setRoot(String fxmlClasspath, double w, double h)
     {

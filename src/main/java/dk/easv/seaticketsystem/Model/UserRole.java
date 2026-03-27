@@ -1,5 +1,5 @@
 package dk.easv.seaticketsystem.Model;
-// Bruges til at bestemme hvilken rolle en bruger har
+// Decides which user
 public enum UserRole
 {
     USER("Bruger"),

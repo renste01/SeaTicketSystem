@@ -12,7 +12,7 @@ import java.io.InputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-// Klasse til at sætte logo ind
+// Class to get Logo
 public class LogoUtil {
 
     private static final String SVG_RESOURCE = "/dk/easv/seaticketsystem/images/sea-logo.svg";
@@ -59,7 +59,7 @@ public class LogoUtil {
             }
         } catch (Exception e)
         {
-            // CSS Håndtere at den er tom.
+            // CSS Handles if it's empty
         }
         return pane;
     }

@@ -4,8 +4,8 @@ package dk.easv.seaticketsystem.Session;
 import dk.easv.seaticketsystem.Model.User;
 
 /**
- * Singleton der holder styr på den aktuelle brugersession og navigation-stadie.
- * Er vigtig i forhold til at genkende hvem der logger ind.
+ * Singleton handles user session and navigation
+ * Important to identify who is logged in
  */
 public class SessionManager {
 
