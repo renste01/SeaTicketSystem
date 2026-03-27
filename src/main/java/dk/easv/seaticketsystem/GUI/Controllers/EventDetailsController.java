@@ -33,4 +33,11 @@ public class EventDetailsController {
     private void handleBack() {
         ViewManager.getInstance().loadView("EventListView.fxml");
     }
+
+    @FXML
+    private void handleEdit() {
+        EditEventController.setEvent(selectedEvent);
+        ViewManager.getInstance().loadView("EditEventView.fxml");
+    }
+
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.EditEventController"
+      spacing="14">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Rediger Event" styleClass="page-title"/>
+
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" prefWidth="120"/>
+            <ColumnConstraints prefWidth="260"/>
+        </columnConstraints>
+
+        <children>
+            <Label text="Titel:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="titleField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Sted:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="locationField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Dato:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <DatePicker fx:id="datePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Beskrivelse:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextArea fx:id="descriptionField"
+                      wrapText="true"
+                      prefRowCount="4"
+                      GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        </children>
+    </GridPane>
+
+    <Label fx:id="errorLabel"
+           styleClass="error-label"
+           visible="false"
+           managed="false"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annuller" onAction="#handleCancel" styleClass="btn-secondary"/>
+        <Button text="Gem ændringer" onAction="#handleSave" styleClass="btn-primary"/>
+    </HBox>
+
+</VBox>

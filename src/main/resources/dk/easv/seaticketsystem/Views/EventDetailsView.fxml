@@ -31,6 +31,9 @@
                   prefRowCount="6"/>
     </VBox>
 
-    <Button text="Tilbage" onAction="#handleBack" styleClass="btn-secondary"/>
+    <Button text="✏️ Rediger Event"
+            onAction="#handleEdit"
+            styleClass="btn-primary"/>
+
 
 </VBox>
