@@ -2,12 +2,12 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 // Project Imports
 import dk.easv.seaticketsystem.Model.Event;
+import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-// Java Imports
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,6 +33,17 @@ public class EventListController implements Initializable {
 
         setupDeleteColumn();
         loadDummyEvents();
+
+        // ⭐ Restore double-click to open event details ⭐
+        eventTable.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getClickCount() == 2) {
+                Event selected = eventTable.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    EventDetailsController.setEvent(selected);
+                    ViewManager.getInstance().loadView("EventDetailsView.fxml");
+                }
+            }
+        });
     }
 
     private void setupDeleteColumn() {

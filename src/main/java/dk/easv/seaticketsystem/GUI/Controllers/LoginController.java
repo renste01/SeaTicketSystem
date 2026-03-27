@@ -4,6 +4,7 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 import dk.easv.seaticketsystem.BLL.UserService;
 import dk.easv.seaticketsystem.MainApp;
 import dk.easv.seaticketsystem.Session.SessionManager;
+
 // Java Imports
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,15 +26,20 @@ public class LoginController {
         String email = emailField.getText() == null ? "" : emailField.getText().trim();
         String password = passwordField.getText() == null ? "" : passwordField.getText();
 
-        if (email.isBlank() || password.isBlank())
-        {
+        if (email.isBlank() || password.isBlank()) {
             showError("Udfyld venligst alle felter.");
             return;
         }
 
         userService.authenticateStaff(email, password).ifPresentOrElse(user -> {
+
+            // ⭐ IMPORTANT CHANGE ⭐
+            // Save the logged-in user so other controllers can check the role
             SessionManager.getInstance().login(user);
+
+            // Load main UI
             MainApp.setRoot("/dk/easv/seaticketsystem/Views/MainPageView.fxml", 1280, 800);
+
         }, () -> {
             showError("Login er kun for administratorer og eventkoordinatorer.");
             passwordField.clear();
@@ -42,13 +48,11 @@ public class LoginController {
     }
 
     @FXML
-    private void handleKeyPress(KeyEvent e)
-    {
+    private void handleKeyPress(KeyEvent e) {
         if (e.getCode() == KeyCode.ENTER) handleLogin();
     }
 
-    private void showError(String msg)
-    {
+    private void showError(String msg) {
         errorLabel.setText(msg);
         errorLabel.setVisible(true);
         errorLabel.setManaged(true);

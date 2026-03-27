@@ -31,7 +31,8 @@
                   prefRowCount="6"/>
     </VBox>
 
-    <Button text="✏️ Rediger Event"
+    <Button fx:id="editButton"
+            text="✏️ Rediger Event"
             onAction="#handleEdit"
             styleClass="btn-primary"/>
 
