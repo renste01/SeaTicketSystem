@@ -16,48 +16,67 @@ public class UserRepository
 {
     public Optional<User> findStaffByEmail(String email)
     {
-       String sql =
-               """
-               SELECT UserId, FirstName, LastName, Email, [Password], UserRole
-               From dbo.Users
-               WHERE Email = ? AND UserRole IN ('Admin', 'COORDINATOR')
-               """;
-       try
-       {
-           DBConnector.getInstance();
-           try (Connection con = DBConnector.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)){
+        String sql =
+                """
+                SELECT UserId, FirstName, LastName, Email, [Password], UserRole
+                From dbo.Users
+                WHERE Email = ? AND UserRole IN ('Admin', 'COORDINATOR')
+                """;
+        try
+        {
+            DBConnector.getInstance();
+            try (Connection con = DBConnector.getConnection();
+                 PreparedStatement ps = con.prepareStatement(sql)){
 
-               ps.setString(1, email);
-               try (ResultSet rs = ps.executeQuery())
-               {
-                   if (!rs.next()) return Optional.empty();
-                   return Optional.of(mapUser(rs));
-               }
-           }
-       } catch (SQLException | IOException e){
-           e.printStackTrace();
-           return Optional.empty();
-       }
+                ps.setString(1, email);
+                try (ResultSet rs = ps.executeQuery())
+                {
+                    if (!rs.next()) return Optional.empty();
+                    return Optional.of(mapUser(rs));
+                }
+            }
+        } catch (SQLException | IOException e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
-    public void createUser(User user)throws Exception{
+    public void createUser(User user) throws Exception {
         String sql = "INSERT INTO Users (UserId, FirstName, LastName, Email, Password, UserRole) Values(?,?,?,?,?,?)";
-         try (Connection conn = DBConnector.getInstance().getConnection();
-         PreparedStatement stmt = (conn.prepareStatement(sql))){
+        try (Connection conn = DBConnector.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-             stmt.setString(1, user.getId());
-             stmt.setString(2, user.getFirstName());
-             stmt.setString(3, user.getLastName());
-             stmt.setString(4, user.getEmail());
-             stmt.setString(5, user.getPassword());
-             stmt.setString(6, user.getRole().name());
+            stmt.setString(1, user.getId());
+            stmt.setString(2, user.getFirstName());
+            stmt.setString(3, user.getLastName());
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getPassword());
+            stmt.setString(6, user.getRole().name());
 
-             stmt.executeUpdate();
-         }
-
+            stmt.executeUpdate();
+        }
     }
-    private User mapUser (ResultSet rs) throws SQLException{
+
+    public void updateUser(User user) {
+        String sql = "UPDATE Users SET FirstName = ?, LastName = ?, Email = ?, Password = ? WHERE UserId = ?";
+
+        try (Connection conn = DBConnector.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPassword());
+            ps.setString(5, user.getId());
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private User mapUser(ResultSet rs) throws SQLException {
         String id = rs.getString("UserId");
         String first = rs.getString("Firstname");
         String last = rs.getString("Lastname");
@@ -65,8 +84,7 @@ public class UserRepository
         String password = rs.getString("Password");
         String role = rs.getString("UserRole");
 
-        if ("ADMIN".equalsIgnoreCase(role))
-        {
+        if ("ADMIN".equalsIgnoreCase(role)) {
             return new Admin(id, first, last, email, password);
         }
         return new EventCoordinator(id, first, last, email, password);
@@ -106,5 +124,3 @@ public class UserRepository
         }
     }
 }
-
-

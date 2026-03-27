@@ -31,28 +31,28 @@ public class MainLayoutController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // ViewManager skal kende contentArea
+        // ViewManager needs to know contentArea
         ViewManager.getInstance().setContentArea(contentArea);
 
         // Logo
         Pane logo = LogoUtil.create(175, Color.WHITE);
         sidebarLogoPane.getChildren().setAll(logo);
 
-        // Hent bruger
+        // Get User
         User user = SessionManager.getInstance().getCurrentUser();
         userNameLabel.setText(user.getName());
         userRoleLabel.setText(user.getRole().getDisplayName());
 
-        // Skjul begge menuer som udgangspunkt
+        // Hides both menus as standard
         setVisible(coordinatorMenu, false);
         setVisible(adminMenu, false);
 
-        // Vis menu baseret på rolle
+        // Show menus based on role
         UserRole role = user.getRole();
         if (role == UserRole.COORDINATOR) setVisible(coordinatorMenu, true);
         if (role == UserRole.ADMIN) setVisible(adminMenu, true);
 
-        // Standard tekst i midten
+        // Standard text
         contentArea.getChildren().setAll(new Label("Homepage klar. Vælg en menu-side."));
     }
 
@@ -66,6 +66,12 @@ public class MainLayoutController implements Initializable {
         SessionManager.getInstance().logout();
         MainApp.setRoot("/dk/easv/seaticketsystem/Views/LoginView.fxml", 1280, 800);
     }
+
+    @FXML
+    private void handleProfile() {
+        ViewManager.getInstance().loadView("ProfileView.fxml");
+    }
+
     @FXML
     private void openUserAdmin() {
         ViewManager.getInstance().loadView("AdminUserView.fxml");
@@ -80,5 +86,4 @@ public class MainLayoutController implements Initializable {
     private void openCreateEvent() {
         ViewManager.getInstance().loadView("CreateEventView.fxml");
     }
-
 }
