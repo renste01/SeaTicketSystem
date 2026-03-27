@@ -2,10 +2,7 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 // Project Imports
 import dk.easv.seaticketsystem.BLL.UserService;
-import dk.easv.seaticketsystem.Model.Admin;
-import dk.easv.seaticketsystem.Model.EventCoordinator;
-import dk.easv.seaticketsystem.Model.User;
-import dk.easv.seaticketsystem.Model.UserRole;
+import dk.easv.seaticketsystem.Model.*;
 
 // Java Imports
 import javafx.fxml.FXML;
@@ -28,7 +25,7 @@ public class CreateUserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        roleComboBox.getItems().addAll(UserRole.ADMIN, UserRole.COORDINATOR);
+        roleComboBox.getItems().addAll(UserRole.ADMIN, UserRole.COORDINATOR, UserRole.USER);
     }
 
 
@@ -53,9 +50,12 @@ public class CreateUserController implements Initializable {
             return;
         }
 
-        User newUser = (role == UserRole.ADMIN)
+        User newUser =
+                (role == UserRole.ADMIN)
                 ? new Admin(fn, ln, email, pw)
-                : new EventCoordinator(fn, ln, email, pw);
+                : (role == UserRole.COORDINATOR)
+                ? new EventCoordinator(fn, ln, email, pw)
+                : new RegularUser(fn, ln, email, pw);
 
         userService.createUser(newUser); // Creates new User (Important)
 

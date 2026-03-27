@@ -3,6 +3,7 @@ package dk.easv.seaticketsystem.DAL;
 // Project Imports
 import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
+import dk.easv.seaticketsystem.Model.RegularUser;
 import dk.easv.seaticketsystem.Model.User;
 
 // Java Imports
@@ -20,7 +21,7 @@ public class UserRepository
                 """
                 SELECT UserId, FirstName, LastName, Email, [Password], UserRole
                 From dbo.Users
-                WHERE Email = ? AND UserRole IN ('Admin', 'COORDINATOR')
+                WHERE Email = ? AND UserRole IN ('Admin', 'COORDINATOR', 'USER')
                 """;
         try
         {
@@ -86,8 +87,11 @@ public class UserRepository
 
         if ("ADMIN".equalsIgnoreCase(role)) {
             return new Admin(id, first, last, email, password);
+        } else if ("COORDINATOR".equalsIgnoreCase(role)) {
+            return new EventCoordinator(id, first, last, email, password);
+        } else {
+            return new RegularUser(id, first, last, email, password);
         }
-        return new EventCoordinator(id, first, last, email, password);
     }
 
     public List<User> getAllUsers() {
