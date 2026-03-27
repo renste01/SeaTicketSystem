@@ -19,13 +19,20 @@ public class UserService {
             new EventCoordinator("coord-001", "Lars", "Nielsen", "koordinator@sea.dk", "koor123")
     ));
 
-    public Optional<User> authenticateStaff(String email, String password) {
+// til ahrd coding
+   /* public Optional<User> authenticateStaff(String email, String password) {
         return staffUsers.stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .filter(u -> u.checkPassword(password))
                 .filter(u -> u.getRole() == UserRole.ADMIN || u.getRole() == UserRole.COORDINATOR)
                 .findFirst();
     }
+*/
+    public Optional<User> authenticateStaff(String email, String password){
+
+        return userDAO.findStaffByEmail(email).filter(u -> u.checkPassword(password));
+    }
+
 
     public void createUserTest(User newUser) {
         boolean exists = staffUsers.stream()
@@ -65,4 +72,6 @@ public class UserService {
             throw new RuntimeException("Kunne ikke slette bruger", e);
         }
     }
+
+
 }
