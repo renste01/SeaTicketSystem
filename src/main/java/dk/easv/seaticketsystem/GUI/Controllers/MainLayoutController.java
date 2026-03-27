@@ -66,6 +66,12 @@ public class MainLayoutController implements Initializable {
         SessionManager.getInstance().logout();
         MainApp.setRoot("/dk/easv/seaticketsystem/Views/LoginView.fxml", 1280, 800);
     }
+
+    @FXML
+    private void handleProfile() {
+        ViewManager.getInstance().loadView("ProfileView.fxml");
+    }
+
     @FXML
     private void openUserAdmin() {
         ViewManager.getInstance().loadView("AdminUserView.fxml");
@@ -80,5 +86,4 @@ public class MainLayoutController implements Initializable {
     private void openCreateEvent() {
         ViewManager.getInstance().loadView("CreateEventView.fxml");
     }
-
 }

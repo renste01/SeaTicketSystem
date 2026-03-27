@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public class UserService {
 
-    // TIL CREATE USER DATABASEN
     private final UserRepository userDAO = new UserRepository();
 
     private final List<User> staffUsers = new ArrayList<>(List.of(
@@ -39,7 +38,6 @@ public class UserService {
         staffUsers.add(newUser);
     }
 
-
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
@@ -52,6 +50,13 @@ public class UserService {
         }
     }
 
+    public void updateUser(User user) {
+        try {
+            userDAO.updateUser(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Kunne ikke opdatere bruger", e);
+        }
+    }
 
     public void deleteUser(String userId) {
         try {

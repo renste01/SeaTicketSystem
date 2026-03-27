@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.ProfileController"
+      spacing="20">
+
+    <padding>
+        <Insets top="30" right="40" bottom="30" left="40"/>
+    </padding>
+
+    <Label text="Min Profil" styleClass="page-title"/>
+
+    <!-- Info sektion -->
+    <VBox spacing="10" styleClass="profile-section">
+        <Label text="PERSONLIGE OPLYSNINGER" styleClass="sidebar-section-label"/>
+
+        <GridPane hgap="12" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
+                <ColumnConstraints prefWidth="260"/>
+            </columnConstraints>
+
+            <Label text="Fornavn:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="firstNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Efternavn:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="lastNameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="E-mail:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="emailField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Rolle:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Label fx:id="roleLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button text="💾 Gem ændringer" onAction="#handleSaveInfo"/>
+            <Label fx:id="infoFeedbackLabel" visible="false" managed="false"/>
+        </HBox>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Skift adgangskode sektion -->
+    <VBox spacing="10">
+        <Label text="SKIFT ADGANGSKODE" styleClass="sidebar-section-label"/>
+
+        <GridPane hgap="12" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
+                <ColumnConstraints prefWidth="260"/>
+            </columnConstraints>
+
+            <Label text="Nuværende:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="currentPasswordField" promptText="Nuværende adgangskode"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Ny adgangskode:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="newPasswordField" promptText="Ny adgangskode"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Bekræft:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="confirmPasswordField" promptText="Gentag ny adgangskode"
+                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button text=" Skift adgangskode" onAction="#handleChangePassword"/>
+            <Label fx:id="passwordFeedbackLabel" visible="false" managed="false"/>
+        </HBox>
+    </VBox>
+
+</VBox>

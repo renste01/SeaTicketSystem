@@ -41,7 +41,8 @@
                         onAction="#openEvents"/>
 
                 <Button text="👤  Min Profil"
-                        maxWidth="Infinity" styleClass="sidebar-btn"/>
+                        maxWidth="Infinity" styleClass="sidebar-btn"
+                        onAction="#handleProfile"/>
             </VBox>
 
             <!-- Koordinator-menu -->
