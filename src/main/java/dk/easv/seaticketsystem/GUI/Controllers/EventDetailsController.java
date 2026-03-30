@@ -29,7 +29,7 @@ public class EventDetailsController {
     @FXML private TableColumn<Tickets, Double> colPrice;
     @FXML private TextField priceField;
 
-    private final TicketService ticketService = new TicketService();
+    private final TicketService ticketsService = new TicketService();
 
     private static Event selectedEvent;
 
@@ -67,27 +67,29 @@ public class EventDetailsController {
         if (selectedEvent == null) return;
 
         ticketTable.setItems(FXCollections.observableList(
-                ticketService.getTicketsForEvent(selectedEvent.getId())
+                ticketsService.getTicketsForEvent(selectedEvent.getId())
         ));
     }
 
     @FXML
     private void handleCreateTicket() {
         try {
-            String ticketId = UUID.randomUUID().toString();
-            String eventId = selectedEvent.getId();
-            String userId = null; // optional
             double price = Double.parseDouble(priceField.getText());
 
-            Tickets ticket = new Tickets(ticketId, eventId, userId, price);
-            ticketService.createTicket(ticket);
+            Tickets ticket = new Tickets(
+                    UUID.randomUUID().toString(),
+                    selectedEvent.getId(),
+                    null, // userId hvis du vil tilføje det senere
+                    price
+            );
+
+            ticketsService.createTicket(ticket);
 
             priceField.clear();
             loadTickets();
 
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Kunne ikke oprette ticket: " + e.getMessage());
-            alert.showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Kunne ikke oprette ticket: " + e.getMessage()).show();
         }
     }
 

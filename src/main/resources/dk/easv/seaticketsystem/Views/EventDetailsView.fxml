@@ -37,16 +37,16 @@
             styleClass="btn-primary"/>
 
     <!-- Ticket Table -->
-    <TableView fx:id="ticketTable">
+    <TableView fx:id="ticketTable" prefHeight="200">
         <columns>
-            <TableColumn text="Ticket ID" fx:id="colTicketId"/>
-            <TableColumn text="Price" fx:id="colPrice"/>
+            <TableColumn text="Ticket ID" fx:id="colTicketId" prefWidth="200"/>
+            <TableColumn text="Price" fx:id="colPrice" prefWidth="100"/>
         </columns>
     </TableView>
 
     <!-- Ticket Creation -->
     <HBox spacing="10">
-        <TextField fx:id="priceField" promptText="Ticket price"/>
+        <TextField fx:id="priceField" promptText="Ticket price" prefWidth="150"/>
         <Button text="➕ Opret Ticket" onAction="#handleCreateTicket"/>
     </HBox>
 

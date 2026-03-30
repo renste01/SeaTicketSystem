@@ -16,4 +16,8 @@ public class TicketService {
     public List<Tickets> getTicketsForEvent(String eventId) {
         return ticketRepo.getTicketsByEvent(eventId);
     }
+
+    public List<Tickets> getTicketsForUser(String id) {
+        return ticketRepo.getTicketsByUser(id);
+    }
 }

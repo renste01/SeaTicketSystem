@@ -56,4 +56,31 @@ public class TicketRepository {
     }
 
 
+
+    public List<Tickets> getTicketsByUser(String id) {
+        List<Tickets> tickets = new ArrayList<>();
+
+        String sql = "SELECT * FROM Tickets WHERE UserId = ?";
+
+        try (Connection conn = DBConnector.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                tickets.add(new Tickets(
+                        rs.getString("TicketId"),
+                        rs.getString("EventId"),
+                        rs.getString("UserId"),
+                        rs.getDouble("Price")
+                ));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Kunne ikke hente brugerens tickets", e);
+        }
+
+        return tickets;
+    }
 }

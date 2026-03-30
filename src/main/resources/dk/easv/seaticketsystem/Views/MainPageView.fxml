@@ -46,6 +46,10 @@
             </VBox>
 
             <!-- Koordinator-menu -->
+            <Button text="🎟  Mine Billetter"
+                    maxWidth="Infinity"
+                    styleClass="sidebar-btn"
+                    onAction="#openMyTickets"/>
             <VBox fx:id="coordinatorMenu" styleClass="sidebar-nav" spacing="2">
                 <padding><Insets top="10" right="10" bottom="0" left="10"/></padding>
                 <Label text="KOORDINATOR" styleClass="sidebar-section-label"/>

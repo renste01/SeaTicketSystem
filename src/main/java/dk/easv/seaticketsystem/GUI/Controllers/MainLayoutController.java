@@ -60,6 +60,10 @@ public class MainLayoutController implements Initializable {
         node.setVisible(v);
         node.setManaged(v);
     }
+    @FXML
+    private void openMyTickets() {
+        ViewManager.getInstance().loadView("MyTicketsView.fxml");
+    }
 
     @FXML
     private void handleLogout() {
