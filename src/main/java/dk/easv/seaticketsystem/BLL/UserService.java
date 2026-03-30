@@ -1,11 +1,12 @@
 package dk.easv.seaticketsystem.BLL;
 
 import dk.easv.seaticketsystem.DAL.UserRepository;
+import dk.easv.seaticketsystem.DAL.DBConnector;
 import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
 import dk.easv.seaticketsystem.Model.User;
-import dk.easv.seaticketsystem.Model.UserRole;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,42 +15,52 @@ public class UserService {
 
     private final UserRepository userDAO = new UserRepository();
 
-    private final List<User> staffUsers = new ArrayList<>(List.of(
+    // Offline fallback-brugere
+    private final List<User> offlineUsers = new ArrayList<>(List.of(
             new Admin("admin-001", "System", "Administrator", "admin@sea.dk", "admin123"),
             new EventCoordinator("coord-001", "Lars", "Nielsen", "koordinator@sea.dk", "koor123")
     ));
 
-// til ahrd coding
-   /* public Optional<User> authenticateStaff(String email, String password) {
-        return staffUsers.stream()
-                .filter(u -> u.getEmail().equalsIgnoreCase(email))
-                .filter(u -> u.checkPassword(password))
-                .filter(u -> u.getRole() == UserRole.ADMIN || u.getRole() == UserRole.COORDINATOR)
-                .findFirst();
-    }
-*/
-    public Optional<User> authenticateStaff(String email, String password){
-
-        return userDAO.findStaffByEmail(email).filter(u -> u.checkPassword(password));
+    // Automatisk check: virker databasen?
+    private boolean databaseAvailable() {
+        try (Connection c = DBConnector.getInstance().getConnection()) {
+            return c != null && !c.isClosed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
+    // LOGIN
+    public Optional<User> authenticateStaff(String email, String password) {
 
-    public void createUserTest(User newUser) {
-        boolean exists = staffUsers.stream()
-                .anyMatch(u -> u.getEmail().equalsIgnoreCase(newUser.getEmail()));
-
-        if (exists) {
-            throw new IllegalArgumentException("En bruger med denne email findes allerede.");
+        if (!databaseAvailable()) {
+            // Offline mode
+            return offlineUsers.stream()
+                    .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                    .filter(u -> u.checkPassword(password))
+                    .findFirst();
         }
 
-        staffUsers.add(newUser);
+        // Online mode
+        return userDAO.findStaffByEmail(email)
+                .filter(u -> u.checkPassword(password));
     }
 
+    // GET ALL USERS
     public List<User> getAllUsers() {
+        if (!databaseAvailable()) {
+            return new ArrayList<>(offlineUsers);
+        }
         return userDAO.getAllUsers();
     }
 
+    // CREATE USER
     public void createUser(User newUser) {
+        if (!databaseAvailable()) {
+            offlineUsers.add(newUser);
+            return;
+        }
+
         try {
             userDAO.createUser(newUser);
         } catch (Exception e) {
@@ -57,7 +68,12 @@ public class UserService {
         }
     }
 
+    // UPDATE USER
     public void updateUser(User user) {
+        if (!databaseAvailable()) {
+            return; // offline mode gør ingenting
+        }
+
         try {
             userDAO.updateUser(user);
         } catch (Exception e) {
@@ -65,13 +81,17 @@ public class UserService {
         }
     }
 
+    // DELETE USER
     public void deleteUser(String userId) {
+        if (!databaseAvailable()) {
+            offlineUsers.removeIf(u -> u.getId().equals(userId));
+            return;
+        }
+
         try {
             userDAO.deleteUser(userId);
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke slette bruger", e);
         }
     }
-
-
 }
