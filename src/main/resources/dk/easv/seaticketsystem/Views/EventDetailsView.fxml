@@ -36,5 +36,18 @@
             onAction="#handleEdit"
             styleClass="btn-primary"/>
 
+    <!-- Ticket Table -->
+    <TableView fx:id="ticketTable">
+        <columns>
+            <TableColumn text="Ticket ID" fx:id="colTicketId"/>
+            <TableColumn text="Price" fx:id="colPrice"/>
+        </columns>
+    </TableView>
+
+    <!-- Ticket Creation -->
+    <HBox spacing="10">
+        <TextField fx:id="priceField" promptText="Ticket price"/>
+        <Button text="➕ Opret Ticket" onAction="#handleCreateTicket"/>
+    </HBox>
 
 </VBox>
