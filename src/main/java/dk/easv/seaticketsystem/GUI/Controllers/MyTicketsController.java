@@ -27,8 +27,12 @@ public class MyTicketsController {
 
         var user = SessionManager.getInstance().getCurrentUser();
 
-        ticketTable.setItems(FXCollections.observableList(
-                ticketService.getTicketsForUser(user.getId())
-        ));
+        try {
+            ticketTable.setItems(FXCollections.observableList(
+                    ticketService.getTicketsForUser(user.getId())
+            ));
+        } catch (Exception e) {
+            System.out.println("Kunne ikke hente tickets: " + e.getMessage());
+        }
     }
 }
