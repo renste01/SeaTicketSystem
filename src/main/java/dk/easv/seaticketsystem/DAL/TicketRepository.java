@@ -21,6 +21,8 @@ public class TicketRepository {
             stmt.setString(3, tickets.getUserID());
             stmt.setDouble(4,tickets.getPrice());
 
+            stmt.executeUpdate();
+
         } catch (Exception e){
             throw new RuntimeException("kunne ikke opretter forbindelse :(", e);
         }
