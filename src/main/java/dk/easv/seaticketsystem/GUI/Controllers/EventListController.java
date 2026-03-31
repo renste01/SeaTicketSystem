@@ -1,7 +1,10 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
-// Project Imports
+import dk.easv.seaticketsystem.BLL.UserService;
 import dk.easv.seaticketsystem.Model.Event;
+import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.Model.UserRole;
+import dk.easv.seaticketsystem.Session.SessionManager;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class EventListController implements Initializable {
 
@@ -21,9 +25,15 @@ public class EventListController implements Initializable {
     @FXML private TableColumn<Event, String> colTitle;
     @FXML private TableColumn<Event, String> colDate;
     @FXML private TableColumn<Event, String> colLocation;
+    @FXML private TableColumn<Event, Void> colInvite;
     @FXML private TableColumn<Event, Void> colDelete;
 
-    private static final List<Event> events = new ArrayList<>();
+    private final UserService userService = new UserService();
+
+    private static final List<Event> events = new ArrayList<>(List.of(
+            new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12), "Live concert at the harbor"),
+            new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3), "Summer festival with music and food")
+    ));
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -31,10 +41,10 @@ public class EventListController implements Initializable {
         colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
         colLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
 
+        setupInviteColumn();
         setupDeleteColumn();
-        loadDummyEvents();
+        loadEvents();
 
-        // ⭐ Restore double-click to open event details ⭐
         eventTable.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
                 Event selected = eventTable.getSelectionModel().getSelectedItem();
@@ -43,6 +53,110 @@ public class EventListController implements Initializable {
                     ViewManager.getInstance().loadView("EventDetailsView.fxml");
                 }
             }
+        });
+    }
+
+    private void setupInviteColumn() {
+        colInvite.setCellFactory(col -> new TableCell<>() {
+            private final Button inviteBtn = new Button("👥 Inviter");
+
+            {
+                inviteBtn.setStyle("-fx-background-color: #3c7d87; -fx-text-fill: white; -fx-cursor: hand;");
+                inviteBtn.setOnAction(e -> {
+                    Event event = getTableView().getItems().get(getIndex());
+                    handleInviteCoCoordinator(event);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Event event = getTableView().getItems().get(getIndex());
+                User currentUser = SessionManager.getInstance().getCurrentUser();
+
+                // Only show invite button if current user owns this event
+                boolean isOwner = currentUser != null && event.isOwnedBy(currentUser.getId());
+                setGraphic(isOwner ? inviteBtn : null);
+            }
+        });
+    }
+
+    private void handleInviteCoCoordinator(Event event) {
+        // Get all coordinators except the owner
+        List<User> allCoordinators = userService.getAllUsers().stream()
+                .filter(u -> u.getRole() == UserRole.COORDINATOR)
+                .filter(u -> !u.getId().equals(event.getOwnerCoordinatorId()))
+                .filter(u -> !event.getCoCoordinatorIds().contains(u.getId()))
+                .collect(Collectors.toList());
+
+        if (allCoordinators.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Ingen tilgængelige koordinatorer");
+            alert.setHeaderText(null);
+            alert.setContentText("Der er ingen andre koordinatorer at invitere.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Build dialog with dropdown
+        Dialog<User> dialog = new Dialog<>();
+        dialog.setTitle("Inviter Ko-koordinator");
+        dialog.setHeaderText("Vælg en koordinator til: " + event.getTitle());
+
+        ButtonType inviteButtonType = new ButtonType("Inviter", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButtonType = new ButtonType("Annuller", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(inviteButtonType, cancelButtonType);
+
+        ComboBox<User> coordinatorDropdown = new ComboBox<>();
+        coordinatorDropdown.getItems().addAll(allCoordinators);
+        coordinatorDropdown.setPromptText("Vælg koordinator...");
+        coordinatorDropdown.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+                setText(empty || user == null ? null : user.getName() + " (" + user.getEmail() + ")");
+            }
+        });
+        coordinatorDropdown.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+                setText(empty || user == null ? null : user.getName() + " (" + user.getEmail() + ")");
+            }
+        });
+
+        // Disable invite button until selection is made
+        javafx.scene.Node inviteButton = dialog.getDialogPane().lookupButton(inviteButtonType);
+        inviteButton.setDisable(true);
+        coordinatorDropdown.valueProperty().addListener((obs, oldVal, newVal) ->
+                inviteButton.setDisable(newVal == null));
+
+        javafx.scene.layout.VBox content = new javafx.scene.layout.VBox(8,
+                new Label("Ko-koordinator:"), coordinatorDropdown);
+        content.setPrefWidth(380);
+        dialog.getDialogPane().setContent(content);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == inviteButtonType) return coordinatorDropdown.getValue();
+            return null;
+        });
+
+        Optional<User> result = dialog.showAndWait();
+        result.ifPresent(selectedUser -> {
+            event.addCoCoordinator(selectedUser.getId());
+            eventTable.refresh();
+            System.out.println("Invited " + selectedUser.getName() + " as co-coordinator for: " + event.getTitle());
+
+            Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
+            confirmation.setTitle("Invitation sendt");
+            confirmation.setHeaderText(null);
+            confirmation.setContentText(selectedUser.getName() + " er nu ko-koordinator på: " + event.getTitle());
+            confirmation.showAndWait();
         });
     }
 
@@ -61,7 +175,19 @@ public class EventListController implements Initializable {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : deleteBtn);
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Event event = getTableView().getItems().get(getIndex());
+                User currentUser = SessionManager.getInstance().getCurrentUser();
+                UserRole role = currentUser != null ? currentUser.getRole() : null;
+
+                // Admins can delete any event, coordinators only their own
+                boolean canDelete = role == UserRole.ADMIN ||
+                        (role == UserRole.COORDINATOR && event.hasAccess(currentUser.getId()));
+                setGraphic(canDelete ? deleteBtn : null);
             }
         });
     }
@@ -80,22 +206,18 @@ public class EventListController implements Initializable {
         commentArea.setWrapText(true);
         commentArea.setPrefRowCount(3);
 
-        Label commentLabel = new Label("Begrundelse (påkrævet):");
-
-        javafx.scene.layout.VBox content = new javafx.scene.layout.VBox(8, commentLabel, commentArea);
+        javafx.scene.layout.VBox content = new javafx.scene.layout.VBox(8,
+                new Label("Begrundelse (påkrævet):"), commentArea);
         content.setPrefWidth(400);
         dialog.getDialogPane().setContent(content);
 
         javafx.scene.Node deleteButton = dialog.getDialogPane().lookupButton(deleteButtonType);
         deleteButton.setDisable(true);
-        commentArea.textProperty().addListener((obs, oldVal, newVal) -> {
-            deleteButton.setDisable(newVal.trim().isEmpty());
-        });
+        commentArea.textProperty().addListener((obs, oldVal, newVal) ->
+                deleteButton.setDisable(newVal.trim().isEmpty()));
 
         dialog.setResultConverter(buttonType -> {
-            if (buttonType == deleteButtonType) {
-                return commentArea.getText().trim();
-            }
+            if (buttonType == deleteButtonType) return commentArea.getText().trim();
             return null;
         });
 
@@ -103,7 +225,7 @@ public class EventListController implements Initializable {
         result.ifPresent(comment -> {
             events.remove(event);
             eventTable.getItems().remove(event);
-            System.out.println("Event '" + event.getTitle() + "' deleted. Reason: " + comment);
+            System.out.println("Event '" + event.getTitle() + "' slettet. Begrundelse: " + comment);
         });
     }
 
@@ -113,23 +235,38 @@ public class EventListController implements Initializable {
 
     public static void updateEvent(String id, String title, String location, LocalDate date, String description) {
         for (int i = 0; i < events.size(); i++) {
-            Event existingEvent = events.get(i);
-
-            if (existingEvent.getId().equals(id)) {
-                events.set(i, new Event(id, title, location, date, description));
+            if (events.get(i).getId().equals(id)) {
+                Event old = events.get(i);
+                Event updated = new Event(id, title, location, date, description, old.getOwnerCoordinatorId());
+                old.getCoCoordinatorIds().forEach(updated::addCoCoordinator);
+                events.set(i, updated);
                 break;
             }
         }
     }
+    public static void deleteEvent(String id) {
+        events.removeIf(e -> e.getId().equals(id));
+    }
 
-    private void loadDummyEvents() {
-        if (events.isEmpty()) {
-            events.add(new Event("1", "Koncert i Havnen", "Esbjerg Havn",
-                    LocalDate.of(2025, 6, 12), "Live concert at the harbor"));
+    public static List<Event> getEvents() {
+        return new ArrayList<>(events);
+    }
 
-            events.add(new Event("2", "Sommerfestival", "Musikhuset",
-                    LocalDate.of(2025, 7, 3), "Summer festival with music and food"));
+    private void loadEvents() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) return;
+
+        List<Event> visible;
+        if (currentUser.getRole() == UserRole.ADMIN) {
+            // Admins see everything
+            visible = new ArrayList<>(events);
+        } else {
+            // Coordinators only see their own or events they are co-coordinator on
+            visible = events.stream()
+                    .filter(e -> e.getOwnerCoordinatorId() == null || e.hasAccess(currentUser.getId()))
+                    .collect(Collectors.toList());
         }
-        eventTable.getItems().setAll(events);
+
+        eventTable.getItems().setAll(visible);
     }
 }

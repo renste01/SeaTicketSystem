@@ -54,7 +54,8 @@
                 <padding><Insets top="10" right="10" bottom="0" left="10"/></padding>
                 <Label text="KOORDINATOR" styleClass="sidebar-section-label"/>
                 <Button text="📋  Mine Events"
-                        maxWidth="Infinity" styleClass="sidebar-btn"/>
+                        maxWidth="Infinity" styleClass="sidebar-btn"
+                        onAction="#openMyEvents"/>
                 <Button text="➕  Opret Event"
                         maxWidth="Infinity" styleClass="sidebar-btn"
                         onAction="#openCreateEvent"/>
@@ -68,14 +69,16 @@
                 <Label text="ADMINISTRATOR" styleClass="sidebar-section-label"/>
 
                 <Button text="🏠  Dashboard"
-                        maxWidth="Infinity" styleClass="sidebar-btn"/>
+                        maxWidth="Infinity" styleClass="sidebar-btn"
+                        onAction="#openDashboard"/>
 
                 <Button text="👥  Administrer Brugere"
                         maxWidth="Infinity" styleClass="sidebar-btn"
                         onAction="#openUserAdmin"/>
 
                 <Button text="📂  Administrer Events"
-                        maxWidth="Infinity" styleClass="sidebar-btn"/>
+                        maxWidth="Infinity" styleClass="sidebar-btn"
+                        onAction="#openAdminEvents"/>
             </VBox>
 
             <!-- Fyld plads -->

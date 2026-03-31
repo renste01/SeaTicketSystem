@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dk.easv.seaticketsystem.GUI.Controllers.AdminDashboardController"
+            fitToWidth="true"
+            styleClass="page-scroll">
+
+    <VBox spacing="20" styleClass="page">
+        <padding>
+            <Insets top="28" right="28" bottom="28" left="28"/>
+        </padding>
+
+        <!-- Header -->
+        <VBox styleClass="admin-hero" spacing="4">
+            <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+            <Label fx:id="welcomeLabel" styleClass="admin-welcome"/>
+            <Label text="Her er et overblik over systemets brugere og events." styleClass="admin-welcome-sub"/>
+        </VBox>
+
+        <!-- Stat cards -->
+        <HBox spacing="16">
+            <VBox styleClass="admin-stat-card admin-stat-blue" spacing="4" alignment="CENTER">
+                <Label text="👥" styleClass="admin-stat-icon"/>
+                <Label fx:id="totalUsersLabel" text="0" styleClass="admin-stat-num"/>
+                <Label text="Brugere i alt" styleClass="admin-stat-label"/>
+            </VBox>
+            <VBox styleClass="admin-stat-card admin-stat-green" spacing="4" alignment="CENTER">
+                <Label text="🎟" styleClass="admin-stat-icon"/>
+                <Label fx:id="totalCoordinatorsLabel" text="0" styleClass="admin-stat-num"/>
+                <Label text="Koordinatorer" styleClass="admin-stat-label"/>
+            </VBox>
+            <VBox styleClass="admin-stat-card admin-stat-orange" spacing="4" alignment="CENTER">
+                <Label text="🔑" styleClass="admin-stat-icon"/>
+                <Label fx:id="totalAdminsLabel" text="0" styleClass="admin-stat-num"/>
+                <Label text="Administratorer" styleClass="admin-stat-label"/>
+            </VBox>
+            <VBox styleClass="admin-stat-card admin-stat-purple" spacing="4" alignment="CENTER">
+                <Label text="📅" styleClass="admin-stat-icon"/>
+                <Label fx:id="totalEventsLabel" text="0" styleClass="admin-stat-num"/>
+                <Label text="Events" styleClass="admin-stat-label"/>
+            </VBox>
+        </HBox>
+
+        <!-- Users table -->
+        <VBox spacing="10" styleClass="admin-section-card">
+            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+            <Label text="Brugeroversigt" styleClass="section-title"/>
+            <TableView fx:id="recentUsersTable" prefHeight="220" styleClass="sea-table">
+                <columns>
+                    <TableColumn fx:id="colUserName" text="Navn" prefWidth="200"/>
+                    <TableColumn fx:id="colUserEmail" text="Email" prefWidth="240"/>
+                    <TableColumn fx:id="colUserRole" text="Rolle" prefWidth="150"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- Events table -->
+        <VBox spacing="10" styleClass="admin-section-card">
+            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+            <Label text="Eventoversigt" styleClass="section-title"/>
+            <TableView fx:id="recentEventsTable" prefHeight="220" styleClass="sea-table">
+                <columns>
+                    <TableColumn fx:id="colEventTitle" text="Titel" prefWidth="220"/>
+                    <TableColumn fx:id="colEventDate" text="Dato" prefWidth="120"/>
+                    <TableColumn fx:id="colEventLocation" text="Sted" prefWidth="200"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+    </VBox>
+</ScrollPane>

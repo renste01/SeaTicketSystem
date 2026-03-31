@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="dk.easv.seaticketsystem.GUI.Controllers.AdminEventManager"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.AdminEventManagerController"
+      spacing="16">
 
-</AnchorPane>
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Administrer Events" styleClass="page-title"/>
+
+    <TableView fx:id="eventTable" styleClass="sea-table" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colTitle" text="Titel" prefWidth="200"/>
+            <TableColumn fx:id="colDate" text="Dato" prefWidth="120"/>
+            <TableColumn fx:id="colLocation" text="Sted" prefWidth="180"/>
+            <TableColumn fx:id="colOwner" text="Koordinator" prefWidth="180"/>
+            <TableColumn fx:id="colDelete" text="" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+</VBox>

@@ -1,6 +1,8 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
 import dk.easv.seaticketsystem.Model.Event;
+import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.Session.SessionManager;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -28,18 +30,20 @@ public class CreateEventController {
             return;
         }
 
+        // Tag event with the current coordinator's ID
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        String ownerId = currentUser != null ? currentUser.getId() : null;
+
         Event newEvent = new Event(
                 UUID.randomUUID().toString(),
                 title,
                 location,
                 date,
-                description
+                description,
+                ownerId
         );
 
-        // Add event to the shared list
         EventListController.addEvent(newEvent);
-
-        // Navigate back to event list
         ViewManager.getInstance().loadView("EventListView.fxml");
     }
 
