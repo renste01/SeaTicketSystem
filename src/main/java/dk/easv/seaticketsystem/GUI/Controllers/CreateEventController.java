@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public class CreateEventController {
@@ -15,6 +17,8 @@ public class CreateEventController {
     @FXML private TextField titleField;
     @FXML private TextField locationField;
     @FXML private DatePicker datePicker;
+    @FXML private DatePicker endDatePicker;
+    @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
     @FXML private Label errorLabel;
 
@@ -23,10 +27,27 @@ public class CreateEventController {
         String title = titleField.getText().trim();
         String location = locationField.getText().trim();
         LocalDate date = datePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        String endTimeText = endTimeField.getText().trim();
         String description = descriptionField.getText().trim();
 
-        if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()) {
+        if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()
+                || endDate == null || endTimeText.isEmpty()) {
             showError("Udfyld venligst alle felter.");
+            return;
+        }
+
+        LocalTime endTime;
+        try {
+            endTime = LocalTime.parse(endTimeText);
+        } catch (Exception ex) {
+            showError("Sluttid skal være i format HH:mm.");
+            return;
+        }
+        LocalDateTime startDateTime = date.atStartOfDay();
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+        if (!endDateTime.isAfter(startDateTime)) {
+            showError("Slutdato/-tid skal være efter startdato.");
             return;
         }
 
@@ -40,7 +61,8 @@ public class CreateEventController {
                 location,
                 date,
                 description,
-                ownerId
+                ownerId,
+                endDateTime
         );
 
         EventListController.addEvent(newEvent);

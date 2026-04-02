@@ -43,7 +43,7 @@ public class EventDetailsController {
         // Load event details
         if (selectedEvent != null) {
             titleLabel.setText(selectedEvent.getTitle());
-            dateLabel.setText(selectedEvent.getDate().toString());
+            dateLabel.setText(selectedEvent.getDateRangeDisplay());
             locationLabel.setText(selectedEvent.getLocation());
             descriptionArea.setText(selectedEvent.getDescription());
         }

@@ -13,6 +13,8 @@ import javafx.scene.control.*;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,22 +26,30 @@ public class EventListController implements Initializable {
     @FXML private TableView<Event> eventTable;
     @FXML private TableColumn<Event, String> colTitle;
     @FXML private TableColumn<Event, String> colDate;
+    @FXML private TableColumn<Event, String> colTime;
     @FXML private TableColumn<Event, String> colLocation;
+    @FXML private TableColumn<Event, String> colCoordinators;
     @FXML private TableColumn<Event, Void> colInvite;
     @FXML private TableColumn<Event, Void> colDelete;
 
     private final UserService userService = new UserService();
 
     private static final List<Event> events = new ArrayList<>(List.of(
-            new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12), "Live concert at the harbor"),
-            new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3), "Summer festival with music and food")
+            new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12), "Live concert at the harbor", LocalDateTime.of(2025, 6, 12, 22, 0)),
+            new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3), "Summer festival with music and food", LocalDateTime.of(2025, 7, 3, 23, 30))
     ));
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
         colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
+        colTime.setCellValueFactory(c -> {
+            LocalDateTime end = c.getValue().getEndDateTime();
+            if (end == null) return new SimpleStringProperty("-");
+            return new SimpleStringProperty(end.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        });
         colLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
+        colCoordinators.setCellValueFactory(c -> new SimpleStringProperty(getCoordinatorNames(c.getValue())));
 
         setupInviteColumn();
         setupDeleteColumn();
@@ -233,11 +243,11 @@ public class EventListController implements Initializable {
         events.add(e);
     }
 
-    public static void updateEvent(String id, String title, String location, LocalDate date, String description) {
+    public static void updateEvent(String id, String title, String location, LocalDate date, String description, LocalDateTime endDateTime) {
         for (int i = 0; i < events.size(); i++) {
             if (events.get(i).getId().equals(id)) {
                 Event old = events.get(i);
-                Event updated = new Event(id, title, location, date, description, old.getOwnerCoordinatorId());
+                Event updated = new Event(id, title, location, date, description, old.getOwnerCoordinatorId(), endDateTime);
                 old.getCoCoordinatorIds().forEach(updated::addCoCoordinator);
                 events.set(i, updated);
                 break;
@@ -250,6 +260,33 @@ public class EventListController implements Initializable {
 
     public static List<Event> getEvents() {
         return new ArrayList<>(events);
+    }
+
+    private String getCoordinatorNames(Event event) {
+        List<User> allUsers = userService.getAllUsers();
+        List<String> names = new ArrayList<>();
+
+        String ownerId = event.getOwnerCoordinatorId();
+        if (ownerId != null) {
+            for (User user : allUsers) {
+                if (user.getId().equals(ownerId)) {
+                    names.add(user.getName());
+                    break;
+                }
+            }
+        }
+
+        for (String coId : event.getCoCoordinatorIds()) {
+            for (User user : allUsers) {
+                if (user.getId().equals(coId)) {
+                    names.add(user.getName());
+                    break;
+                }
+            }
+        }
+
+        if (names.isEmpty()) return "Ingen";
+        return String.join(", ", names);
     }
 
     private void loadEvents() {

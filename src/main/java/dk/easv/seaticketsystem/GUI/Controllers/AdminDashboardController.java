@@ -34,6 +34,7 @@ public class AdminDashboardController implements Initializable {
     @FXML private TableColumn<Event, String> colEventTitle;
     @FXML private TableColumn<Event, String> colEventDate;
     @FXML private TableColumn<Event, String> colEventLocation;
+    @FXML private TableColumn<Event, String> colEventCoordinators;
 
     private final UserService userService = new UserService();
 
@@ -49,8 +50,9 @@ public class AdminDashboardController implements Initializable {
         colUserRole.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getRole().getDisplayName()));
 
         colEventTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
-        colEventDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
+        colEventDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDateRangeDisplay()));
         colEventLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
+        colEventCoordinators.setCellValueFactory(c -> new SimpleStringProperty(getCoordinatorNames(c.getValue())));
 
         loadData();
     }
@@ -78,5 +80,32 @@ public class AdminDashboardController implements Initializable {
 
         recentUsersTable.getItems().setAll(allUsers);
         recentEventsTable.getItems().setAll(allEvents);
+    }
+
+    private String getCoordinatorNames(Event event) {
+        List<User> allUsers = userService.getAllUsers();
+        List<String> names = new ArrayList<>();
+
+        String ownerId = event.getOwnerCoordinatorId();
+        if (ownerId != null) {
+            for (User user : allUsers) {
+                if (user.getId().equals(ownerId)) {
+                    names.add(user.getName());
+                    break;
+                }
+            }
+        }
+
+        for (String coId : event.getCoCoordinatorIds()) {
+            for (User user : allUsers) {
+                if (user.getId().equals(coId)) {
+                    names.add(user.getName());
+                    break;
+                }
+            }
+        }
+
+        if (names.isEmpty()) return "Ingen";
+        return String.join(", ", names);
     }
 }

@@ -6,12 +6,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class EditEventController {
 
     @FXML private TextField titleField;
     @FXML private TextField locationField;
     @FXML private DatePicker datePicker;
+    @FXML private DatePicker endDatePicker;
+    @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
     @FXML private Label errorLabel;
 
@@ -27,6 +32,10 @@ public class EditEventController {
             titleField.setText(eventToEdit.getTitle());
             locationField.setText(eventToEdit.getLocation());
             datePicker.setValue(eventToEdit.getDate());
+            if (eventToEdit.getEndDateTime() != null) {
+                endDatePicker.setValue(eventToEdit.getEndDateTime().toLocalDate());
+                endTimeField.setText(eventToEdit.getEndDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+            }
             descriptionField.setText(eventToEdit.getDescription());
         }
     }
@@ -36,10 +45,28 @@ public class EditEventController {
         String title = titleField.getText().trim();
         String location = locationField.getText().trim();
         LocalDate date = datePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        String endTimeText = endTimeField.getText().trim();
         String description = descriptionField.getText().trim();
 
-        if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()) {
+        if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()
+                || endDate == null || endTimeText.isEmpty()) {
             showError("Udfyld venligst alle felter.");
+            return;
+        }
+
+        LocalTime endTime;
+        try {
+            endTime = LocalTime.parse(endTimeText);
+        } catch (Exception ex) {
+            showError("Sluttid skal være i format HH:mm.");
+            return;
+        }
+
+        LocalDateTime startDateTime = date.atStartOfDay();
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+        if (!endDateTime.isAfter(startDateTime)) {
+            showError("Slutdato/-tid skal være efter startdato.");
             return;
         }
 
@@ -49,7 +76,8 @@ public class EditEventController {
                 title,
                 location,
                 date,
-                description
+                description,
+                endDateTime
         );
 
         ViewManager.getInstance().loadView("EventListView.fxml");

@@ -30,11 +30,17 @@
             <Label text="Dato:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
             <DatePicker fx:id="datePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-            <Label text="Beskrivelse:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Label text="Slutdato:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <DatePicker fx:id="endDatePicker" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="Sluttid (HH:mm):" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="endTimeField" promptText="fx 21:30" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="Beskrivelse:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
             <TextArea fx:id="descriptionField"
                       wrapText="true"
                       prefRowCount="4"
-                      GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                      GridPane.rowIndex="5" GridPane.columnIndex="1"/>
         </children>
     </GridPane>
 

@@ -11,6 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -21,8 +24,9 @@ public class MyEventsController implements Initializable {
     @FXML private TableView<Event> eventTable;
     @FXML private TableColumn<Event, String> colTitle;
     @FXML private TableColumn<Event, String> colDate;
+    @FXML private TableColumn<Event, String> colTime;
     @FXML private TableColumn<Event, String> colLocation;
-    @FXML private TableColumn<Event, String> colCoCoordinators;
+    @FXML private TableColumn<Event, String> colCoordinators;
     @FXML private TableColumn<Event, Void> colInvite;
 
     private final UserService userService = new UserService();
@@ -34,23 +38,14 @@ public class MyEventsController implements Initializable {
 
         colTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
         colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
+        colTime.setCellValueFactory(c -> {
+            LocalDateTime end = c.getValue().getEndDateTime();
+            if (end == null) return new SimpleStringProperty("-");
+            return new SimpleStringProperty(end.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        });
         colLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
 
-        // Show co-coordinator names in a column
-        colCoCoordinators.setCellValueFactory(c -> {
-            List<String> coIds = c.getValue().getCoCoordinatorIds();
-            if (coIds.isEmpty()) return new SimpleStringProperty("Ingen");
-
-            List<User> allUsers = userService.getAllUsers();
-            String names = coIds.stream()
-                    .map(id -> allUsers.stream()
-                            .filter(u -> u.getId().equals(id))
-                            .findFirst()
-                            .map(User::getName)
-                            .orElse("Ukendt"))
-                    .collect(Collectors.joining(", "));
-            return new SimpleStringProperty(names);
-        });
+        colCoordinators.setCellValueFactory(c -> new SimpleStringProperty(getCoordinatorNames(c.getValue())));
 
         setupInviteColumn();
         loadMyEvents();
@@ -156,5 +151,32 @@ public class MyEventsController implements Initializable {
                 .collect(Collectors.toList());
 
         eventTable.getItems().setAll(myEvents);
+    }
+
+    private String getCoordinatorNames(Event event) {
+        List<User> allUsers = userService.getAllUsers();
+        List<String> names = new ArrayList<>();
+
+        String ownerId = event.getOwnerCoordinatorId();
+        if (ownerId != null) {
+            for (User user : allUsers) {
+                if (user.getId().equals(ownerId)) {
+                    names.add(user.getName());
+                    break;
+                }
+            }
+        }
+
+        for (String coId : event.getCoCoordinatorIds()) {
+            for (User user : allUsers) {
+                if (user.getId().equals(coId)) {
+                    names.add(user.getName());
+                    break;
+                }
+            }
+        }
+
+        if (names.isEmpty()) return "Ingen";
+        return String.join(", ", names);
     }
 }
