@@ -1,18 +1,25 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+import dk.easv.seaticketsystem.BLL.UserService;
 import dk.easv.seaticketsystem.Model.Event;
 import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.Model.UserRole;
 import dk.easv.seaticketsystem.Session.SessionManager;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
-public class CreateEventController {
+public class CreateEventController implements Initializable {
 
     @FXML private TextField titleField;
     @FXML private TextField locationField;
@@ -20,7 +27,26 @@ public class CreateEventController {
     @FXML private DatePicker endDatePicker;
     @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
+    @FXML private ListView<User> coordinatorList;
     @FXML private Label errorLabel;
+
+    private final UserService userService = new UserService();
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        String currentUserId = currentUser != null ? currentUser.getId() : null;
+
+        List<User> coordinators = new ArrayList<>();
+        for (User user : userService.getAllUsers()) {
+            if (user.getRole() == UserRole.COORDINATOR &&
+                    (currentUserId == null || !currentUserId.equals(user.getId()))) {
+                coordinators.add(user);
+            }
+        }
+        coordinatorList.getItems().setAll(coordinators);
+        coordinatorList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }
 
     @FXML
     private void handleCreate() {
@@ -64,6 +90,13 @@ public class CreateEventController {
                 ownerId,
                 endDateTime
         );
+
+        List<User> selectedCoordinators = coordinatorList.getSelectionModel().getSelectedItems();
+        for (User coordinator : selectedCoordinators) {
+            if (ownerId == null || !ownerId.equals(coordinator.getId())) {
+                newEvent.addCoCoordinator(coordinator.getId());
+            }
+        }
 
         EventListController.addEvent(newEvent);
         ViewManager.getInstance().loadView("EventListView.fxml");

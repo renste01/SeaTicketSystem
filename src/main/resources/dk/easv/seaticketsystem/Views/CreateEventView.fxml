@@ -6,50 +6,64 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="dk.easv.seaticketsystem.GUI.Controllers.CreateEventController"
-      spacing="14">
+      spacing="16"
+      styleClass="admin-section-card"
+      prefWidth="900"
+      maxWidth="900">
 
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="16" right="22" bottom="16" left="22"/>
     </padding>
 
     <Label text="Opret Event" styleClass="page-title"/>
 
-    <GridPane hgap="10" vgap="10">
+    <GridPane hgap="14" vgap="12">
         <columnConstraints>
-            <ColumnConstraints halignment="RIGHT" prefWidth="120"/>
-            <ColumnConstraints prefWidth="260"/>
+            <ColumnConstraints halignment="RIGHT" prefWidth="180"/>
+            <ColumnConstraints prefWidth="620"/>
         </columnConstraints>
 
         <children>
             <Label text="Titel:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
             <TextField fx:id="titleField"
+                       styleClass="form-field"
                        promptText="Event titel"
                        GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
             <Label text="Sted:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
             <TextField fx:id="locationField"
+                       styleClass="form-field"
                        promptText="Hvor afholdes eventet?"
                        GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
             <Label text="Dato:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
             <DatePicker fx:id="datePicker"
+                        styleClass="form-field"
                          GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
             <Label text="Slutdato:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
             <DatePicker fx:id="endDatePicker"
+                        styleClass="form-field"
                         GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
             <Label text="Sluttid (HH:mm):" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
             <TextField fx:id="endTimeField"
+                       styleClass="form-field"
                        promptText="fx 21:30"
                        GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
             <Label text="Beskrivelse:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
             <TextArea fx:id="descriptionField"
+                       styleClass="form-field"
                        promptText="Kort beskrivelse af eventet"
                        wrapText="true"
-                       prefRowCount="4"
+                       prefRowCount="7"
                        GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+            <Label text="Tilføj flere koordinatorer:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <ListView fx:id="coordinatorList"
+                      prefHeight="140"
+                      GridPane.rowIndex="6" GridPane.columnIndex="1"/>
         </children>
     </GridPane>
 
@@ -59,6 +73,7 @@
            managed="false"/>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Region HBox.hgrow="ALWAYS"/>
         <Button text="Annuller" onAction="#handleCancel" styleClass="btn-secondary"/>
         <Button text="Opret Event" onAction="#handleCreate" styleClass="btn-primary"/>
     </HBox>
