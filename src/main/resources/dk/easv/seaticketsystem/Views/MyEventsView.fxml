@@ -3,26 +3,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.MyEventsController"
-      spacing="16">
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dk.easv.seaticketsystem.GUI.Controllers.MyEventsController"
+            fitToWidth="true"
+            styleClass="page-scroll">
 
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+    <VBox spacing="24">
+        <padding>
+            <Insets top="28" right="28" bottom="28" left="28"/>
+        </padding>
 
-    <Label text="Mine Events" styleClass="page-title"/>
+        <Label text="Mine Events" styleClass="page-title"/>
+        <Label text="Her kan du se dine events og invitere ko-koordinatorer."
+               styleClass="admin-welcome-sub"/>
 
-    <TableView fx:id="eventTable" styleClass="sea-table" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="colTitle" text="Titel" prefWidth="180"/>
-            <TableColumn fx:id="colDate" text="Dato" prefWidth="110"/>
-            <TableColumn fx:id="colTime" text="Tid" prefWidth="90"/>
-            <TableColumn fx:id="colLocation" text="Sted" prefWidth="150"/>
-            <TableColumn fx:id="colCoordinators" text="Koordinatorer" prefWidth="170"/>
-            <TableColumn fx:id="colInvite" text="" prefWidth="200"/>
-        </columns>
-    </TableView>
+        <VBox fx:id="eventCardsContainer" spacing="16"/>
 
-</VBox>
+    </VBox>
+</ScrollPane>

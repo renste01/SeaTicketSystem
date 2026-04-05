@@ -5,29 +5,21 @@ import dk.easv.seaticketsystem.Model.Event;
 import dk.easv.seaticketsystem.Model.User;
 import dk.easv.seaticketsystem.Model.UserRole;
 import dk.easv.seaticketsystem.Session.SessionManager;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class MyEventsController implements Initializable {
 
-    @FXML private TableView<Event> eventTable;
-    @FXML private TableColumn<Event, String> colTitle;
-    @FXML private TableColumn<Event, String> colDate;
-    @FXML private TableColumn<Event, String> colTime;
-    @FXML private TableColumn<Event, String> colLocation;
-    @FXML private TableColumn<Event, String> colCoordinators;
-    @FXML private TableColumn<Event, Void> colInvite;
+    @FXML private VBox eventCardsContainer;
 
     private final UserService userService = new UserService();
     private User currentUser;
@@ -35,49 +27,105 @@ public class MyEventsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         currentUser = SessionManager.getInstance().getCurrentUser();
-
-        colTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
-        colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
-        colTime.setCellValueFactory(c -> {
-            LocalDateTime end = c.getValue().getEndDateTime();
-            if (end == null) return new SimpleStringProperty("-");
-            return new SimpleStringProperty(end.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-        });
-        colLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
-
-        colCoordinators.setCellValueFactory(c -> new SimpleStringProperty(getCoordinatorNames(c.getValue())));
-
-        setupInviteColumn();
         loadMyEvents();
     }
 
-    private void setupInviteColumn() {
-        colInvite.setCellFactory(col -> new TableCell<>() {
-            private final Button inviteBtn = new Button("👥 Inviter ko-koordinator");
+    private void loadMyEvents() {
+        if (currentUser == null) return;
 
-            {
-                inviteBtn.setStyle("-fx-background-color: #3c7d87; -fx-text-fill: white; -fx-cursor: hand;");
-                inviteBtn.setOnAction(e -> {
-                    Event event = getTableView().getItems().get(getIndex());
-                    handleInviteCoCoordinator(event);
-                });
-            }
+        eventCardsContainer.getChildren().clear();
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : inviteBtn);
+        List<Event> myEvents = EventListController.getEvents().stream()
+                .filter(e -> e.isOwnedBy(currentUser.getId()))
+                .toList();
+
+        if (myEvents.isEmpty()) {
+            Label empty = new Label("Du har ingen events endnu. Opret et event for at komme i gang.");
+            empty.setStyle("-fx-text-fill: #888; -fx-font-size: 13px;");
+            eventCardsContainer.getChildren().add(empty);
+            return;
+        }
+
+        for (Event event : myEvents) {
+            eventCardsContainer.getChildren().add(buildEventCard(event));
+        }
+    }
+
+    private VBox buildEventCard(Event event) {
+        VBox card = new VBox(12);
+        card.setStyle(
+                "-fx-background-color: white;" +
+                        "-fx-background-radius: 12;" +
+                        "-fx-border-radius: 12;" +
+                        "-fx-border-color: #e4e8ec;" +
+                        "-fx-border-width: 1;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 2);"
+        );
+        card.setPadding(new Insets(20));
+
+        // Title
+        Label titleLabel = new Label(event.getTitle());
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #002430;");
+
+        // Meta info
+        HBox metaRow = new HBox(24);
+        metaRow.setAlignment(Pos.CENTER_LEFT);
+        metaRow.getChildren().addAll(
+                metaLabel("📅  " + event.getDate()),
+                metaLabel("📍  " + event.getLocation())
+        );
+
+        // Co-coordinators
+        List<String> coIds = event.getCoCoordinatorIds();
+        String coNames = coIds.isEmpty() ? "Ingen ko-koordinatorer endnu" :
+                coIds.stream()
+                        .map(id -> userService.getAllUsers().stream()
+                                .filter(u -> u.getId().equals(id))
+                                .findFirst()
+                                .map(User::getName)
+                                .orElse("Ukendt"))
+                        .collect(java.util.stream.Collectors.joining(", "));
+
+        Label coLabel = new Label("👥  Ko-koordinatorer: " + coNames);
+        coLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #454b50;");
+        coLabel.setWrapText(true);
+
+        // Invite button
+        Button inviteBtn = new Button("👥  Inviter ko-koordinator");
+        inviteBtn.setStyle(
+                "-fx-background-color: #3c7d87;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 20;" +
+                        "-fx-padding: 8 20 8 20;" +
+                        "-fx-cursor: hand;"
+        );
+        inviteBtn.setOnAction(_ -> {
+            handleInviteCoCoordinator(event);
+            int index = eventCardsContainer.getChildren().indexOf(card);
+            if (index >= 0) {
+                eventCardsContainer.getChildren().set(index, buildEventCard(event));
             }
         });
+
+        Separator sep = new Separator();
+
+        card.getChildren().addAll(titleLabel, sep, metaRow, coLabel, inviteBtn);
+        return card;
+    }
+
+    private Label metaLabel(String text) {
+        Label label = new Label(text);
+        label.setStyle("-fx-font-size: 13px; -fx-text-fill: #454b50;");
+        return label;
     }
 
     private void handleInviteCoCoordinator(Event event) {
-        // Get all coordinators except the owner and already invited ones
         List<User> availableCoordinators = userService.getAllUsers().stream()
                 .filter(u -> u.getRole() == UserRole.COORDINATOR)
                 .filter(u -> !u.getId().equals(event.getOwnerCoordinatorId()))
                 .filter(u -> !event.getCoCoordinatorIds().contains(u.getId()))
-                .collect(Collectors.toList());
+                .toList();
 
         if (availableCoordinators.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -99,7 +147,7 @@ public class MyEventsController implements Initializable {
         ComboBox<User> coordinatorDropdown = new ComboBox<>();
         coordinatorDropdown.getItems().addAll(availableCoordinators);
         coordinatorDropdown.setPromptText("Vælg koordinator...");
-        coordinatorDropdown.setCellFactory(lv -> new ListCell<>() {
+        coordinatorDropdown.setCellFactory(_ -> new ListCell<>() {
             @Override
             protected void updateItem(User user, boolean empty) {
                 super.updateItem(user, empty);
@@ -116,23 +164,19 @@ public class MyEventsController implements Initializable {
 
         javafx.scene.Node inviteButton = dialog.getDialogPane().lookupButton(inviteButtonType);
         inviteButton.setDisable(true);
-        coordinatorDropdown.valueProperty().addListener((obs, oldVal, newVal) ->
+        coordinatorDropdown.valueProperty().addListener((_, _, newVal) ->
                 inviteButton.setDisable(newVal == null));
 
-        javafx.scene.layout.VBox content = new javafx.scene.layout.VBox(8,
-                new Label("Ko-koordinator:"), coordinatorDropdown);
+        VBox content = new VBox(8, new Label("Ko-koordinator:"), coordinatorDropdown);
         content.setPrefWidth(380);
         dialog.getDialogPane().setContent(content);
 
-        dialog.setResultConverter(buttonType -> {
-            if (buttonType == inviteButtonType) return coordinatorDropdown.getValue();
-            return null;
-        });
+        dialog.setResultConverter(buttonType ->
+                buttonType == inviteButtonType ? coordinatorDropdown.getValue() : null);
 
         Optional<User> result = dialog.showAndWait();
         result.ifPresent(selectedUser -> {
             event.addCoCoordinator(selectedUser.getId());
-            eventTable.refresh();
 
             Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
             confirmation.setTitle("Invitation sendt");
@@ -140,43 +184,5 @@ public class MyEventsController implements Initializable {
             confirmation.setContentText(selectedUser.getName() + " er nu ko-koordinator på: " + event.getTitle());
             confirmation.showAndWait();
         });
-    }
-
-    private void loadMyEvents() {
-        if (currentUser == null) return;
-
-        // Only show events this coordinator owns
-        List<Event> myEvents = EventListController.getEvents().stream()
-                .filter(e -> e.isOwnedBy(currentUser.getId()))
-                .collect(Collectors.toList());
-
-        eventTable.getItems().setAll(myEvents);
-    }
-
-    private String getCoordinatorNames(Event event) {
-        List<User> allUsers = userService.getAllUsers();
-        List<String> names = new ArrayList<>();
-
-        String ownerId = event.getOwnerCoordinatorId();
-        if (ownerId != null) {
-            for (User user : allUsers) {
-                if (user.getId().equals(ownerId)) {
-                    names.add(user.getName());
-                    break;
-                }
-            }
-        }
-
-        for (String coId : event.getCoCoordinatorIds()) {
-            for (User user : allUsers) {
-                if (user.getId().equals(coId)) {
-                    names.add(user.getName());
-                    break;
-                }
-            }
-        }
-
-        if (names.isEmpty()) return "Ingen";
-        return String.join(", ", names);
     }
 }
