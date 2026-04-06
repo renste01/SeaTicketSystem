@@ -194,6 +194,10 @@
 .content-area  { -fx-background-color: #f4f7f8; }
 .page-scroll   { -fx-background-color: transparent; -fx-background: #f4f7f8; }
 .page          { -fx-background-color: #f4f7f8; }
+.page-compact {
+    -fx-background-color: #f4f7f8;
+    -fx-spacing: 12;
+}
 
 /* ---- Sidetitler ---- */
 .page-title {
@@ -469,4 +473,5 @@
     -fx-border-color: #e4e8ec;
     -fx-border-width: 1;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+    -fx-padding: 12 14 12 14;
 }
