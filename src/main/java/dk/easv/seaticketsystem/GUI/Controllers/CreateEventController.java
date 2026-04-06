@@ -17,7 +17,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.UUID;
 
 public class CreateEventController implements Initializable {
 
@@ -86,7 +85,7 @@ public class CreateEventController implements Initializable {
         String ownerId = currentUser != null ? currentUser.getId() : null;
 
         Event newEvent = new Event(
-                UUID.randomUUID().toString(),
+                String.valueOf(EventListController.getEvents().size() + 1),
                 title,
                 location,
                 date,

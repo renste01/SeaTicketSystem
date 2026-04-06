@@ -17,7 +17,7 @@ public class TicketRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, tickets.getTicketId());
-            stmt.setString(2, tickets.getEventId());
+            stmt.setInt(2, tickets.getEventId());
             stmt.setString(3, tickets.getUserID());
             stmt.setDouble(4,tickets.getPrice());
 
@@ -28,7 +28,7 @@ public class TicketRepository {
         }
 
     }
-    public List<Tickets> getTicketsByEvent(String eventId) {
+    public List<Tickets> getTicketsByEvent(int eventId) {
         List<Tickets> tickets = new ArrayList<>();
 
         String sql = "SELECT * FROM Tickets WHERE EventId = ?";
@@ -36,13 +36,13 @@ public class TicketRepository {
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, eventId);
+            stmt.setInt(1, eventId);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 tickets.add(new Tickets(
                         rs.getString("TicketId"),
-                        rs.getString("EventId"),
+                        rs.getInt("EventId"),
                         rs.getString("UserId"),
                         rs.getDouble("Price")
                 ));
@@ -71,7 +71,7 @@ public class TicketRepository {
             while (rs.next()) {
                 tickets.add(new Tickets(
                         rs.getString("TicketId"),
-                        rs.getString("EventId"),
+                        rs.getInt("EventId"),
                         rs.getString("UserId"),
                         rs.getDouble("Price")
                 ));

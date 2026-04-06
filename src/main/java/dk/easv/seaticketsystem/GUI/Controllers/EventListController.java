@@ -236,6 +236,23 @@ public class EventListController implements Initializable {
     }
 
     public static void addEvent(Event e) {
+        if (!isNumeric(e.getId())) {
+            String nextId = String.valueOf(events.size() + 1);
+            Event normalized = new Event(
+                    nextId,
+                    e.getTitle(),
+                    e.getLocation(),
+                    e.getDate(),
+                    e.getStartTime(),
+                    e.getDescription(),
+                    e.getOwnerCoordinatorId(),
+                    e.getEndDateTime(),
+                    e.getLocationGuidance()
+            );
+            e.getCoCoordinatorIds().forEach(normalized::addCoCoordinator);
+            events.add(normalized);
+            return;
+        }
         events.add(e);
     }
 
@@ -256,6 +273,14 @@ public class EventListController implements Initializable {
 
     public static List<Event> getEvents() {
         return new ArrayList<>(events);
+    }
+
+    private static boolean isNumeric(String value) {
+        if (value == null || value.isBlank()) return false;
+        for (int i = 0; i < value.length(); i++) {
+            if (!Character.isDigit(value.charAt(i))) return false;
+        }
+        return true;
     }
 
     private String getCoordinatorNames(Event event) {

@@ -82,7 +82,7 @@ public class EventDetailsController {
         if (selectedEvent == null) return;
 
         ticketTable.setItems(FXCollections.observableList(
-                ticketsService.getTicketsForEvent(selectedEvent.getId())
+                ticketsService.getTicketsForEvent(Integer.parseInt(selectedEvent.getId()))
         ));
     }
 
@@ -93,7 +93,7 @@ public class EventDetailsController {
 
             Tickets ticket = new Tickets(
                     UUID.randomUUID().toString(),
-                    selectedEvent.getId(),
+                    Integer.parseInt(selectedEvent.getId()),
                     null, // userId hvis du vil tilføje det senere
                     price
             );

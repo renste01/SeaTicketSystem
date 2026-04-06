@@ -13,7 +13,7 @@ public class TicketService {
         ticketRepo.createTicket(ticket);
     }
 
-    public List<Tickets> getTicketsForEvent(String eventId) {
+    public List<Tickets> getTicketsForEvent(int eventId) {
         return ticketRepo.getTicketsByEvent(eventId);
     }
 
