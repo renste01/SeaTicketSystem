@@ -63,14 +63,12 @@ public class AdminDashboardController implements Initializable {
         List<User> allUsers;
         try {
             allUsers = userService.getAllUsers();
-            System.out.println("Dashboard loaded " + allUsers.size() + " users");
         } catch (Exception e) {
             System.out.println("ERROR loading users: " + e.getMessage());
             allUsers = new ArrayList<>();
         }
 
         List<Event> allEvents = EventListController.getEvents();
-        System.out.println("Dashboard loaded " + allEvents.size() + " events");
 
         long coordinators = allUsers.stream().filter(u -> u.getRole() == UserRole.COORDINATOR).count();
         long admins = allUsers.stream().filter(u -> u.getRole() == UserRole.ADMIN).count();

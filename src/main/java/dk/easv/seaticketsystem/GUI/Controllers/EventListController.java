@@ -1,11 +1,12 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+import dk.easv.seaticketsystem.BLL.EventService;
 import dk.easv.seaticketsystem.BLL.UserService;
+import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import dk.easv.seaticketsystem.Model.Event;
 import dk.easv.seaticketsystem.Model.User;
 import dk.easv.seaticketsystem.Model.UserRole;
 import dk.easv.seaticketsystem.Session.SessionManager;
-import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,11 +34,7 @@ public class EventListController implements Initializable {
     @FXML private TableColumn<Event, Void> colDelete;
 
     private final UserService userService = new UserService();
-
-    private static final List<Event> events = new ArrayList<>(List.of(
-            new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12), LocalTime.of(18, 0), "Live concert at the harbor", LocalDateTime.of(2025, 6, 12, 22, 0)),
-            new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3), LocalTime.of(19, 0), "Summer festival with music and food", LocalDateTime.of(2025, 7, 3, 23, 30))
-    ));
+    private final EventService eventService = new EventService();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -84,8 +81,6 @@ public class EventListController implements Initializable {
 
                 Event event = getTableView().getItems().get(getIndex());
                 User currentUser = SessionManager.getInstance().getCurrentUser();
-
-                // Only show invite button if current user owns this event
                 boolean isOwner = currentUser != null && event.isOwnedBy(currentUser.getId());
                 setGraphic(isOwner ? inviteBtn : null);
             }
@@ -93,7 +88,6 @@ public class EventListController implements Initializable {
     }
 
     private void handleInviteCoCoordinator(Event event) {
-        // Get all coordinators except the owner
         List<User> allCoordinators = userService.getAllUsers().stream()
                 .filter(u -> u.getRole() == UserRole.COORDINATOR)
                 .filter(u -> !u.getId().equals(event.getOwnerCoordinatorId()))
@@ -109,7 +103,6 @@ public class EventListController implements Initializable {
             return;
         }
 
-        // Build dialog with dropdown
         Dialog<User> dialog = new Dialog<>();
         dialog.setTitle("Inviter Ko-koordinator");
         dialog.setHeaderText("Vælg en koordinator til: " + event.getTitle());
@@ -136,7 +129,6 @@ public class EventListController implements Initializable {
             }
         });
 
-        // Disable invite button until selection is made
         javafx.scene.Node inviteButton = dialog.getDialogPane().lookupButton(inviteButtonType);
         inviteButton.setDisable(true);
         coordinatorDropdown.valueProperty().addListener((obs, oldVal, newVal) ->
@@ -156,7 +148,6 @@ public class EventListController implements Initializable {
         result.ifPresent(selectedUser -> {
             event.addCoCoordinator(selectedUser.getId());
             eventTable.refresh();
-            System.out.println("Invited " + selectedUser.getName() + " as co-coordinator for: " + event.getTitle());
 
             Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
             confirmation.setTitle("Invitation sendt");
@@ -189,8 +180,6 @@ public class EventListController implements Initializable {
                 Event event = getTableView().getItems().get(getIndex());
                 User currentUser = SessionManager.getInstance().getCurrentUser();
                 UserRole role = currentUser != null ? currentUser.getRole() : null;
-
-                // Admins can delete any event, coordinators only their own
                 boolean canDelete = role == UserRole.ADMIN ||
                         (role == UserRole.COORDINATOR && event.hasAccess(currentUser.getId()));
                 setGraphic(canDelete ? deleteBtn : null);
@@ -229,58 +218,35 @@ public class EventListController implements Initializable {
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(comment -> {
-            events.remove(event);
+            eventService.deleteEvent(event.getId());
             eventTable.getItems().remove(event);
             System.out.println("Event '" + event.getTitle() + "' slettet. Begrundelse: " + comment);
         });
     }
 
     public static void addEvent(Event e) {
-        if (!isNumeric(e.getId())) {
-            String nextId = String.valueOf(events.size() + 1);
-            Event normalized = new Event(
-                    nextId,
-                    e.getTitle(),
-                    e.getLocation(),
-                    e.getDate(),
-                    e.getStartTime(),
-                    e.getDescription(),
-                    e.getOwnerCoordinatorId(),
-                    e.getEndDateTime(),
-                    e.getLocationGuidance()
-            );
-            e.getCoCoordinatorIds().forEach(normalized::addCoCoordinator);
-            events.add(normalized);
-            return;
-        }
-        events.add(e);
+        new EventService().createEvent(e);
     }
 
     public static void updateEvent(String id, String title, String location, LocalDate date, LocalTime startTime, String description, LocalDateTime endDateTime, String locationGuidance) {
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getId().equals(id)) {
-                Event old = events.get(i);
+        EventService service = new EventService();
+        List<Event> all = service.getAllEvents();
+        for (Event old : all) {
+            if (old.getId().equals(id)) {
                 Event updated = new Event(id, title, location, date, startTime, description, old.getOwnerCoordinatorId(), endDateTime, locationGuidance);
                 old.getCoCoordinatorIds().forEach(updated::addCoCoordinator);
-                events.set(i, updated);
+                service.updateEvent(updated);
                 break;
             }
         }
     }
+
     public static void deleteEvent(String id) {
-        events.removeIf(e -> e.getId().equals(id));
+        new EventService().deleteEvent(id);
     }
 
     public static List<Event> getEvents() {
-        return new ArrayList<>(events);
-    }
-
-    private static boolean isNumeric(String value) {
-        if (value == null || value.isBlank()) return false;
-        for (int i = 0; i < value.length(); i++) {
-            if (!Character.isDigit(value.charAt(i))) return false;
-        }
-        return true;
+        return new EventService().getAllEvents();
     }
 
     private String getCoordinatorNames(Event event) {
@@ -314,13 +280,12 @@ public class EventListController implements Initializable {
         User currentUser = SessionManager.getInstance().getCurrentUser();
         if (currentUser == null) return;
 
+        List<Event> allEvents = eventService.getAllEvents();
         List<Event> visible;
         if (currentUser.getRole() == UserRole.ADMIN) {
-            // Admins see everything
-            visible = new ArrayList<>(events);
+            visible = new ArrayList<>(allEvents);
         } else {
-            // Coordinators only see their own or events they are co-coordinator on
-            visible = events.stream()
+            visible = allEvents.stream()
                     .filter(e -> e.getOwnerCoordinatorId() == null || e.hasAccess(currentUser.getId()))
                     .collect(Collectors.toList());
         }

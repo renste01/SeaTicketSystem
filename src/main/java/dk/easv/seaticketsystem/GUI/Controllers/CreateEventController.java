@@ -85,7 +85,7 @@ public class CreateEventController implements Initializable {
         String ownerId = currentUser != null ? currentUser.getId() : null;
 
         Event newEvent = new Event(
-                String.valueOf(EventListController.getEvents().size() + 1),
+                "0",
                 title,
                 location,
                 date,

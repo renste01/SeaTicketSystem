@@ -15,7 +15,6 @@ public class EditEventController {
     @FXML private TextField titleField;
     @FXML private TextField locationField;
     @FXML private DatePicker datePicker;
-    @FXML private DatePicker endDatePicker;
     @FXML private TextField startTimeField;
     @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
@@ -38,7 +37,6 @@ public class EditEventController {
                 startTimeField.setText(eventToEdit.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")));
             }
             if (eventToEdit.getEndDateTime() != null) {
-                endDatePicker.setValue(eventToEdit.getEndDateTime().toLocalDate());
                 endTimeField.setText(eventToEdit.getEndDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
             }
             descriptionField.setText(eventToEdit.getDescription());
@@ -51,14 +49,13 @@ public class EditEventController {
         String title = titleField.getText().trim();
         String location = locationField.getText().trim();
         LocalDate date = datePicker.getValue();
-        LocalDate endDate = endDatePicker.getValue();
         String startTimeText = startTimeField.getText().trim();
         String endTimeText = endTimeField.getText().trim();
         String description = descriptionField.getText().trim();
         String locationGuidance = locationGuidanceField.getText().trim();
 
         if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()
-                || endDate == null || startTimeText.isEmpty() || endTimeText.isEmpty() || locationGuidance.isEmpty()) {
+                || startTimeText.isEmpty() || endTimeText.isEmpty() || locationGuidance.isEmpty()) {
             showError("Udfyld venligst alle felter.");
             return;
         }
@@ -74,9 +71,9 @@ public class EditEventController {
         }
 
         LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+        LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
         if (!endDateTime.isAfter(startDateTime)) {
-            showError("Slutdato/-tid skal være efter startdato.");
+            showError("Sluttid skal være efter starttid.");
             return;
         }
 
