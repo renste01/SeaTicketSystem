@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -19,6 +21,7 @@ public class AdminEventManagerController implements Initializable {
     @FXML private TableView<Event> eventTable;
     @FXML private TableColumn<Event, String> colTitle;
     @FXML private TableColumn<Event, String> colDate;
+    @FXML private TableColumn<Event, String> colTime;
     @FXML private TableColumn<Event, String> colLocation;
     @FXML private TableColumn<Event, String> colOwner;
     @FXML private TableColumn<Event, Void> colDelete;
@@ -29,6 +32,7 @@ public class AdminEventManagerController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
         colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
+        colTime.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTimeRangeDisplay()));
         colLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
         colOwner.setCellValueFactory(c -> {
             String ownerId = c.getValue().getOwnerCoordinatorId();

@@ -72,6 +72,7 @@ public class MyEventsController implements Initializable {
         metaRow.setAlignment(Pos.CENTER_LEFT);
         metaRow.getChildren().addAll(
                 metaLabel("📅  " + event.getDate()),
+                metaLabel("⏰  " + event.getTimeRangeDisplay()),
                 metaLabel("📍  " + event.getLocation())
         );
 

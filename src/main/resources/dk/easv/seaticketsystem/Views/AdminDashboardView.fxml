@@ -64,10 +64,11 @@
             <Label text="Eventoversigt" styleClass="section-title"/>
             <TableView fx:id="recentEventsTable" prefHeight="220" styleClass="sea-table">
                 <columns>
-                    <TableColumn fx:id="colEventTitle" text="Titel" prefWidth="180"/>
+                    <TableColumn fx:id="colEventTitle" text="Titel" prefWidth="160"/>
                     <TableColumn fx:id="colEventDate" text="Dato" prefWidth="120"/>
-                    <TableColumn fx:id="colEventLocation" text="Sted" prefWidth="160"/>
-                    <TableColumn fx:id="colEventCoordinators" text="Koordinatorer" prefWidth="220"/>
+                    <TableColumn fx:id="colEventTime" text="Tid" prefWidth="110"/>
+                    <TableColumn fx:id="colEventLocation" text="Sted" prefWidth="140"/>
+                    <TableColumn fx:id="colEventCoordinators" text="Koordinatorer" prefWidth="200"/>
                 </columns>
             </TableView>
         </VBox>

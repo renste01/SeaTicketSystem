@@ -18,8 +18,9 @@
         <columns>
             <TableColumn fx:id="colTitle" text="Titel" prefWidth="200"/>
             <TableColumn fx:id="colDate" text="Dato" prefWidth="120"/>
-            <TableColumn fx:id="colLocation" text="Sted" prefWidth="180"/>
-            <TableColumn fx:id="colOwner" text="Koordinator" prefWidth="180"/>
+            <TableColumn fx:id="colTime" text="Tid" prefWidth="110"/>
+            <TableColumn fx:id="colLocation" text="Sted" prefWidth="150"/>
+            <TableColumn fx:id="colOwner" text="Koordinator" prefWidth="170"/>
             <TableColumn fx:id="colDelete" text="" prefWidth="120"/>
         </columns>
     </TableView>

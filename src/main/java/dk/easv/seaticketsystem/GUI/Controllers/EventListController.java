@@ -15,7 +15,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,11 +43,7 @@ public class EventListController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
         colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
-        colTime.setCellValueFactory(c -> {
-            LocalDateTime end = c.getValue().getEndDateTime();
-            if (end == null) return new SimpleStringProperty("-");
-            return new SimpleStringProperty(end.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-        });
+        colTime.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTimeRangeDisplay()));
         colLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
         colCoordinators.setCellValueFactory(c -> new SimpleStringProperty(getCoordinatorNames(c.getValue())));
 

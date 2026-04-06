@@ -99,4 +99,11 @@ public class Event {
         DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
         return date + " → " + endDateTime.toLocalDate() + " " + endDateTime.toLocalTime().format(timeFmt);
     }
+
+    public String getTimeRangeDisplay() {
+        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+        String start = startTime != null ? startTime.format(timeFmt) : "-";
+        String end = endDateTime != null ? endDateTime.toLocalTime().format(timeFmt) : "-";
+        return start + " - " + end;
+    }
 }
