@@ -24,9 +24,10 @@ public class CreateEventController implements Initializable {
     @FXML private TextField titleField;
     @FXML private TextField locationField;
     @FXML private DatePicker datePicker;
-    @FXML private DatePicker endDatePicker;
+    @FXML private TextField startTimeField;
     @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
+    @FXML private TextArea locationGuidanceField;
     @FXML private ListView<User> coordinatorList;
     @FXML private Label errorLabel;
 
@@ -53,27 +54,30 @@ public class CreateEventController implements Initializable {
         String title = titleField.getText().trim();
         String location = locationField.getText().trim();
         LocalDate date = datePicker.getValue();
-        LocalDate endDate = endDatePicker.getValue();
+        String startTimeText = startTimeField.getText().trim();
         String endTimeText = endTimeField.getText().trim();
         String description = descriptionField.getText().trim();
+        String locationGuidance = locationGuidanceField.getText().trim();
 
         if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()
-                || endDate == null || endTimeText.isEmpty()) {
+                || startTimeText.isEmpty() || endTimeText.isEmpty() || locationGuidance.isEmpty()) {
             showError("Udfyld venligst alle felter.");
             return;
         }
 
+        LocalTime startTime;
         LocalTime endTime;
         try {
+            startTime = LocalTime.parse(startTimeText);
             endTime = LocalTime.parse(endTimeText);
         } catch (Exception ex) {
-            showError("Sluttid skal være i format HH:mm.");
+            showError("Start/sluttid skal være i format HH:mm.");
             return;
         }
-        LocalDateTime startDateTime = date.atStartOfDay();
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+        LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
         if (!endDateTime.isAfter(startDateTime)) {
-            showError("Slutdato/-tid skal være efter startdato.");
+            showError("Sluttid skal være efter starttid.");
             return;
         }
 
@@ -86,9 +90,11 @@ public class CreateEventController implements Initializable {
                 title,
                 location,
                 date,
+                startTime,
                 description,
                 ownerId,
-                endDateTime
+                endDateTime,
+                locationGuidance
         );
 
         List<User> selectedCoordinators = coordinatorList.getSelectionModel().getSelectedItems();

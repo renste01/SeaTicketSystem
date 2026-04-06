@@ -13,13 +13,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class EventDetailsController {
 
     @FXML private Label titleLabel;
     @FXML private Label dateLabel;
+    @FXML private Label startTimeLabel;
+    @FXML private Label endTimeLabel;
     @FXML private Label locationLabel;
+    @FXML private Label locationGuidanceLabel;
     @FXML private TextArea descriptionArea;
     @FXML private Button editButton;
 
@@ -43,8 +47,19 @@ public class EventDetailsController {
         // Load event details
         if (selectedEvent != null) {
             titleLabel.setText(selectedEvent.getTitle());
-            dateLabel.setText(selectedEvent.getDateRangeDisplay());
+            dateLabel.setText(selectedEvent.getDate().toString());
+            if (selectedEvent.getStartTime() != null) {
+                startTimeLabel.setText(selectedEvent.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+            } else {
+                startTimeLabel.setText("-");
+            }
+            if (selectedEvent.getEndDateTime() != null) {
+                endTimeLabel.setText(selectedEvent.getEndDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+            } else {
+                endTimeLabel.setText("-");
+            }
             locationLabel.setText(selectedEvent.getLocation());
+            locationGuidanceLabel.setText(selectedEvent.getLocationGuidance());
             descriptionArea.setText(selectedEvent.getDescription());
         }
 

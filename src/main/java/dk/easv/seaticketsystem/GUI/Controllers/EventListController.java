@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,8 @@ public class EventListController implements Initializable {
     private final UserService userService = new UserService();
 
     private static final List<Event> events = new ArrayList<>(List.of(
-            new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12), "Live concert at the harbor", LocalDateTime.of(2025, 6, 12, 22, 0)),
-            new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3), "Summer festival with music and food", LocalDateTime.of(2025, 7, 3, 23, 30))
+            new Event("1", "Koncert i Havnen", "Esbjerg Havn", LocalDate.of(2025, 6, 12), LocalTime.of(18, 0), "Live concert at the harbor", LocalDateTime.of(2025, 6, 12, 22, 0)),
+            new Event("2", "Sommerfestival", "Musikhuset", LocalDate.of(2025, 7, 3), LocalTime.of(19, 0), "Summer festival with music and food", LocalDateTime.of(2025, 7, 3, 23, 30))
     ));
 
     @Override
@@ -243,11 +244,11 @@ public class EventListController implements Initializable {
         events.add(e);
     }
 
-    public static void updateEvent(String id, String title, String location, LocalDate date, String description, LocalDateTime endDateTime) {
+    public static void updateEvent(String id, String title, String location, LocalDate date, LocalTime startTime, String description, LocalDateTime endDateTime, String locationGuidance) {
         for (int i = 0; i < events.size(); i++) {
             if (events.get(i).getId().equals(id)) {
                 Event old = events.get(i);
-                Event updated = new Event(id, title, location, date, description, old.getOwnerCoordinatorId(), endDateTime);
+                Event updated = new Event(id, title, location, date, startTime, description, old.getOwnerCoordinatorId(), endDateTime, locationGuidance);
                 old.getCoCoordinatorIds().forEach(updated::addCoCoordinator);
                 events.set(i, updated);
                 break;

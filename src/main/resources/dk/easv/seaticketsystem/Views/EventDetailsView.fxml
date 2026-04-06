@@ -21,8 +21,17 @@
         <Label text="Dato:" styleClass="detail-key"/>
         <Label fx:id="dateLabel" styleClass="detail-value"/>
 
+        <Label text="Starttid:" styleClass="detail-key"/>
+        <Label fx:id="startTimeLabel" styleClass="detail-value"/>
+
+        <Label text="Sluttid:" styleClass="detail-key"/>
+        <Label fx:id="endTimeLabel" styleClass="detail-value"/>
+
         <Label text="Sted:" styleClass="detail-key"/>
         <Label fx:id="locationLabel" styleClass="detail-value"/>
+
+        <Label text="Lokationsvejledning:" styleClass="detail-key"/>
+        <Label fx:id="locationGuidanceLabel" styleClass="detail-value"/>
 
         <Label text="Beskrivelse:" styleClass="detail-key"/>
         <TextArea fx:id="descriptionArea"
