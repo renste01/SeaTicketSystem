@@ -20,44 +20,8 @@ public class Event {
     private final String ownerCoordinatorId;
     private final List<String> coCoordinatorIds = new ArrayList<>();
 
-    public Event(String id, String title, String location, LocalDate date, String description) {
-        this(id, title, location, date, null, description, null, null, null);
-    }
-
-    public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description) {
-        this(id, title, location, date, startTime, description, null, null, null);
-    }
-
-    public Event(String id, String title, String location, LocalDate date, String description, LocalDateTime endDateTime) {
-        this(id, title, location, date, null, description, null, endDateTime, null);
-    }
-
     public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description, LocalDateTime endDateTime) {
         this(id, title, location, date, startTime, description, null, endDateTime, null);
-    }
-
-    public Event(String id, String title, String location, LocalDate date, String description, LocalDateTime endDateTime, String locationGuidance) {
-        this(id, title, location, date, null, description, null, endDateTime, locationGuidance);
-    }
-
-    public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description, LocalDateTime endDateTime, String locationGuidance) {
-        this(id, title, location, date, startTime, description, null, endDateTime, locationGuidance);
-    }
-
-    public Event(String id, String title, String location, LocalDate date, String description, String ownerCoordinatorId) {
-        this(id, title, location, date, null, description, ownerCoordinatorId, null, null);
-    }
-
-    public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description, String ownerCoordinatorId) {
-        this(id, title, location, date, startTime, description, ownerCoordinatorId, null, null);
-    }
-
-    public Event(String id, String title, String location, LocalDate date, String description, String ownerCoordinatorId, LocalDateTime endDateTime) {
-        this(id, title, location, date, null, description, ownerCoordinatorId, endDateTime, null);
-    }
-
-    public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description, String ownerCoordinatorId, LocalDateTime endDateTime) {
-        this(id, title, location, date, startTime, description, ownerCoordinatorId, endDateTime, null);
     }
 
     public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description, String ownerCoordinatorId, LocalDateTime endDateTime, String locationGuidance) {
