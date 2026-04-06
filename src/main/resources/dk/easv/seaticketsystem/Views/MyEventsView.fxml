@@ -15,7 +15,7 @@
         </padding>
 
         <Label text="Mine Events" styleClass="page-title"/>
-        <Label text="Her kan du se dine events og invitere ko-koordinatorer."
+        <Label text="Her kan du se dine events og tilføje koordinatorer."
                styleClass="admin-welcome-sub"/>
 
         <VBox fx:id="eventCardsContainer" spacing="12"/>

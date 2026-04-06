@@ -133,6 +133,18 @@
 }
 .btn-danger:hover { -fx-background-color: #a82518; }
 
+.btn-back-icon {
+    -fx-background-color: #3c7d87;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 6 12 6 12;
+    -fx-cursor: hand;
+}
+.btn-back-icon:hover   { -fx-background-color: #2f6670; }
+.btn-back-icon:pressed { -fx-background-color: #25555d; }
+
 /* ---- Sidebar ---- */
 .main-root { -fx-background-color: #f4f7f8; }
 
@@ -474,4 +486,16 @@
     -fx-border-width: 1;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
     -fx-padding: 12 14 12 14;
+}
+
+.feedback-success {
+    -fx-text-fill: #1f7a3f;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.feedback-error {
+    -fx-text-fill: #b42318;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
 }

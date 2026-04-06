@@ -92,7 +92,7 @@ public class MyEventsController implements Initializable {
         coLabel.setWrapText(true);
 
         // Invite button
-        Button inviteBtn = new Button("👥  Inviter ko-koordinator");
+        Button inviteBtn = new Button("👥  Tilføj koordinator");
         inviteBtn.setStyle(
                 "-fx-background-color: #3c7d87;" +
                         "-fx-text-fill: white;" +
@@ -132,16 +132,16 @@ public class MyEventsController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Ingen tilgængelige koordinatorer");
             alert.setHeaderText(null);
-            alert.setContentText("Der er ingen andre koordinatorer at invitere.");
+            alert.setContentText("Der er ingen andre koordinatorer at tilføje.");
             alert.showAndWait();
             return;
         }
 
         Dialog<User> dialog = new Dialog<>();
-        dialog.setTitle("Inviter Ko-koordinator");
+        dialog.setTitle("Tilføj koordinator");
         dialog.setHeaderText("Vælg en koordinator til: " + event.getTitle());
 
-        ButtonType inviteButtonType = new ButtonType("Inviter", ButtonBar.ButtonData.OK_DONE);
+        ButtonType inviteButtonType = new ButtonType("Tilføj", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Annuller", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getDialogPane().getButtonTypes().addAll(inviteButtonType, cancelButtonType);
 

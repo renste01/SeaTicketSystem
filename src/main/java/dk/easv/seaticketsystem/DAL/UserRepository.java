@@ -73,7 +73,7 @@ public class UserRepository
             ps.executeUpdate();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Could not update user in database: " + e.getMessage(), e);
         }
     }
 

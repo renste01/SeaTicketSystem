@@ -23,7 +23,7 @@ public class EventDetailsController {
     @FXML private Label startTimeLabel;
     @FXML private Label endTimeLabel;
     @FXML private Label locationLabel;
-    @FXML private Label locationGuidanceLabel;
+    @FXML private TextArea locationGuidanceArea;
     @FXML private TextArea descriptionArea;
     @FXML private Button editButton;
 
@@ -59,7 +59,7 @@ public class EventDetailsController {
                 endTimeLabel.setText("-");
             }
             locationLabel.setText(selectedEvent.getLocation());
-            locationGuidanceLabel.setText(selectedEvent.getLocationGuidance());
+            locationGuidanceArea.setText(selectedEvent.getLocationGuidance() == null ? "" : selectedEvent.getLocationGuidance());
             descriptionArea.setText(selectedEvent.getDescription());
         }
 
