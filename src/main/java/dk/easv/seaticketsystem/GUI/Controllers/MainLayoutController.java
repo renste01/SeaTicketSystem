@@ -26,8 +26,8 @@ public class MainLayoutController implements Initializable {
     @FXML private Label userRoleLabel;
     @FXML private VBox coordinatorMenu;
     @FXML private VBox adminMenu;
-    @FXML private StackPane sidebarLogoPane;
     @FXML private VBox userMenu;
+    @FXML private StackPane sidebarLogoPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,11 +45,16 @@ public class MainLayoutController implements Initializable {
         setVisible(adminMenu, false);
         setVisible(userMenu, false);
 
-        // Show menu based on role
+        // Show menus based on role
         UserRole role = user.getRole();
-        if (role == UserRole.COORDINATOR) setVisible(coordinatorMenu, true);
-        if (role == UserRole.ADMIN)       setVisible(adminMenu, true);
-        if (role == UserRole.USER)        setVisible(userMenu, true);
+        if (role == UserRole.COORDINATOR) {
+            setVisible(coordinatorMenu, true);
+            setVisible(userMenu, true);
+        }
+        if (role == UserRole.ADMIN) {
+            setVisible(adminMenu, true);
+            setVisible(userMenu, true);
+        }
 
         contentArea.getChildren().setAll(new Label("Homepage klar. Vælg en menu-side."));
     }
@@ -58,6 +63,7 @@ public class MainLayoutController implements Initializable {
         node.setVisible(v);
         node.setManaged(v);
     }
+
     @FXML
     private void openMyTickets() {
         ViewManager.getInstance().loadView("MyTicketsView.fxml");
@@ -93,14 +99,17 @@ public class MainLayoutController implements Initializable {
     private void openDashboard() {
         ViewManager.getInstance().loadView("AdminDashboardView.fxml");
     }
+
     @FXML
     private void openAdminEvents() {
         ViewManager.getInstance().loadView("AdminEventManager.fxml");
     }
+
     @FXML
     private void openMyEvents() {
         ViewManager.getInstance().loadView("MyEventsView.fxml");
     }
+
     @FXML
     private void openUserSearch() {
         ViewManager.getInstance().loadView("UserSearchView.fxml");
