@@ -73,24 +73,7 @@ public class UserRepository
             ps.executeUpdate();
 
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private User mapUser(ResultSet rs) throws SQLException {
-        String id = rs.getString("UserId");
-        String first = rs.getString("Firstname");
-        String last = rs.getString("Lastname");
-        String email = rs.getString("Email");
-        String password = rs.getString("Password");
-        String role = rs.getString("UserRole");
-
-        if ("ADMIN".equalsIgnoreCase(role)) {
-            return new Admin(id, first, last, email, password);
-        } else if ("COORDINATOR".equalsIgnoreCase(role)) {
-            return new EventCoordinator(id, first, last, email, password);
-        } else {
-            return new RegularUser(id, first, last, email, password);
+            throw new RuntimeException("Could not update user in database: " + e.getMessage(), e);
         }
     }
 
@@ -125,6 +108,22 @@ public class UserRepository
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    private User mapUser(ResultSet rs) throws SQLException {
+        String id = rs.getString("UserId");
+        String first = rs.getString("Firstname");
+        String last = rs.getString("Lastname");
+        String email = rs.getString("Email");
+        String password = rs.getString("Password");
+        String role = rs.getString("UserRole");
+
+        if ("ADMIN".equalsIgnoreCase(role)) {
+            return new Admin(id, first, last, email, password);
+        } else if ("COORDINATOR".equalsIgnoreCase(role)) {
+            return new EventCoordinator(id, first, last, email, password);
+        } else {
+            return new RegularUser(id, first, last, email, password);
         }
     }
 }

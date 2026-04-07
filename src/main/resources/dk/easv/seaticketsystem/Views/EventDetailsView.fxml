@@ -6,29 +6,47 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="dk.easv.seaticketsystem.GUI.Controllers.EventDetailsController"
-      spacing="16">
+      spacing="12"
+      styleClass="page-compact">
 
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="14" right="16" bottom="14" left="16"/>
     </padding>
 
-    <Label text="Event Detaljer" styleClass="page-title"/>
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Button text="⟵" onAction="#handleBack" styleClass="btn-back-icon"/>
+        <Label text="Event Detaljer" styleClass="page-title"/>
+    </HBox>
 
-    <VBox spacing="8">
+    <VBox spacing="8" styleClass="admin-section-card">
         <Label text="Titel:" styleClass="detail-key"/>
         <Label fx:id="titleLabel" styleClass="detail-value"/>
 
         <Label text="Dato:" styleClass="detail-key"/>
         <Label fx:id="dateLabel" styleClass="detail-value"/>
 
+        <Label text="Starttid:" styleClass="detail-key"/>
+        <Label fx:id="startTimeLabel" styleClass="detail-value"/>
+
+        <Label text="Sluttid:" styleClass="detail-key"/>
+        <Label fx:id="endTimeLabel" styleClass="detail-value"/>
+
         <Label text="Sted:" styleClass="detail-key"/>
         <Label fx:id="locationLabel" styleClass="detail-value"/>
+
+        <Label text="Lokationsvejledning:" styleClass="detail-key"/>
+        <TextArea fx:id="locationGuidanceArea"
+                  editable="false"
+                  wrapText="true"
+                  prefRowCount="4"
+                  styleClass="desc-area"/>
 
         <Label text="Beskrivelse:" styleClass="detail-key"/>
         <TextArea fx:id="descriptionArea"
                   editable="false"
                   wrapText="true"
-                  prefRowCount="6"/>
+                  prefRowCount="6"
+                  styleClass="desc-area"/>
     </VBox>
 
     <Button fx:id="editButton"

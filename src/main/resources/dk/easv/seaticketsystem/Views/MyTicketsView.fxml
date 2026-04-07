@@ -6,15 +6,16 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="dk.easv.seaticketsystem.GUI.Controllers.MyTicketsController"
-      spacing="16">
+      spacing="12"
+      styleClass="page-compact">
 
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="14" right="16" bottom="14" left="16"/>
     </padding>
 
     <Label text="Mine Billetter" styleClass="page-title"/>
 
-    <TableView fx:id="ticketTable" prefHeight="400">
+    <TableView fx:id="ticketTable" prefHeight="400" styleClass="sea-table" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn text="Event" fx:id="colEvent" prefWidth="200"/>
             <TableColumn text="Pris" fx:id="colPrice" prefWidth="100"/>

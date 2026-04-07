@@ -6,17 +6,18 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="dk.easv.seaticketsystem.GUI.Controllers.ProfileController"
-      spacing="20">
+      spacing="12"
+      styleClass="page-compact">
 
     <padding>
-        <Insets top="30" right="40" bottom="30" left="40"/>
+        <Insets top="16" right="16" bottom="16" left="16"/>
     </padding>
 
     <Label text="Min Profil" styleClass="page-title"/>
 
     <!-- Info sektion -->
-    <VBox spacing="10" styleClass="profile-section">
-        <Label text="PERSONLIGE OPLYSNINGER" styleClass="sidebar-section-label"/>
+    <VBox spacing="8" styleClass="admin-section-card">
+        <Label text="Personlige oplysninger" styleClass="section-title"/>
 
         <GridPane hgap="12" vgap="10">
             <columnConstraints>
@@ -38,7 +39,7 @@
         </GridPane>
 
         <HBox spacing="10">
-            <Button text="💾 Gem ændringer" onAction="#handleSaveInfo"/>
+            <Button fx:id="saveInfoButton" text="Gem ændringer" onAction="#handleSaveInfo" styleClass="btn-primary"/>
             <Label fx:id="infoFeedbackLabel" visible="false" managed="false"/>
         </HBox>
     </VBox>
@@ -46,8 +47,8 @@
     <Separator/>
 
     <!-- Skift adgangskode sektion -->
-    <VBox spacing="10">
-        <Label text="SKIFT ADGANGSKODE" styleClass="sidebar-section-label"/>
+    <VBox spacing="8" styleClass="admin-section-card">
+        <Label text="Skift adgangskode" styleClass="section-title"/>
 
         <GridPane hgap="12" vgap="10">
             <columnConstraints>
@@ -69,7 +70,7 @@
         </GridPane>
 
         <HBox spacing="10">
-            <Button text=" Skift adgangskode" onAction="#handleChangePassword"/>
+            <Button text="Skift adgangskode" onAction="#handleChangePassword" styleClass="btn-secondary"/>
             <Label fx:id="passwordFeedbackLabel" visible="false" managed="false"/>
         </HBox>
     </VBox>

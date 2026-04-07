@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="dk.easv.seaticketsystem.GUI.Controllers.EventListController"
-      spacing="16">
+      spacing="12"
+      styleClass="page-compact">
 
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="14" right="16" bottom="14" left="16"/>
     </padding>
 
     <Label text="Events" styleClass="page-title"/>
 
-    <TableView fx:id="eventTable" styleClass="sea-table">
-        <columns>
-            <TableColumn fx:id="colTitle" text="Titel" prefWidth="200"/>
-            <TableColumn fx:id="colDate" text="Dato" prefWidth="120"/>
-            <TableColumn fx:id="colTime" text="Tid" prefWidth="90"/>
-            <TableColumn fx:id="colLocation" text="Sted" prefWidth="150"/>
-            <TableColumn fx:id="colCoordinators" text="Koordinatorer" prefWidth="180"/>
-            <TableColumn fx:id="colInvite" text="" prefWidth="110"/>
-            <TableColumn fx:id="colDelete" text="" prefWidth="120"/>
-        </columns>
-    </TableView>
+    <ScrollPane fitToWidth="true" styleClass="page-scroll" VBox.vgrow="ALWAYS">
+        <content>
+            <VBox fx:id="eventCardsContainer" spacing="10">
+                <padding>
+                    <Insets top="4" right="4" bottom="8" left="4"/>
+                </padding>
+            </VBox>
+        </content>
+    </ScrollPane>
 
 </VBox>

@@ -3,12 +3,12 @@ package dk.easv.seaticketsystem.Model;
 public class Tickets {
 
     private final String ticketId;
-    private final String eventId;
+    private final int eventId;
     private final String userID;
     private final double price;
 
 
-    public Tickets(String ticketId, String eventId, String userID, double price ) {
+    public Tickets(String ticketId, int eventId, String userID, double price ) {
         this.ticketId = ticketId;
         this.eventId = eventId;
         this.userID = userID;
@@ -19,7 +19,7 @@ public class Tickets {
             return ticketId;
         }
 
-        public String getEventId() {
+        public int getEventId() {
             return eventId;
         }
 

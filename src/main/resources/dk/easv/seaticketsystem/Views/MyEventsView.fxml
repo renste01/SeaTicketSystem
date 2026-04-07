@@ -9,16 +9,16 @@
             fitToWidth="true"
             styleClass="page-scroll">
 
-    <VBox spacing="24">
+    <VBox spacing="14" styleClass="page-compact">
         <padding>
-            <Insets top="28" right="28" bottom="28" left="28"/>
+            <Insets top="16" right="16" bottom="16" left="16"/>
         </padding>
 
         <Label text="Mine Events" styleClass="page-title"/>
-        <Label text="Her kan du se dine events og invitere ko-koordinatorer."
+        <Label text="Her kan du se dine events og tilføje koordinatorer."
                styleClass="admin-welcome-sub"/>
 
-        <VBox fx:id="eventCardsContainer" spacing="16"/>
+        <VBox fx:id="eventCardsContainer" spacing="12"/>
 
     </VBox>
 </ScrollPane>

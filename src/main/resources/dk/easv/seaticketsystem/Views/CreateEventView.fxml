@@ -41,24 +41,35 @@
                         styleClass="form-field"
                          GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-            <Label text="Slutdato:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <DatePicker fx:id="endDatePicker"
-                        styleClass="form-field"
-                        GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <Label text="Tid (start/slut):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                <children>
+                    <TextField fx:id="startTimeField"
+                               styleClass="form-field"
+                               promptText="Start fx 18:00"
+                               prefWidth="300"/>
+                    <TextField fx:id="endTimeField"
+                               styleClass="form-field"
+                               promptText="Slut fx 21:30"
+                               prefWidth="300"/>
+                </children>
+            </HBox>
 
-            <Label text="Sluttid (HH:mm):" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-            <TextField fx:id="endTimeField"
-                       styleClass="form-field"
-                       promptText="fx 21:30"
-                       GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-
-            <Label text="Beskrivelse:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <Label text="Beskrivelse:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
             <TextArea fx:id="descriptionField"
                        styleClass="form-field"
                        promptText="Kort beskrivelse af eventet"
                        wrapText="true"
-                       prefRowCount="7"
-                       GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                       prefRowCount="4"
+                       GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="Lokationsvejledning:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <TextArea fx:id="locationGuidanceField"
+                      styleClass="form-field"
+                      promptText="Fx: Indgang B, 2. sal, lokale 2.14"
+                      wrapText="true"
+                      prefRowCount="3"
+                      GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
             <Label text="Tilføj flere koordinatorer:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
             <ListView fx:id="coordinatorList"

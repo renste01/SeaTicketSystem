@@ -9,9 +9,9 @@
             fitToWidth="true"
             styleClass="page-scroll">
 
-    <VBox spacing="20" styleClass="page">
+    <VBox spacing="12" styleClass="page-compact">
         <padding>
-            <Insets top="28" right="28" bottom="28" left="28"/>
+            <Insets top="16" right="16" bottom="16" left="16"/>
         </padding>
 
         <!-- Header -->
@@ -22,7 +22,7 @@
         </VBox>
 
         <!-- Stat cards -->
-        <HBox spacing="16">
+        <HBox spacing="12">
             <VBox styleClass="admin-stat-card admin-stat-blue" spacing="4" alignment="CENTER">
                 <Label text="👥" styleClass="admin-stat-icon"/>
                 <Label fx:id="totalUsersLabel" text="0" styleClass="admin-stat-num"/>
@@ -46,10 +46,10 @@
         </HBox>
 
         <!-- Users table -->
-        <VBox spacing="10" styleClass="admin-section-card">
+        <VBox spacing="8" styleClass="admin-section-card">
             <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
             <Label text="Brugeroversigt" styleClass="section-title"/>
-            <TableView fx:id="recentUsersTable" prefHeight="220" styleClass="sea-table">
+            <TableView fx:id="recentUsersTable" prefHeight="240" styleClass="sea-table">
                 <columns>
                     <TableColumn fx:id="colUserName" text="Navn" prefWidth="200"/>
                     <TableColumn fx:id="colUserEmail" text="Email" prefWidth="240"/>
@@ -59,15 +59,16 @@
         </VBox>
 
         <!-- Events table -->
-        <VBox spacing="10" styleClass="admin-section-card">
+        <VBox spacing="8" styleClass="admin-section-card">
             <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
             <Label text="Eventoversigt" styleClass="section-title"/>
-            <TableView fx:id="recentEventsTable" prefHeight="220" styleClass="sea-table">
+            <TableView fx:id="recentEventsTable" prefHeight="240" styleClass="sea-table">
                 <columns>
-                    <TableColumn fx:id="colEventTitle" text="Titel" prefWidth="180"/>
+                    <TableColumn fx:id="colEventTitle" text="Titel" prefWidth="160"/>
                     <TableColumn fx:id="colEventDate" text="Dato" prefWidth="120"/>
-                    <TableColumn fx:id="colEventLocation" text="Sted" prefWidth="160"/>
-                    <TableColumn fx:id="colEventCoordinators" text="Koordinatorer" prefWidth="220"/>
+                    <TableColumn fx:id="colEventTime" text="Tid" prefWidth="110"/>
+                    <TableColumn fx:id="colEventLocation" text="Sted" prefWidth="140"/>
+                    <TableColumn fx:id="colEventCoordinators" text="Koordinatorer" prefWidth="200"/>
                 </columns>
             </TableView>
         </VBox>

@@ -33,6 +33,7 @@ public class AdminDashboardController implements Initializable {
     @FXML private TableView<Event> recentEventsTable;
     @FXML private TableColumn<Event, String> colEventTitle;
     @FXML private TableColumn<Event, String> colEventDate;
+    @FXML private TableColumn<Event, String> colEventTime;
     @FXML private TableColumn<Event, String> colEventLocation;
     @FXML private TableColumn<Event, String> colEventCoordinators;
 
@@ -50,7 +51,8 @@ public class AdminDashboardController implements Initializable {
         colUserRole.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getRole().getDisplayName()));
 
         colEventTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
-        colEventDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDateRangeDisplay()));
+        colEventDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
+        colEventTime.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTimeRangeDisplay()));
         colEventLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
         colEventCoordinators.setCellValueFactory(c -> new SimpleStringProperty(getCoordinatorNames(c.getValue())));
 
@@ -61,14 +63,12 @@ public class AdminDashboardController implements Initializable {
         List<User> allUsers;
         try {
             allUsers = userService.getAllUsers();
-            System.out.println("Dashboard loaded " + allUsers.size() + " users");
         } catch (Exception e) {
             System.out.println("ERROR loading users: " + e.getMessage());
             allUsers = new ArrayList<>();
         }
 
         List<Event> allEvents = EventListController.getEvents();
-        System.out.println("Dashboard loaded " + allEvents.size() + " events");
 
         long coordinators = allUsers.stream().filter(u -> u.getRole() == UserRole.COORDINATOR).count();
         long admins = allUsers.stream().filter(u -> u.getRole() == UserRole.ADMIN).count();

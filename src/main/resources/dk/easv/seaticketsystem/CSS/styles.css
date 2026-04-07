@@ -2,7 +2,7 @@
     -fx-background-color: linear-gradient(to bottom right, #002430, #004a5a);
 }
 
-/* ---- Login-kort ---- */
+/* Login - card/header/brand */
 .login-card {
     -fx-background-color: #002430;
     -fx-background-radius: 14;
@@ -55,7 +55,7 @@
     -fx-text-fill: #aaa;
 }
 
-/* ---- Formular ---- */
+/* Form fields and helper labels */
 .form-label {
     -fx-font-size: 13px;
     -fx-font-weight: bold;
@@ -84,7 +84,7 @@
     -fx-font-size: 13px;
 }
 
-/* ---- Knapper ---- */
+/* Buttons */
 .btn-primary {
     -fx-background-color: #db3629;
     -fx-text-fill: white;
@@ -133,7 +133,19 @@
 }
 .btn-danger:hover { -fx-background-color: #a82518; }
 
-/* ---- Sidebar ---- */
+.btn-back-icon {
+    -fx-background-color: #3c7d87;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 6 12 6 12;
+    -fx-cursor: hand;
+}
+.btn-back-icon:hover   { -fx-background-color: #2f6670; }
+.btn-back-icon:pressed { -fx-background-color: #25555d; }
+
+/* Main shell - sidebar */
 .main-root { -fx-background-color: #f4f7f8; }
 
 .sidebar {
@@ -190,12 +202,16 @@
 .sidebar-btn-logout  { -fx-text-fill: rgba(219,54,41,0.8); }
 .sidebar-btn-logout:hover { -fx-background-color: rgba(219,54,41,0.22); -fx-text-fill: #ff8070; }
 
-/* ---- Indholdsarea ---- */
+/* Main shell - content area */
 .content-area  { -fx-background-color: #f4f7f8; }
 .page-scroll   { -fx-background-color: transparent; -fx-background: #f4f7f8; }
 .page          { -fx-background-color: #f4f7f8; }
+.page-compact {
+    -fx-background-color: #f4f7f8;
+    -fx-spacing: 12;
+}
 
-/* ---- Sidetitler ---- */
+/* Page titles */
 .page-title {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
@@ -212,7 +228,7 @@
     -fx-text-fill: #002430;
 }
 
-/* ---- Tabeller ---- */
+/* Tables */
 .sea-table {
     -fx-background-color: white;
     -fx-border-color: #e4e8ec;
@@ -232,7 +248,7 @@
 .sea-table .table-row-cell:even { -fx-background-color: white; }
 .sea-table .table-row-cell:selected { -fx-background-color: #fde8e6; }
 
-/* ---- Billekort (ticket-detail) ---- */
+/* Ticket detail card */
 .ticket-card {
     -fx-background-color: white;
     -fx-background-radius: 12;
@@ -278,7 +294,7 @@
     -fx-text-fill: #aaa;
 }
 
-/* ---- Statistik-kort (admin – legacy) ---- */
+/* Admin stat cards (legacy) */
 .stat-card {
     -fx-background-color: white;
     -fx-background-radius: 10;
@@ -298,7 +314,7 @@
     -fx-text-fill: #454b50;
 }
 
-/* ---- Profil-side ---- */
+/* Profile page */
 .profile-header-box {
     -fx-background-color: white;
     -fx-background-radius: 12;
@@ -327,7 +343,7 @@
     -fx-font-weight: bold;
 }
 
-/* ---- Event-detalje-kort (legacy) ---- */
+/* Event detail card */
 .event-detail-card {
     -fx-background-color: white;
     -fx-background-radius: 10;
@@ -360,7 +376,7 @@
     -fx-text-fill: #454b50;
 }
 
-/* ---- Event-liste kort ---- */
+/* Event list cards */
 .event-card {
     -fx-background-color: white;
     -fx-background-radius: 12;
@@ -394,7 +410,7 @@
     -fx-wrap-text: true;
 }
 
-/* ---- Billet-liste kort ---- */
+/* Ticket list cards */
 .ticket-card-list {
     -fx-background-color: white;
     -fx-background-radius: 12;
@@ -423,7 +439,7 @@
     -fx-text-fill: #002430;
 }
 
-/* ---- Admin Dashboard ---- */
+/* Admin dashboard */
 .admin-hero {
     -fx-background-color: linear-gradient(to right, #002430, #004a5a);
 }
@@ -443,7 +459,7 @@
     -fx-min-width: 160;
     -fx-pref-width: 185;
 }
-/* SEA primær rød */
+/* SEA primary red palette */
 .admin-stat-blue   { -fx-background-color: linear-gradient(to bottom right, #002430, #004a5a); }
 .admin-stat-orange { -fx-background-color: linear-gradient(to bottom right, #b82d22, #db3629); }
 .admin-stat-green  { -fx-background-color: linear-gradient(to bottom right, #2a606a, #3c7d87); }
@@ -469,4 +485,18 @@
     -fx-border-color: #e4e8ec;
     -fx-border-width: 1;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+    -fx-padding: 12 14 12 14;
+}
+
+/* Feedback labels */
+.feedback-success {
+    -fx-text-fill: #1f7a3f;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.feedback-error {
+    -fx-text-fill: #b42318;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
 }
