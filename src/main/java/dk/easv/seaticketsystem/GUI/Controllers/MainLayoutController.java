@@ -27,32 +27,30 @@ public class MainLayoutController implements Initializable {
     @FXML private VBox coordinatorMenu;
     @FXML private VBox adminMenu;
     @FXML private StackPane sidebarLogoPane;
+    @FXML private VBox userMenu;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        // ViewManager needs to know contentArea
         ViewManager.getInstance().setContentArea(contentArea);
 
-        // Logo
         Pane logo = LogoUtil.create(175, Color.WHITE);
         sidebarLogoPane.getChildren().setAll(logo);
 
-        // Get User
         User user = SessionManager.getInstance().getCurrentUser();
         userNameLabel.setText(user.getName());
         userRoleLabel.setText(user.getRole().getDisplayName());
 
-        // Hides both menus as standard
+        // Hide all role menus by default
         setVisible(coordinatorMenu, false);
         setVisible(adminMenu, false);
+        setVisible(userMenu, false);
 
-        // Show menus based on role
+        // Show menu based on role
         UserRole role = user.getRole();
         if (role == UserRole.COORDINATOR) setVisible(coordinatorMenu, true);
-        if (role == UserRole.ADMIN) setVisible(adminMenu, true);
+        if (role == UserRole.ADMIN)       setVisible(adminMenu, true);
+        if (role == UserRole.USER)        setVisible(userMenu, true);
 
-        // Standard text
         contentArea.getChildren().setAll(new Label("Homepage klar. Vælg en menu-side."));
     }
 
@@ -102,5 +100,9 @@ public class MainLayoutController implements Initializable {
     @FXML
     private void openMyEvents() {
         ViewManager.getInstance().loadView("MyEventsView.fxml");
+    }
+    @FXML
+    private void openUserSearch() {
+        ViewManager.getInstance().loadView("UserSearchView.fxml");
     }
 }
