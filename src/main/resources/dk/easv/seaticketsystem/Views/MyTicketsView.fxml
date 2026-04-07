@@ -13,13 +13,61 @@
         <Insets top="14" right="16" bottom="14" left="16"/>
     </padding>
 
-    <Label text="Mine Billetter" styleClass="page-title"/>
+    <Label text="Billetter" styleClass="page-title"/>
+
+    <VBox spacing="8" styleClass="admin-section-card">
+        <Label text="Registrer billetkøb" styleClass="section-title"/>
+
+        <GridPane hgap="10" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="140"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints prefWidth="140"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+
+            <Label text="Vælg event:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="eventComboBox" promptText="Vælg event"
+                      GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Antal:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+            <TextField fx:id="ticketCountField" text="1"
+                       GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+            <Label text="Navn:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="customerNameField" promptText="Fx Anna Jensen"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="E-mail:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+            <TextField fx:id="customerEmailField" promptText="anna@email.dk"
+                       GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+            <Label text="Vælg modtager:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <HBox spacing="8" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                <ComboBox fx:id="receiverUserComboBox" promptText="Vælg bruger (valgfri)" HBox.hgrow="ALWAYS"/>
+                <Button text="Ryd" onAction="#handleClearReceiverSelection" styleClass="btn-secondary"/>
+            </HBox>
+
+            <Label text="Pris pr. billet:" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+            <TextField fx:id="priceField" promptText="Fx 100"
+                       GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button text="Send billetter" onAction="#handleIssueTickets" styleClass="btn-primary"/>
+            <Button text="Marker som sendt" onAction="#handleMarkAsSent" styleClass="btn-teal"/>
+            <Label fx:id="ticketFeedbackLabel" visible="false" managed="false"/>
+        </HBox>
+    </VBox>
 
     <TableView fx:id="ticketTable" prefHeight="400" styleClass="sea-table" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn text="Event" fx:id="colEvent" prefWidth="200"/>
-            <TableColumn text="Pris" fx:id="colPrice" prefWidth="100"/>
-            <TableColumn text="Dato" fx:id="colDate" prefWidth="150"/>
+            <TableColumn text="Event" fx:id="colEvent" prefWidth="170"/>
+            <TableColumn text="Kunde" fx:id="colCustomer" prefWidth="160"/>
+            <TableColumn text="E-mail" fx:id="colEmail" prefWidth="180"/>
+            <TableColumn text="Pris" fx:id="colPrice" prefWidth="90"/>
+            <TableColumn text="Status" fx:id="colStatus" prefWidth="100"/>
+            <TableColumn text="Sendt" fx:id="colSentAt" prefWidth="180"/>
         </columns>
     </TableView>
 

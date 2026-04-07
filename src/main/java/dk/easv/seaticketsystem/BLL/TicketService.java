@@ -20,4 +20,12 @@ public class TicketService {
     public List<Tickets> getTicketsForUser(String id) {
         return ticketRepo.getTicketsByUser(id);
     }
+
+    public List<Tickets> getAllTickets() {
+        return ticketRepo.getAllTickets();
+    }
+
+    public void markTicketAsSent(String ticketId) {
+        ticketRepo.markTicketAsSent(ticketId);
+    }
 }
