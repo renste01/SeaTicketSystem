@@ -2,6 +2,7 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 import dk.easv.seaticketsystem.BLL.UserService;
 import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -25,8 +26,6 @@ public class UserSearchController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allUsers = userService.getAllUsers();
-
-        // Live search as user types
         searchField.textProperty().addListener((_, _, newVal) -> performSearch(newVal));
     }
 
@@ -35,9 +34,7 @@ public class UserSearchController implements Initializable {
         noResultsLabel.setVisible(false);
         noResultsLabel.setManaged(false);
 
-        if (query == null || query.trim().isEmpty()) {
-            return;
-        }
+        if (query == null || query.trim().isEmpty()) return;
 
         String lower = query.trim().toLowerCase();
 
@@ -70,9 +67,14 @@ public class UserSearchController implements Initializable {
         );
         card.setPadding(new Insets(20));
 
-        // Avatar circle with initials
-        String initials = getInitials(user);
-        Label avatar = new Label(initials);
+        // Avatar
+        String initials = "";
+        if (user.getFirstName() != null && !user.getFirstName().isEmpty())
+            initials += user.getFirstName().charAt(0);
+        if (user.getLastName() != null && !user.getLastName().isEmpty())
+            initials += user.getLastName().charAt(0);
+
+        Label avatar = new Label(initials.toUpperCase());
         avatar.setStyle(
                 "-fx-background-color: #002430;" +
                         "-fx-text-fill: white;" +
@@ -101,11 +103,29 @@ public class UserSearchController implements Initializable {
 
         Separator sep = new Separator();
 
-        // Details
+        // Detail rows
         HBox emailRow = detailRow("✉️  Email:", user.getEmail());
         HBox roleRow  = detailRow("👤  Rolle:", user.getRole().getDisplayName());
 
-        card.getChildren().addAll(headerRow, sep, emailRow, roleRow);
+        // View profile button
+        Button viewBtn = new Button("👁  Se profil");
+        viewBtn.setStyle(
+                "-fx-background-color: #002430;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 20;" +
+                        "-fx-padding: 8 20 8 20;" +
+                        "-fx-cursor: hand;"
+        );
+        viewBtn.setOnAction(_ -> {
+            UserProfileViewController.setUser(user);
+            ViewManager.getInstance().loadView("UserProfileView.fxml");
+        });
+
+        HBox buttonRow = new HBox(viewBtn);
+        buttonRow.setAlignment(Pos.CENTER_RIGHT);
+
+        card.getChildren().addAll(headerRow, sep, emailRow, roleRow, buttonRow);
         return card;
     }
 
@@ -120,14 +140,5 @@ public class UserSearchController implements Initializable {
         HBox row = new HBox(10, keyLabel, valueLabel);
         row.setAlignment(Pos.CENTER_LEFT);
         return row;
-    }
-
-    private String getInitials(User user) {
-        String first = user.getFirstName();
-        String last = user.getLastName();
-        String initials = "";
-        if (first != null && !first.isEmpty()) initials += first.charAt(0);
-        if (last != null && !last.isEmpty()) initials += last.charAt(0);
-        return initials.toUpperCase();
     }
 }
