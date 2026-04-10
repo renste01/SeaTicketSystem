@@ -5,6 +5,7 @@ import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
 import dk.easv.seaticketsystem.Model.RegularUser;
 import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.Model.UserRole;
 
 // Java Imports
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class UserRepository
                 """
                 SELECT UserId, FirstName, LastName, Email, [Password], UserRole
                 From dbo.Users
-                WHERE Email = ? AND UserRole IN ('Admin', 'COORDINATOR', 'USER')
+                WHERE Email = ? AND UserRole IN ('ADMIN', 'COORDINATOR')
                 """;
         try
         {
@@ -51,10 +52,51 @@ public class UserRepository
             stmt.setString(2, user.getFirstName());
             stmt.setString(3, user.getLastName());
             stmt.setString(4, user.getEmail());
-            stmt.setString(5, user.getPassword());
+            if (user.getRole() == UserRole.USER) {
+                stmt.setNull(5, Types.NVARCHAR);
+            } else {
+                stmt.setString(5, user.getPassword());
+            }
             stmt.setString(6, user.getRole().name());
 
             stmt.executeUpdate();
+        }
+    }
+
+    public Optional<User> findRegularUserByEmail(String email) {
+        String sql =
+                """
+                SELECT UserId, FirstName, LastName, Email, [Password], UserRole
+                FROM dbo.Users
+                WHERE Email = ? AND UserRole = 'USER'
+                """;
+        try (Connection con = DBConnector.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return Optional.empty();
+                return Optional.of(mapUser(rs));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Kunne ikke hente billetbruger", e);
+        }
+    }
+
+    public User createTicketUser(String fullName, String email) {
+        String sql = "INSERT INTO Users (UserId, FirstName, LastName, Email, Password, UserRole) VALUES (?,?,?,?,?,?)";
+        String userId = java.util.UUID.randomUUID().toString();
+        try (Connection conn = DBConnector.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, userId);
+            stmt.setString(2, fullName);
+            stmt.setNull(3, Types.NVARCHAR);
+            stmt.setString(4, email);
+            stmt.setNull(5, Types.NVARCHAR);
+            stmt.setString(6, "USER");
+            stmt.executeUpdate();
+            return new RegularUser(userId, fullName, email);
+        } catch (Exception e) {
+            throw new RuntimeException("Kunne ikke oprette billetbruger", e);
         }
     }
 
@@ -123,7 +165,11 @@ public class UserRepository
         } else if ("COORDINATOR".equalsIgnoreCase(role)) {
             return new EventCoordinator(id, first, last, email, password);
         } else {
-            return new RegularUser(id, first, last, email, password);
+            String name = first;
+            if (last != null && !last.isBlank()) {
+                name = first + " " + last;
+            }
+            return new RegularUser(id, name, email);
         }
     }
 }

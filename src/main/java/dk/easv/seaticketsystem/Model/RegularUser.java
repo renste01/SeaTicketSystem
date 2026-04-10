@@ -4,14 +4,13 @@ import java.util.UUID;
 
 public class RegularUser extends User
 {
-    public RegularUser(String id, String firstName, String lastName, String email, String
-            password)
+    public RegularUser(String id, String name, String email)
     {
-        super(id, firstName, lastName, email, password, UserRole.USER);
+        super(id, name, "", email, null, UserRole.USER);
     }
 
-    public RegularUser(String firstName, String lastName, String email, String password)
+    public RegularUser(String name, String email)
     {
-        this(UUID.randomUUID().toString(), firstName, lastName, email, password);
+        this(UUID.randomUUID().toString(), name, email);
     }
 }

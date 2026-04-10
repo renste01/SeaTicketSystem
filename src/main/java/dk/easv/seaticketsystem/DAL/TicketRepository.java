@@ -1,6 +1,7 @@
 package dk.easv.seaticketsystem.DAL;
 
 import dk.easv.seaticketsystem.Model.Tickets;
+import dk.easv.seaticketsystem.Model.TicketType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ import java.util.List;
 public class TicketRepository {
 
     public void createTicket (Tickets tickets){
-        String sql = "INSERT INTO Tickets (TicketId, EventID, UserId, Price, CustomerName, CustomerEmail, DeliveryStatus, SentAt, IssuedByCoordinatorId) VALUES(?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Tickets (TicketId, EventID, UserId, Price, CustomerName, CustomerEmail, DeliveryStatus, SentAt, IssuedByCoordinatorId, TicketType) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -21,7 +22,7 @@ public class TicketRepository {
             stmt.setString(1, tickets.getTicketId());
             stmt.setInt(2, tickets.getEventId());
             stmt.setString(3, tickets.getUserID());
-            stmt.setDouble(4,tickets.getPrice());
+            stmt.setString(4, String.valueOf(tickets.getPrice()));
             stmt.setString(5, tickets.getCustomerName());
             stmt.setString(6, tickets.getCustomerEmail());
             stmt.setString(7, tickets.getDeliveryStatus());
@@ -31,6 +32,7 @@ public class TicketRepository {
                 stmt.setTimestamp(8, Timestamp.valueOf(tickets.getSentAt()));
             }
             stmt.setString(9, tickets.getIssuedByCoordinatorId());
+            stmt.setString(10, tickets.getTicketType().name());
 
             stmt.executeUpdate();
 
@@ -114,6 +116,17 @@ public class TicketRepository {
         }
     }
 
+    public void deleteTicket(String ticketId) {
+        String sql = "DELETE FROM Tickets WHERE TicketId = ?";
+        try (Connection conn = DBConnector.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, ticketId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException("Kunne ikke slette ticket", e);
+        }
+    }
+
     private Tickets mapTicket(ResultSet rs) throws Exception {
         Timestamp sentAtValue = null;
         try {
@@ -124,22 +137,35 @@ public class TicketRepository {
         String customerEmail = null;
         String deliveryStatus = null;
         String issuedBy = null;
+        String ticketType = "STANDARD";
 
         try { customerName = rs.getString("CustomerName"); } catch (Exception ignored) {}
         try { customerEmail = rs.getString("CustomerEmail"); } catch (Exception ignored) {}
         try { deliveryStatus = rs.getString("DeliveryStatus"); } catch (Exception ignored) {}
         try { issuedBy = rs.getString("IssuedByCoordinatorId"); } catch (Exception ignored) {}
+        try { ticketType = rs.getString("TicketType"); } catch (Exception ignored) {}
+
+        String priceValue = rs.getString("Price");
+        double parsedPrice = priceValue == null || priceValue.isBlank() ? 0.0 : Double.parseDouble(priceValue);
+
+        TicketType parsedTicketType;
+        try {
+            parsedTicketType = TicketType.valueOf(ticketType == null ? "STANDARD" : ticketType.toUpperCase());
+        } catch (Exception e) {
+            parsedTicketType = TicketType.STANDARD;
+        }
 
         return new Tickets(
                 rs.getString("TicketId"),
                 rs.getInt("EventId"),
                 rs.getString("UserId"),
-                rs.getDouble("Price"),
+                parsedPrice,
                 customerName,
                 customerEmail,
                 deliveryStatus,
                 sentAtValue == null ? null : sentAtValue.toLocalDateTime(),
-                issuedBy
+                issuedBy,
+                parsedTicketType
         );
     }
 }

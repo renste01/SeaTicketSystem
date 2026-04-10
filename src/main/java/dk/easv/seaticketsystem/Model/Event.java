@@ -18,13 +18,18 @@ public class Event {
     private final String description;
     private final String locationGuidance;
     private final String ownerCoordinatorId;
+    private final boolean vipEnabled;
     private final List<String> coCoordinatorIds = new ArrayList<>();
 
     public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description, LocalDateTime endDateTime) {
-        this(id, title, location, date, startTime, description, null, endDateTime, null);
+        this(id, title, location, date, startTime, description, null, endDateTime, null, false);
     }
 
     public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description, String ownerCoordinatorId, LocalDateTime endDateTime, String locationGuidance) {
+        this(id, title, location, date, startTime, description, ownerCoordinatorId, endDateTime, locationGuidance, false);
+    }
+
+    public Event(String id, String title, String location, LocalDate date, LocalTime startTime, String description, String ownerCoordinatorId, LocalDateTime endDateTime, String locationGuidance, boolean vipEnabled) {
         this.id = id;
         this.title = title;
         this.location = location;
@@ -34,6 +39,7 @@ public class Event {
         this.description = description;
         this.locationGuidance = locationGuidance;
         this.ownerCoordinatorId = ownerCoordinatorId;
+        this.vipEnabled = vipEnabled;
     }
 
     public String getId()                           { return id; }
@@ -45,6 +51,7 @@ public class Event {
     public String getDescription()                  { return description; }
     public String getLocationGuidance()             { return locationGuidance; }
     public String getOwnerCoordinatorId()           { return ownerCoordinatorId; }
+    public boolean isVipEnabled()                   { return vipEnabled; }
     public List<String> getCoCoordinatorIds()       { return coCoordinatorIds; }
 
     public void addCoCoordinator(String userId)     { coCoordinatorIds.add(userId); }

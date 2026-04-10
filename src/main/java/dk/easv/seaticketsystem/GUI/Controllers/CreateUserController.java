@@ -25,7 +25,7 @@ public class CreateUserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        roleComboBox.getItems().addAll(UserRole.ADMIN, UserRole.COORDINATOR, UserRole.USER);
+        roleComboBox.getItems().addAll(UserRole.ADMIN, UserRole.COORDINATOR);
     }
 
 
@@ -53,9 +53,7 @@ public class CreateUserController implements Initializable {
         User newUser =
                 (role == UserRole.ADMIN)
                 ? new Admin(fn, ln, email, pw)
-                : (role == UserRole.COORDINATOR)
-                ? new EventCoordinator(fn, ln, email, pw)
-                : new RegularUser(fn, ln, email, pw);
+                : new EventCoordinator(fn, ln, email, pw);
 
         userService.createUser(newUser); // Creates new User (Important)
 

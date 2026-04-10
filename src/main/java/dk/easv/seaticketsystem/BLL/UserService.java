@@ -4,7 +4,9 @@ import dk.easv.seaticketsystem.DAL.UserRepository;
 import dk.easv.seaticketsystem.DAL.DBConnector;
 import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
+import dk.easv.seaticketsystem.Model.RegularUser;
 import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.Model.UserRole;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -93,5 +95,29 @@ public class UserService {
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke slette bruger", e);
         }
+    }
+
+    public User findOrCreateTicketUser(String name, String email) {
+        String cleanName = name == null ? "" : name.trim();
+        String cleanEmail = email == null ? "" : email.trim().toLowerCase();
+
+        if (!databaseAvailable()) {
+            for (User user : offlineUsers) {
+                if (user.getRole() == UserRole.USER && user.getEmail().equalsIgnoreCase(cleanEmail)) {
+                    return user;
+                }
+            }
+
+            User ticketUser = new RegularUser(cleanName, cleanEmail);
+            offlineUsers.add(ticketUser);
+            return ticketUser;
+        }
+
+        Optional<User> existingUser = userDAO.findRegularUserByEmail(cleanEmail);
+        if (existingUser.isPresent()) {
+            return existingUser.get();
+        }
+
+        return userDAO.createTicketUser(cleanName, cleanEmail);
     }
 }

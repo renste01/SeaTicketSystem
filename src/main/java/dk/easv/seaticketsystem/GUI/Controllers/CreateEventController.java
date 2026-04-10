@@ -27,6 +27,7 @@ public class CreateEventController implements Initializable {
     @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
     @FXML private TextArea locationGuidanceField;
+    @FXML private CheckBox vipEnabledCheckBox;
     @FXML private ListView<User> coordinatorList;
     @FXML private Label errorLabel;
 
@@ -57,6 +58,7 @@ public class CreateEventController implements Initializable {
         String endTimeText = endTimeField.getText().trim();
         String description = descriptionField.getText().trim();
         String locationGuidance = locationGuidanceField.getText().trim();
+        boolean vipEnabled = vipEnabledCheckBox.isSelected();
 
         if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()
                 || startTimeText.isEmpty() || endTimeText.isEmpty() || locationGuidance.isEmpty()) {
@@ -93,7 +95,8 @@ public class CreateEventController implements Initializable {
                 description,
                 ownerId,
                 endDateTime,
-                locationGuidance
+                locationGuidance,
+                vipEnabled
         );
 
         List<User> selectedCoordinators = coordinatorList.getSelectionModel().getSelectedItems();

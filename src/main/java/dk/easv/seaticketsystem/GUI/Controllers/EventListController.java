@@ -151,12 +151,12 @@ public class EventListController implements Initializable {
         new EventService().createEvent(e);
     }
 
-    public static void updateEvent(String id, String title, String location, LocalDate date, LocalTime startTime, String description, LocalDateTime endDateTime, String locationGuidance) {
+    public static void updateEvent(String id, String title, String location, LocalDate date, LocalTime startTime, String description, LocalDateTime endDateTime, String locationGuidance, boolean vipEnabled) {
         EventService service = new EventService();
         List<Event> all = service.getAllEvents();
         for (Event old : all) {
             if (old.getId().equals(id)) {
-                Event updated = new Event(id, title, location, date, startTime, description, old.getOwnerCoordinatorId(), endDateTime, locationGuidance);
+                Event updated = new Event(id, title, location, date, startTime, description, old.getOwnerCoordinatorId(), endDateTime, locationGuidance, vipEnabled);
                 old.getCoCoordinatorIds().forEach(updated::addCoCoordinator);
                 service.updateEvent(updated);
                 break;

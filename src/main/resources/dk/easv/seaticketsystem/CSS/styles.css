@@ -133,6 +133,20 @@
 }
 .btn-danger:hover { -fx-background-color: #a82518; }
 
+.btn-compact {
+    -fx-background-color: white;
+    -fx-text-fill: #002430;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-color: #ccd6de;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+}
+.btn-compact:hover { -fx-background-color: #f0f4f6; }
+
 .btn-back-icon {
     -fx-background-color: #3c7d87;
     -fx-text-fill: white;
@@ -292,6 +306,23 @@
 .qr-hint {
     -fx-font-size: 11px;
     -fx-text-fill: #aaa;
+}
+
+.status-pill {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 4 10 4 10;
+    -fx-background-radius: 14;
+}
+
+.status-pending {
+    -fx-background-color: #fff4ce;
+    -fx-text-fill: #8a6d1e;
+}
+
+.status-sent {
+    -fx-background-color: #dff6e7;
+    -fx-text-fill: #1f7a3f;
 }
 
 /* Admin stat cards (legacy) */

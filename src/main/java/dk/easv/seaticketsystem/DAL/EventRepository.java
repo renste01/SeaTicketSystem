@@ -16,7 +16,7 @@ public class EventRepository {
 
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
-        String sql = "SELECT EventId, Title, Location, StartDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance FROM Events";
+        String sql = "SELECT EventId, Title, Location, StartDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled FROM Events";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -33,7 +33,7 @@ public class EventRepository {
     }
 
     public Event createEvent(Event event) {
-        String sql = "INSERT INTO Events (Title, Location, StartDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance) VALUES (?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Events (Title, Location, StartDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled) VALUES (?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -46,6 +46,7 @@ public class EventRepository {
             stmt.setString(6, event.getDescription());
             stmt.setString(7, event.getOwnerCoordinatorId());
             stmt.setString(8, event.getLocationGuidance());
+            stmt.setBoolean(9, event.isVipEnabled());
             stmt.executeUpdate();
 
             try (ResultSet keys = stmt.getGeneratedKeys()) {
@@ -60,7 +61,8 @@ public class EventRepository {
                             event.getDescription(),
                             event.getOwnerCoordinatorId(),
                             event.getEndDateTime(),
-                            event.getLocationGuidance()
+                            event.getLocationGuidance(),
+                            event.isVipEnabled()
                     );
                     event.getCoCoordinatorIds().forEach(created::addCoCoordinator);
                     return created;
@@ -74,7 +76,7 @@ public class EventRepository {
     }
 
     public void updateEvent(Event event) {
-        String sql = "UPDATE Events SET Title = ?, Location = ?, StartDate = ?, StartTime = ?, EndTime = ?, Description = ?, OwnerCoordinatorId = ?, LocationGuidance = ? WHERE EventId = ?";
+        String sql = "UPDATE Events SET Title = ?, Location = ?, StartDate = ?, StartTime = ?, EndTime = ?, Description = ?, OwnerCoordinatorId = ?, LocationGuidance = ?, VipEnabled = ? WHERE EventId = ?";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -87,7 +89,8 @@ public class EventRepository {
             stmt.setString(6, event.getDescription());
             stmt.setString(7, event.getOwnerCoordinatorId());
             stmt.setString(8, event.getLocationGuidance());
-            stmt.setInt(9, Integer.parseInt(event.getId()));
+            stmt.setBoolean(9, event.isVipEnabled());
+            stmt.setInt(10, Integer.parseInt(event.getId()));
             stmt.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke opdatere event", e);
@@ -117,7 +120,8 @@ public class EventRepository {
         String description = rs.getString("Description");
         String ownerCoordinatorId = rs.getString("OwnerCoordinatorId");
         String locationGuidance = rs.getString("LocationGuidance");
+        boolean vipEnabled = rs.getBoolean("VipEnabled");
 
-        return new Event(id, title, location, startDate, startTime, description, ownerCoordinatorId, endDateTime, locationGuidance);
+        return new Event(id, title, location, startDate, startTime, description, ownerCoordinatorId, endDateTime, locationGuidance, vipEnabled);
     }
 }

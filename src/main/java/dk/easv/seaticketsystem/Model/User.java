@@ -23,7 +23,10 @@ public abstract class User {
     public String getId()                       {return id;}
     public String getFirstName()                {return firstName;}
     public String getLastName()                 {return lastName;}
-    public String getName()                     {return firstName + " " + lastName;}
+    public String getName() {
+        if (lastName == null || lastName.isBlank()) return firstName;
+        return firstName + " " + lastName;
+    }
     public String getEmail()                    {return email;}
     public String getPassword()                 {return password;}
     public UserRole getRole()                   {return role;}
@@ -37,7 +40,7 @@ public abstract class User {
     public void setProfileImagePath(String path){this.profileImagePath = path;}
 
 
-    public boolean checkPassword(String pw)     {return this.password.equals(pw);}
+    public boolean checkPassword(String pw)     {return this.password != null && this.password.equals(pw);}
 
     @Override public String toString()          {return getName() + " (" + email + ")";}
 }

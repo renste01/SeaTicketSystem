@@ -28,4 +28,8 @@ public class TicketService {
     public void markTicketAsSent(String ticketId) {
         ticketRepo.markTicketAsSent(ticketId);
     }
+
+    public void deleteTicket(String ticketId) {
+        ticketRepo.deleteTicket(ticketId);
+    }
 }

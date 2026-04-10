@@ -44,14 +44,18 @@
                       prefRowCount="4"
                       GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-            <Label text="Lokationsvejledning:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-            <TextArea fx:id="locationGuidanceField"
-                      wrapText="true"
-                      prefRowCount="3"
-                      promptText="Fx: Indgang B, 2. sal, lokale 2.14"
-                      GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-        </children>
-    </GridPane>
+             <Label text="Lokationsvejledning:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+             <TextArea fx:id="locationGuidanceField"
+                       wrapText="true"
+                       prefRowCount="3"
+                       promptText="Fx: Indgang B, 2. sal, lokale 2.14"
+                       GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+             <Label text="VIP billet muligt:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+             <CheckBox fx:id="vipEnabledCheckBox"
+                       GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+         </children>
+     </GridPane>
 
     <Label fx:id="errorLabel"
            styleClass="error-label"

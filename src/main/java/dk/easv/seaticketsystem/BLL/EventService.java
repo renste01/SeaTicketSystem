@@ -44,7 +44,8 @@ public class EventService {
                     event.getDescription(),
                     event.getOwnerCoordinatorId(),
                     event.getEndDateTime(),
-                    event.getLocationGuidance()
+                    event.getLocationGuidance(),
+                    event.isVipEnabled()
             );
             event.getCoCoordinatorIds().forEach(created::addCoCoordinator);
             offlineEvents.add(created);

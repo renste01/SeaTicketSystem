@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.TicketDetailsController"
+      spacing="12"
+      styleClass="page-compact">
+
+    <padding>
+        <Insets top="14" right="16" bottom="14" left="16"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Billetdetaljer" styleClass="page-title"/>
+        <Label fx:id="statusLabel" styleClass="status-pill"/>
+    </HBox>
+
+    <VBox spacing="12" styleClass="ticket-card">
+        <padding>
+            <Insets top="14" right="16" bottom="14" left="16"/>
+        </padding>
+
+        <GridPane hgap="12" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="140"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints prefWidth="140"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+
+            <Label text="Ticket ID" styleClass="detail-key" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Label fx:id="ticketIdLabel" styleClass="ticket-number" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Pris" styleClass="detail-key" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+            <Label fx:id="priceLabel" styleClass="detail-value" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+            <Label text="Køber" styleClass="detail-key" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="buyerNameLabel" styleClass="detail-value" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="E-mail" styleClass="detail-key" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+            <Label fx:id="buyerEmailLabel" styleClass="detail-value" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+            <Label text="Billet type" styleClass="detail-key" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Label fx:id="ticketTypeLabel" styleClass="detail-value" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        </GridPane>
+    </VBox>
+
+    <VBox spacing="10" styleClass="admin-section-card">
+        <Label text="Event" styleClass="section-title"/>
+
+        <GridPane hgap="12" vgap="8">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="140"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+
+            <Label text="Titel" styleClass="detail-key" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Label fx:id="eventTitleLabel" styleClass="detail-value" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Dato" styleClass="detail-key" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="eventDateLabel" styleClass="detail-value" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Tid" styleClass="detail-key" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Label fx:id="eventTimeLabel" styleClass="detail-value" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Lokation" styleClass="detail-key" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Label fx:id="eventLocationLabel" styleClass="detail-value" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="Beskrivelse" styleClass="detail-key" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <Label fx:id="eventDescriptionLabel" styleClass="detail-value" wrapText="true" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        </GridPane>
+    </VBox>
+
+    <HBox spacing="10">
+        <Button text="Tilbage" onAction="#handleBack" styleClass="btn-secondary"/>
+        <Button fx:id="sendTicketButton" text="Send billet" onAction="#handleSendTicket" styleClass="btn-teal"/>
+        <Button text="Slet billet" onAction="#handleDeleteTicket" styleClass="btn-danger"/>
+        <Label fx:id="detailsFeedbackLabel" visible="false" managed="false"/>
+        <Region HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+</VBox>

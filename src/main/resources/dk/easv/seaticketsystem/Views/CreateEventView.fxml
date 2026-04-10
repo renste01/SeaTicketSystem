@@ -75,6 +75,10 @@
             <ListView fx:id="coordinatorList"
                       prefHeight="140"
                       GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+            <Label text="VIP billet muligt:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+            <CheckBox fx:id="vipEnabledCheckBox"
+                      GridPane.rowIndex="7" GridPane.columnIndex="1"/>
         </children>
     </GridPane>
 

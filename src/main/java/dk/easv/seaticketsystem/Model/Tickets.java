@@ -14,15 +14,22 @@ public class Tickets {
     private final String deliveryStatus;
     private final LocalDateTime sentAt;
     private final String issuedByCoordinatorId;
+    private final TicketType ticketType;
 
 
     public Tickets(String ticketId, int eventId, String userID, double price ) {
-        this(ticketId, eventId, userID, price, null, null, "PENDING", null, null);
+        this(ticketId, eventId, userID, price, null, null, "PENDING", null, null, TicketType.STANDARD);
     }
 
     public Tickets(String ticketId, int eventId, String userID, double price,
                    String customerName, String customerEmail, String deliveryStatus,
                    LocalDateTime sentAt, String issuedByCoordinatorId) {
+        this(ticketId, eventId, userID, price, customerName, customerEmail, deliveryStatus, sentAt, issuedByCoordinatorId, TicketType.STANDARD);
+    }
+
+    public Tickets(String ticketId, int eventId, String userID, double price,
+                   String customerName, String customerEmail, String deliveryStatus,
+                   LocalDateTime sentAt, String issuedByCoordinatorId, TicketType ticketType) {
         this.ticketId = ticketId;
         this.eventId = eventId;
         this.userID = userID;
@@ -32,6 +39,7 @@ public class Tickets {
         this.deliveryStatus = deliveryStatus;
         this.sentAt = sentAt;
         this.issuedByCoordinatorId = issuedByCoordinatorId;
+        this.ticketType = ticketType == null ? TicketType.STANDARD : ticketType;
     }
 
     public String getTicketId() {
@@ -73,5 +81,9 @@ public class Tickets {
 
     public String getIssuedByCoordinatorId() {
         return issuedByCoordinatorId;
+    }
+
+    public TicketType getTicketType() {
+        return ticketType;
     }
 }

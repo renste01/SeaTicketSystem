@@ -2,6 +2,7 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 import dk.easv.seaticketsystem.Model.Event;
 import dk.easv.seaticketsystem.Model.Tickets;
+import dk.easv.seaticketsystem.Model.TicketType;
 import dk.easv.seaticketsystem.Model.User;
 import dk.easv.seaticketsystem.Model.UserRole;
 import dk.easv.seaticketsystem.Session.SessionManager;
@@ -95,7 +96,13 @@ public class EventDetailsController {
                     UUID.randomUUID().toString(),
                     Integer.parseInt(selectedEvent.getId()),
                     null, // userId hvis du vil tilføje det senere
-                    price
+                    price,
+                    null,
+                    null,
+                    "PENDING",
+                    null,
+                    null,
+                    TicketType.STANDARD
             );
 
             ticketsService.createTicket(ticket);

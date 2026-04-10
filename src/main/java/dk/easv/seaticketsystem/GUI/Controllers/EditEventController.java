@@ -19,6 +19,7 @@ public class EditEventController {
     @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
     @FXML private TextArea locationGuidanceField;
+    @FXML private CheckBox vipEnabledCheckBox;
     @FXML private Label errorLabel;
 
     private static Event eventToEdit;
@@ -41,6 +42,7 @@ public class EditEventController {
             }
             descriptionField.setText(eventToEdit.getDescription());
             locationGuidanceField.setText(eventToEdit.getLocationGuidance());
+            vipEnabledCheckBox.setSelected(eventToEdit.isVipEnabled());
         }
     }
 
@@ -53,6 +55,7 @@ public class EditEventController {
         String endTimeText = endTimeField.getText().trim();
         String description = descriptionField.getText().trim();
         String locationGuidance = locationGuidanceField.getText().trim();
+        boolean vipEnabled = vipEnabledCheckBox.isSelected();
 
         if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()
                 || startTimeText.isEmpty() || endTimeText.isEmpty() || locationGuidance.isEmpty()) {
@@ -86,7 +89,8 @@ public class EditEventController {
                 startTime,
                 description,
                 endDateTime,
-                locationGuidance
+                locationGuidance,
+                vipEnabled
         );
 
         ViewManager.getInstance().loadView("EventListView.fxml");
