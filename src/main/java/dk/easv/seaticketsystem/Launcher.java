@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem;
 
+// Java Imports
 import javafx.application.Application;
 
 public class Launcher
@@ -8,3 +9,4 @@ public class Launcher
         Application.launch(MainApp.class, args);
     }
 }
+

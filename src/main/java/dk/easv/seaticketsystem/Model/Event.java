@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem.Model;
 
+// Java Imports
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

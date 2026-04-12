@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem.Model;
 
+// Java Imports
 import java.util.UUID;
 
 public class RegularUser extends User

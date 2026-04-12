@@ -1,7 +1,7 @@
 package dk.easv.seaticketsystem.Model;
 
+// Java Imports
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TicketsTest {
@@ -46,3 +46,4 @@ class TicketsTest {
     void getIssuedByCoordinatorId() {
     }
 }
+

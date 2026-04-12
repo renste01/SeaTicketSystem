@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.BLL.EventService;
 import dk.easv.seaticketsystem.BLL.TicketService;
 import dk.easv.seaticketsystem.BLL.UserService;
@@ -11,12 +12,12 @@ import dk.easv.seaticketsystem.Model.UserRole;
 import dk.easv.seaticketsystem.Session.SessionManager;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 
+// Java Imports
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

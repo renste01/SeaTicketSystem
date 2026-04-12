@@ -1,8 +1,11 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.BLL.UserService;
 import dk.easv.seaticketsystem.Model.User;
 import dk.easv.seaticketsystem.Session.SessionManager;
+
+// Java Imports
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;

@@ -1,8 +1,10 @@
 package dk.easv.seaticketsystem.DAL;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.Model.Tickets;
 import dk.easv.seaticketsystem.Model.TicketType;
 
+// Java Imports
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketRepository {
+public class TicketRepository implements ITicketRepository {
 
     public void createTicket (Tickets tickets){
         String sql = "INSERT INTO Tickets (TicketId, EventID, UserId, Price, CustomerName, CustomerEmail, DeliveryStatus, SentAt, IssuedByCoordinatorId, TicketType) VALUES(?,?,?,?,?,?,?,?,?,?)";

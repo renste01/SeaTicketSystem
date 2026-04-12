@@ -1,6 +1,6 @@
 package dk.easv.seaticketsystem.DAL;
 
-// Project Imports
+// Projekt Imports
 import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
 import dk.easv.seaticketsystem.Model.RegularUser;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.sql.*;
 import java.io.IOException;
 
-public class UserRepository
+public class UserRepository implements IUserRepository
 {
     public Optional<User> findStaffByEmail(String email)
     {

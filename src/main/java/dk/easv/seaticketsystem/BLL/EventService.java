@@ -1,16 +1,27 @@
 package dk.easv.seaticketsystem.BLL;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.DAL.DBConnector;
+import dk.easv.seaticketsystem.DAL.IEventRepository;
 import dk.easv.seaticketsystem.DAL.EventRepository;
 import dk.easv.seaticketsystem.Model.Event;
 
+// Java Imports
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventService {
 
-    private final EventRepository eventRepository = new EventRepository();
+    private final IEventRepository eventRepository;
+
+    public EventService() {
+        this.eventRepository = new EventRepository();
+    }
+
+    public EventService(IEventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
 
     private static final List<Event> offlineEvents = new ArrayList<>(List.of(
             new Event("1", "Koncert i Havnen", "Esbjerg Havn", java.time.LocalDate.of(2025, 6, 12), java.time.LocalTime.of(18, 0), "Live concert at the harbor", java.time.LocalDateTime.of(2025, 6, 12, 22, 0)),

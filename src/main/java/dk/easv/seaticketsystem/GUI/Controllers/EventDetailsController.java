@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.Model.Event;
 import dk.easv.seaticketsystem.Model.Tickets;
 import dk.easv.seaticketsystem.Model.TicketType;
@@ -9,11 +10,11 @@ import dk.easv.seaticketsystem.Session.SessionManager;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import dk.easv.seaticketsystem.BLL.TicketService;
 
+// Java Imports
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 

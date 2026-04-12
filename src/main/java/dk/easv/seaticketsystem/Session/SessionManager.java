@@ -1,6 +1,6 @@
 package dk.easv.seaticketsystem.Session;
 
-// Projekt imports
+// Projekt Imports
 import dk.easv.seaticketsystem.Model.User;
 
 /**
@@ -34,3 +34,4 @@ public class SessionManager {
     public String getSelectedEventId()           {return selectedEventId;}
     public void   setSelectedEventId(String id)  {this.selectedEventId = id;}
 }
+

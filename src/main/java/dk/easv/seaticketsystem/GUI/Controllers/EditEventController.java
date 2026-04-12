@@ -1,10 +1,12 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.Model.Event;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
+
+// Java Imports
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

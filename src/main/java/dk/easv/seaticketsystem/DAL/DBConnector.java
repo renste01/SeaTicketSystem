@@ -1,10 +1,8 @@
 package dk.easv.seaticketsystem.DAL;
 
-// SQL Imports
+// Java Imports
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-
-// Java Imports
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

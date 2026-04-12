@@ -1,13 +1,16 @@
 package dk.easv.seaticketsystem.BLL;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.DAL.UserRepository;
 import dk.easv.seaticketsystem.DAL.DBConnector;
+import dk.easv.seaticketsystem.DAL.IUserRepository;
 import dk.easv.seaticketsystem.Model.Admin;
 import dk.easv.seaticketsystem.Model.EventCoordinator;
 import dk.easv.seaticketsystem.Model.RegularUser;
 import dk.easv.seaticketsystem.Model.User;
 import dk.easv.seaticketsystem.Model.UserRole;
 
+// Java Imports
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,15 @@ import java.util.Optional;
 
 public class UserService {
 
-    private final UserRepository userDAO = new UserRepository();
+    private final IUserRepository userRepository;
+
+    public UserService() {
+        this.userRepository = new UserRepository();
+    }
+
+    public UserService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     // Offline fallback-brugere
     private final List<User> offlineUsers = new ArrayList<>(List.of(
@@ -44,7 +55,7 @@ public class UserService {
         }
 
         // Online mode
-        return userDAO.findStaffByEmail(email)
+        return userRepository.findStaffByEmail(email)
                 .filter(u -> u.checkPassword(password));
     }
 
@@ -53,7 +64,7 @@ public class UserService {
         if (!databaseAvailable()) {
             return new ArrayList<>(offlineUsers);
         }
-        return userDAO.getAllUsers();
+        return userRepository.getAllUsers();
     }
 
     // CREATE USER
@@ -64,7 +75,7 @@ public class UserService {
         }
 
         try {
-            userDAO.createUser(newUser);
+            userRepository.createUser(newUser);
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke oprette bruger i databasen", e);
         }
@@ -77,7 +88,7 @@ public class UserService {
         }
 
         try {
-            userDAO.updateUser(user);
+            userRepository.updateUser(user);
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke opdatere bruger", e);
         }
@@ -91,7 +102,7 @@ public class UserService {
         }
 
         try {
-            userDAO.deleteUser(userId);
+            userRepository.deleteUser(userId);
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke slette bruger", e);
         }
@@ -113,11 +124,11 @@ public class UserService {
             return ticketUser;
         }
 
-        Optional<User> existingUser = userDAO.findRegularUserByEmail(cleanEmail);
+        Optional<User> existingUser = userRepository.findRegularUserByEmail(cleanEmail);
         if (existingUser.isPresent()) {
             return existingUser.get();
         }
 
-        return userDAO.createTicketUser(cleanName, cleanEmail);
+        return userRepository.createTicketUser(cleanName, cleanEmail);
     }
 }

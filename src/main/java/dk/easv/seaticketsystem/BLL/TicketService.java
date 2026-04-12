@@ -1,35 +1,46 @@
 package dk.easv.seaticketsystem.BLL;
 
+// Projekt Imports
+import dk.easv.seaticketsystem.DAL.ITicketRepository;
 import dk.easv.seaticketsystem.DAL.TicketRepository;
 import dk.easv.seaticketsystem.Model.Tickets;
 
+// Java Imports
 import java.util.List;
 
 public class TicketService {
 
-    private final TicketRepository ticketRepo = new TicketRepository();
+    private final ITicketRepository ticketRepository;
+
+    public TicketService() {
+        this.ticketRepository = new TicketRepository();
+    }
+
+    public TicketService(ITicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
 
     public void createTicket(Tickets ticket) {
-        ticketRepo.createTicket(ticket);
+        ticketRepository.createTicket(ticket);
     }
 
     public List<Tickets> getTicketsForEvent(int eventId) {
-        return ticketRepo.getTicketsByEvent(eventId);
+        return ticketRepository.getTicketsByEvent(eventId);
     }
 
     public List<Tickets> getTicketsForUser(String id) {
-        return ticketRepo.getTicketsByUser(id);
+        return ticketRepository.getTicketsByUser(id);
     }
 
     public List<Tickets> getAllTickets() {
-        return ticketRepo.getAllTickets();
+        return ticketRepository.getAllTickets();
     }
 
     public void markTicketAsSent(String ticketId) {
-        ticketRepo.markTicketAsSent(ticketId);
+        ticketRepository.markTicketAsSent(ticketId);
     }
 
     public void deleteTicket(String ticketId) {
-        ticketRepo.deleteTicket(ticketId);
+        ticketRepository.deleteTicket(ticketId);
     }
 }

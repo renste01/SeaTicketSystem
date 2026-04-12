@@ -1,7 +1,9 @@
 package dk.easv.seaticketsystem.DAL;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.Model.Event;
 
+// Java Imports
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +14,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventRepository {
+public class EventRepository implements IEventRepository {
 
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();

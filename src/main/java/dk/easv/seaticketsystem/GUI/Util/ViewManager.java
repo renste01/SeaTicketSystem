@@ -1,5 +1,6 @@
 package dk.easv.seaticketsystem.GUI.Util;
 
+// Java Imports
 import javafx.scene.layout.StackPane;
 
 public class ViewManager {

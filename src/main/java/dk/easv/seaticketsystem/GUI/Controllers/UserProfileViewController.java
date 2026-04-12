@@ -1,11 +1,13 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+// Projekt Imports
 import dk.easv.seaticketsystem.Model.User;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
+
+// Java Imports
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
