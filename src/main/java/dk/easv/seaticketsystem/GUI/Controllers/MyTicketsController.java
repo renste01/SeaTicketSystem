@@ -247,7 +247,7 @@ public class MyTicketsController {
     private void handleMarkAsSent() {
         Tickets selected = ticketTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showFeedback("Vælg en billet i listen foerst.", false);
+            showFeedback("Vælg en billet i listen først.", false);
             return;
         }
         if ("SENT".equalsIgnoreCase(selected.getDeliveryStatus())) {
