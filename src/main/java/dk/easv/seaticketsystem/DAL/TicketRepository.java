@@ -5,9 +5,11 @@ import dk.easv.seaticketsystem.Model.Tickets;
 import dk.easv.seaticketsystem.Model.TicketType;
 
 // Java Imports
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class TicketRepository implements ITicketRepository {
 
             stmt.executeUpdate();
 
-        } catch (Exception e){
+        } catch (SQLException | IOException e){
             throw new RuntimeException("Kunne ikke oprette ticket i databasen: " + e.getMessage(), e);
         }
 
@@ -58,7 +60,7 @@ public class TicketRepository implements ITicketRepository {
                 tickets.add(mapTicket(rs));
             }
 
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke hente tickets", e);
         }
 
@@ -82,7 +84,7 @@ public class TicketRepository implements ITicketRepository {
                 tickets.add(mapTicket(rs));
             }
 
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke hente brugerens tickets", e);
         }
 
@@ -99,7 +101,7 @@ public class TicketRepository implements ITicketRepository {
             while (rs.next()) {
                 tickets.add(mapTicket(rs));
             }
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke hente tickets", e);
         }
 
@@ -113,7 +115,7 @@ public class TicketRepository implements ITicketRepository {
             stmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setString(2, ticketId);
             stmt.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke opdatere ticket-status", e);
         }
     }
@@ -124,16 +126,16 @@ public class TicketRepository implements ITicketRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, ticketId);
             stmt.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke slette ticket", e);
         }
     }
 
-    private Tickets mapTicket(ResultSet rs) throws Exception {
+    private Tickets mapTicket(ResultSet rs) throws SQLException {
         Timestamp sentAtValue = null;
         try {
             sentAtValue = rs.getTimestamp("SentAt");
-        } catch (Exception ignored) {}
+        } catch (SQLException ignored) {}
 
         String customerName = null;
         String customerEmail = null;
@@ -141,11 +143,11 @@ public class TicketRepository implements ITicketRepository {
         String issuedBy = null;
         String ticketType = "STANDARD";
 
-        try { customerName = rs.getString("CustomerName"); } catch (Exception ignored) {}
-        try { customerEmail = rs.getString("CustomerEmail"); } catch (Exception ignored) {}
-        try { deliveryStatus = rs.getString("DeliveryStatus"); } catch (Exception ignored) {}
-        try { issuedBy = rs.getString("IssuedByCoordinatorId"); } catch (Exception ignored) {}
-        try { ticketType = rs.getString("TicketType"); } catch (Exception ignored) {}
+        try { customerName = rs.getString("CustomerName"); } catch (SQLException ignored) {}
+        try { customerEmail = rs.getString("CustomerEmail"); } catch (SQLException ignored) {}
+        try { deliveryStatus = rs.getString("DeliveryStatus"); } catch (SQLException ignored) {}
+        try { issuedBy = rs.getString("IssuedByCoordinatorId"); } catch (SQLException ignored) {}
+        try { ticketType = rs.getString("TicketType"); } catch (SQLException ignored) {}
 
         String priceValue = rs.getString("Price");
         double parsedPrice = priceValue == null || priceValue.isBlank() ? 0.0 : Double.parseDouble(priceValue);

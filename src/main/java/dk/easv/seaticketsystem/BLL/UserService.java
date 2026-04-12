@@ -12,6 +12,7 @@ import dk.easv.seaticketsystem.Model.UserRole;
 
 // Java Imports
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +77,7 @@ public class UserService {
 
         try {
             userRepository.createUser(newUser);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Kunne ikke oprette bruger i databasen", e);
         }
     }

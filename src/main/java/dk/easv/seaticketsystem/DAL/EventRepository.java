@@ -4,9 +4,11 @@ package dk.easv.seaticketsystem.DAL;
 import dk.easv.seaticketsystem.Model.Event;
 
 // Java Imports
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +29,7 @@ public class EventRepository implements IEventRepository {
             while (rs.next()) {
                 events.add(mapEvent(rs));
             }
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke hente events", e);
         }
 
@@ -70,7 +72,7 @@ public class EventRepository implements IEventRepository {
                     return created;
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke oprette event", e);
         }
 
@@ -94,7 +96,7 @@ public class EventRepository implements IEventRepository {
             stmt.setBoolean(9, event.isVipEnabled());
             stmt.setInt(10, Integer.parseInt(event.getId()));
             stmt.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke opdatere event", e);
         }
     }
@@ -106,12 +108,12 @@ public class EventRepository implements IEventRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, Integer.parseInt(eventId));
             stmt.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke slette event", e);
         }
     }
 
-    private Event mapEvent(ResultSet rs) throws Exception {
+    private Event mapEvent(ResultSet rs) throws SQLException {
         String id = String.valueOf(rs.getInt("EventId"));
         String title = rs.getString("Title");
         String location = rs.getString("Location");

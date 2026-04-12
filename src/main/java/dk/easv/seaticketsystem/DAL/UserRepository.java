@@ -43,7 +43,7 @@ public class UserRepository implements IUserRepository
         }
     }
 
-    public void createUser(User user) throws Exception {
+    public void createUser(User user) throws SQLException {
         String sql = "INSERT INTO Users (UserId, FirstName, LastName, Email, Password, UserRole) Values(?,?,?,?,?,?)";
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -60,6 +60,8 @@ public class UserRepository implements IUserRepository
             stmt.setString(6, user.getRole().name());
 
             stmt.executeUpdate();
+        } catch (IOException e) {
+            throw new SQLException("Kunne ikke oprette bruger pga. konfigurationsfejl", e);
         }
     }
 
@@ -77,7 +79,7 @@ public class UserRepository implements IUserRepository
                 if (!rs.next()) return Optional.empty();
                 return Optional.of(mapUser(rs));
             }
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke hente billetbruger", e);
         }
     }
@@ -95,7 +97,7 @@ public class UserRepository implements IUserRepository
             stmt.setString(6, "USER");
             stmt.executeUpdate();
             return new RegularUser(userId, fullName, email);
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke oprette billetbruger", e);
         }
     }
@@ -114,7 +116,7 @@ public class UserRepository implements IUserRepository
 
             ps.executeUpdate();
 
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException("Could not update user in database: " + e.getMessage(), e);
         }
     }
@@ -132,7 +134,7 @@ public class UserRepository implements IUserRepository
                 users.add(mapUser(rs));
             }
 
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
@@ -148,7 +150,7 @@ public class UserRepository implements IUserRepository
             ps.setString(1, userId);
             ps.executeUpdate();
 
-        } catch (Exception e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

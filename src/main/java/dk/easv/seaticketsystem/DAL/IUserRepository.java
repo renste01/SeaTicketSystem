@@ -4,6 +4,7 @@ package dk.easv.seaticketsystem.DAL;
 import dk.easv.seaticketsystem.Model.User;
 
 // Java Imports
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public interface IUserRepository
     List<User> getAllUsers();
 
     // Create
-    void createUser(User user) throws Exception;
+    void createUser(User user) throws SQLException;
     User createTicketUser(String fullName, String email);
 
     // Update/Delete
