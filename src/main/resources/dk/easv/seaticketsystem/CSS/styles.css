@@ -260,7 +260,7 @@
 }
 .sea-table .table-row-cell:odd  { -fx-background-color: #f7fafb; }
 .sea-table .table-row-cell:even { -fx-background-color: white; }
-.sea-table .table-row-cell:selected { -fx-background-color: #fde8e6; }
+.sea-table .table-row-cell:selected { -fx-background-color: #db3629; }
 
 /* Ticket detail card */
 .ticket-card {
