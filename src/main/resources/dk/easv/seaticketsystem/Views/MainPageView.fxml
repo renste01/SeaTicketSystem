@@ -33,7 +33,7 @@
                 <padding><Insets top="10" right="10" bottom="0" left="10"/></padding>
                 <Label text="MENU" styleClass="sidebar-section-label"/>
 
-                <Button text="🏠  Homepage"
+                <Button text="🏠  Forside"
                         maxWidth="Infinity" styleClass="sidebar-btn"
                         onAction="#openHomepage"/>
 
