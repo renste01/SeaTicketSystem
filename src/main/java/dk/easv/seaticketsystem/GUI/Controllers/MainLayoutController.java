@@ -65,6 +65,11 @@ public class MainLayoutController implements Initializable {
     }
 
     @FXML
+    private void openHomepage() {
+        MainApp.setRoot("/dk/easv/seaticketsystem/Views/MainPageView.fxml", 1280, 800);
+    }
+
+    @FXML
     private void openMyTickets() {
         ViewManager.getInstance().loadView("MyTicketsView.fxml");
     }
