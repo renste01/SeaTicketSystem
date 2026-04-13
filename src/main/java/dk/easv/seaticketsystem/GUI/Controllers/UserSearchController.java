@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 public class UserSearchController implements Initializable {
 
     @FXML private TextField searchField;
-    @FXML private VBox resultsContainer;
+    @FXML private TilePane resultsContainer;
     @FXML private Label noResultsLabel;
 
     private final UserService userService = new UserService();
@@ -29,6 +29,7 @@ public class UserSearchController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allUsers = userService.getAllUsers();
         searchField.textProperty().addListener((_, _, newVal) -> performSearch(newVal));
+        performSearch("");
     }
 
     private void performSearch(String query) {
@@ -36,15 +37,17 @@ public class UserSearchController implements Initializable {
         noResultsLabel.setVisible(false);
         noResultsLabel.setManaged(false);
 
-        if (query == null || query.trim().isEmpty()) return;
-
-        String lower = query.trim().toLowerCase();
-
-        List<User> results = allUsers.stream()
-                .filter(u ->
-                        u.getName().toLowerCase().contains(lower) ||
-                                u.getEmail().toLowerCase().contains(lower))
-                .toList();
+        List<User> results;
+        if (query == null || query.trim().isEmpty()) {
+            results = allUsers;
+        } else {
+            String lower = query.trim().toLowerCase();
+            results = allUsers.stream()
+                    .filter(u ->
+                            u.getName().toLowerCase().contains(lower) ||
+                                    u.getEmail().toLowerCase().contains(lower))
+                    .toList();
+        }
 
         if (results.isEmpty()) {
             noResultsLabel.setVisible(true);
@@ -68,6 +71,9 @@ public class UserSearchController implements Initializable {
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 2);"
         );
         card.setPadding(new Insets(20));
+        card.setPrefWidth(430);
+        card.setMinWidth(430);
+        card.setMaxWidth(430);
 
         // Avatar
         String initials = "";

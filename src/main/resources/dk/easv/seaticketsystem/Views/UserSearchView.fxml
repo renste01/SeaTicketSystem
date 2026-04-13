@@ -34,7 +34,11 @@
                managed="false"/>
 
         <!-- Results -->
-        <VBox fx:id="resultsContainer" spacing="14"/>
+        <TilePane fx:id="resultsContainer"
+                  hgap="14"
+                  vgap="14"
+                  prefColumns="2"
+                  alignment="TOP_LEFT"/>
 
     </VBox>
 </ScrollPane>
