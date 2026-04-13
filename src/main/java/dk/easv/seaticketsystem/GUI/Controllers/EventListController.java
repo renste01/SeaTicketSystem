@@ -23,12 +23,15 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class EventListController implements Initializable {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @FXML private VBox eventCardsContainer;
 
@@ -249,7 +252,11 @@ public class EventListController implements Initializable {
 
         HBox metaRow = new HBox(18);
         metaRow.setAlignment(Pos.CENTER_LEFT);
-        Label dateLabel = new Label("📅 " + event.getDate());
+        String startDate = event.getDate() != null ? event.getDate().format(DATE_FORMATTER) : "-";
+        String endDate = event.getEndDateTime() != null
+                ? event.getEndDateTime().toLocalDate().format(DATE_FORMATTER)
+                : "-";
+        Label dateLabel = new Label("📅 " + startDate + " - " + endDate);
         dateLabel.getStyleClass().add("event-card-meta");
         Label timeLabel = new Label("⏰ " + event.getTimeRangeDisplay());
         timeLabel.getStyleClass().add("event-card-meta");

@@ -15,11 +15,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.beans.property.SimpleStringProperty;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminDashboardController implements Initializable {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @FXML private Label totalUsersLabel;
     @FXML private Label totalCoordinatorsLabel;
@@ -53,7 +56,7 @@ public class AdminDashboardController implements Initializable {
         colUserRole.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getRole().getDisplayName()));
 
         colEventTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
-        colEventDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
+        colEventDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().format(DATE_FORMATTER)));
         colEventTime.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTimeRangeDisplay()));
         colEventLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
         colEventCoordinators.setCellValueFactory(c -> new SimpleStringProperty(getCoordinatorNames(c.getValue())));

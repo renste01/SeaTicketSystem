@@ -25,6 +25,7 @@ public class CreateEventController implements Initializable {
     @FXML private TextField titleField;
     @FXML private TextField locationField;
     @FXML private DatePicker datePicker;
+    @FXML private DatePicker endDatePicker;
     @FXML private TextField startTimeField;
     @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
@@ -55,14 +56,15 @@ public class CreateEventController implements Initializable {
     private void handleCreate() {
         String title = titleField.getText().trim();
         String location = locationField.getText().trim();
-        LocalDate date = datePicker.getValue();
+        LocalDate startDate = datePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
         String startTimeText = startTimeField.getText().trim();
         String endTimeText = endTimeField.getText().trim();
         String description = descriptionField.getText().trim();
         String locationGuidance = locationGuidanceField.getText().trim();
         boolean vipEnabled = vipEnabledCheckBox.isSelected();
 
-        if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()
+        if (title.isEmpty() || location.isEmpty() || startDate == null || endDate == null || description.isEmpty()
                 || startTimeText.isEmpty() || endTimeText.isEmpty() || locationGuidance.isEmpty()) {
             showError("Udfyld venligst alle felter.");
             return;
@@ -77,10 +79,10 @@ public class CreateEventController implements Initializable {
             showError("Start/sluttid skal være i format HH:mm.");
             return;
         }
-        LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
-        LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
         if (!endDateTime.isAfter(startDateTime)) {
-            showError("Sluttid skal være efter starttid.");
+            showError("Slutdato/sluttid skal være efter startdato/starttid.");
             return;
         }
 
@@ -92,7 +94,7 @@ public class CreateEventController implements Initializable {
                 "0",
                 title,
                 location,
-                date,
+                startDate,
                 startTime,
                 description,
                 ownerId,

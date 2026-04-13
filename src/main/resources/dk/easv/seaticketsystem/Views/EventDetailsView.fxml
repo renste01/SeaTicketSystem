@@ -22,8 +22,11 @@
         <Label text="Titel:" styleClass="detail-key"/>
         <Label fx:id="titleLabel" styleClass="detail-value"/>
 
-        <Label text="Dato:" styleClass="detail-key"/>
-        <Label fx:id="dateLabel" styleClass="detail-value"/>
+        <Label text="Startdato:" styleClass="detail-key"/>
+        <Label fx:id="startDateLabel" styleClass="detail-value"/>
+
+        <Label text="Slutdato:" styleClass="detail-key"/>
+        <Label fx:id="endDateLabel" styleClass="detail-value"/>
 
         <Label text="Starttid:" styleClass="detail-key"/>
         <Label fx:id="startTimeLabel" styleClass="detail-value"/>

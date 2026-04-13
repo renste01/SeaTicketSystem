@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 
 public class AdminEventManagerController implements Initializable {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     @FXML private TableView<Event> eventTable;
     @FXML private TableColumn<Event, String> colTitle;
     @FXML private TableColumn<Event, String> colDate;
@@ -33,7 +35,7 @@ public class AdminEventManagerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
-        colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().toString()));
+        colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().format(DATE_FORMATTER)));
         colTime.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTimeRangeDisplay()));
         colLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
         colOwner.setCellValueFactory(c -> {

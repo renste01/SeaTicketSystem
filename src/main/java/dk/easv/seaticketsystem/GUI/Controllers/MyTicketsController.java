@@ -18,12 +18,15 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 public class MyTicketsController {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @FXML private ComboBox<Event> eventComboBox;
     @FXML private ComboBox<User> receiverUserComboBox;
@@ -84,14 +87,16 @@ public class MyTicketsController {
             @Override
             protected void updateItem(Event item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? null : item.getTitle() + " (" + item.getDate() + ")");
+                String formattedDate = (item == null || item.getDate() == null) ? "-" : item.getDate().format(DATE_FORMATTER);
+                setText(empty || item == null ? null : item.getTitle() + " (" + formattedDate + ")");
             }
         });
         eventComboBox.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(Event item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? null : item.getTitle() + " (" + item.getDate() + ")");
+                String formattedDate = (item == null || item.getDate() == null) ? "-" : item.getDate().format(DATE_FORMATTER);
+                setText(empty || item == null ? null : item.getTitle() + " (" + formattedDate + ")");
             }
         });
         eventComboBox.valueProperty().addListener((obs, oldEvent, newEvent) -> updateTicketTypeChoices(newEvent));

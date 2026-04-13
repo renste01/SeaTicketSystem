@@ -20,8 +20,11 @@ import java.util.UUID;
 
 public class EventDetailsController {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     @FXML private Label titleLabel;
-    @FXML private Label dateLabel;
+    @FXML private Label startDateLabel;
+    @FXML private Label endDateLabel;
     @FXML private Label startTimeLabel;
     @FXML private Label endTimeLabel;
     @FXML private Label locationLabel;
@@ -49,7 +52,12 @@ public class EventDetailsController {
         // Load event details
         if (selectedEvent != null) {
             titleLabel.setText(selectedEvent.getTitle());
-            dateLabel.setText(selectedEvent.getDate().toString());
+            startDateLabel.setText(selectedEvent.getDate().format(DATE_FORMATTER));
+            if (selectedEvent.getEndDateTime() != null) {
+                endDateLabel.setText(selectedEvent.getEndDateTime().toLocalDate().format(DATE_FORMATTER));
+            } else {
+                endDateLabel.setText("-");
+            }
             if (selectedEvent.getStartTime() != null) {
                 startTimeLabel.setText(selectedEvent.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")));
             } else {

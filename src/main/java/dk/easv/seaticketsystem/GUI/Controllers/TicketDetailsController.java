@@ -13,9 +13,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TicketDetailsController {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private static Tickets selectedTicket;
 
@@ -24,7 +27,8 @@ public class TicketDetailsController {
     @FXML private Label priceLabel;
     @FXML private Label ticketTypeLabel;
     @FXML private Label eventTitleLabel;
-    @FXML private Label eventDateLabel;
+    @FXML private Label eventStartDateLabel;
+    @FXML private Label eventEndDateLabel;
     @FXML private Label eventTimeLabel;
     @FXML private Label eventLocationLabel;
     @FXML private Label eventDescriptionLabel;
@@ -56,7 +60,8 @@ public class TicketDetailsController {
         Event event = findEventById(selectedTicket.getEventId());
         if (event == null) {
             eventTitleLabel.setText("Ukendt event");
-            eventDateLabel.setText("-");
+            eventStartDateLabel.setText("-");
+            eventEndDateLabel.setText("-");
             eventTimeLabel.setText("-");
             eventLocationLabel.setText("-");
             eventDescriptionLabel.setText("-");
@@ -64,7 +69,8 @@ public class TicketDetailsController {
         }
 
         eventTitleLabel.setText(event.getTitle());
-        eventDateLabel.setText(String.valueOf(event.getDate()));
+        eventStartDateLabel.setText(event.getDate() != null ? event.getDate().format(DATE_FORMATTER) : "-");
+        eventEndDateLabel.setText(event.getEndDateTime() != null ? event.getEndDateTime().toLocalDate().format(DATE_FORMATTER) : "-");
         eventTimeLabel.setText(event.getTimeRangeDisplay());
         eventLocationLabel.setText(event.getLocation());
         eventDescriptionLabel.setText(event.getDescription() == null ? "-" : event.getDescription());

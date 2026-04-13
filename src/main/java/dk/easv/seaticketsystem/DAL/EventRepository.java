@@ -20,7 +20,7 @@ public class EventRepository implements IEventRepository {
 
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
-        String sql = "SELECT EventId, Title, Location, StartDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled FROM Events";
+        String sql = "SELECT EventId, Title, Location, StartDate, EndDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled FROM Events";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -37,7 +37,7 @@ public class EventRepository implements IEventRepository {
     }
 
     public Event createEvent(Event event) {
-        String sql = "INSERT INTO Events (Title, Location, StartDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled) VALUES (?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Events (Title, Location, StartDate, EndDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -45,12 +45,13 @@ public class EventRepository implements IEventRepository {
             stmt.setString(1, event.getTitle());
             stmt.setString(2, event.getLocation());
             stmt.setString(3, event.getDate().toString());
-            stmt.setString(4, event.getStartTime() != null ? event.getStartTime().toString() : null);
-            stmt.setString(5, event.getEndDateTime() != null ? event.getEndDateTime().toLocalTime().toString() : null);
-            stmt.setString(6, event.getDescription());
-            stmt.setString(7, event.getOwnerCoordinatorId());
-            stmt.setString(8, event.getLocationGuidance());
-            stmt.setBoolean(9, event.isVipEnabled());
+            stmt.setString(4, event.getEndDateTime() != null ? event.getEndDateTime().toLocalDate().toString() : null);
+            stmt.setString(5, event.getStartTime() != null ? event.getStartTime().toString() : null);
+            stmt.setString(6, event.getEndDateTime() != null ? event.getEndDateTime().toLocalTime().toString() : null);
+            stmt.setString(7, event.getDescription());
+            stmt.setString(8, event.getOwnerCoordinatorId());
+            stmt.setString(9, event.getLocationGuidance());
+            stmt.setBoolean(10, event.isVipEnabled());
             stmt.executeUpdate();
 
             try (ResultSet keys = stmt.getGeneratedKeys()) {
@@ -80,7 +81,7 @@ public class EventRepository implements IEventRepository {
     }
 
     public void updateEvent(Event event) {
-        String sql = "UPDATE Events SET Title = ?, Location = ?, StartDate = ?, StartTime = ?, EndTime = ?, Description = ?, OwnerCoordinatorId = ?, LocationGuidance = ?, VipEnabled = ? WHERE EventId = ?";
+        String sql = "UPDATE Events SET Title = ?, Location = ?, StartDate = ?, EndDate = ?, StartTime = ?, EndTime = ?, Description = ?, OwnerCoordinatorId = ?, LocationGuidance = ?, VipEnabled = ? WHERE EventId = ?";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -88,13 +89,14 @@ public class EventRepository implements IEventRepository {
             stmt.setString(1, event.getTitle());
             stmt.setString(2, event.getLocation());
             stmt.setString(3, event.getDate().toString());
-            stmt.setString(4, event.getStartTime() != null ? event.getStartTime().toString() : null);
-            stmt.setString(5, event.getEndDateTime() != null ? event.getEndDateTime().toLocalTime().toString() : null);
-            stmt.setString(6, event.getDescription());
-            stmt.setString(7, event.getOwnerCoordinatorId());
-            stmt.setString(8, event.getLocationGuidance());
-            stmt.setBoolean(9, event.isVipEnabled());
-            stmt.setInt(10, Integer.parseInt(event.getId()));
+            stmt.setString(4, event.getEndDateTime() != null ? event.getEndDateTime().toLocalDate().toString() : null);
+            stmt.setString(5, event.getStartTime() != null ? event.getStartTime().toString() : null);
+            stmt.setString(6, event.getEndDateTime() != null ? event.getEndDateTime().toLocalTime().toString() : null);
+            stmt.setString(7, event.getDescription());
+            stmt.setString(8, event.getOwnerCoordinatorId());
+            stmt.setString(9, event.getLocationGuidance());
+            stmt.setBoolean(10, event.isVipEnabled());
+            stmt.setInt(11, Integer.parseInt(event.getId()));
             stmt.executeUpdate();
         } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke opdatere event", e);
@@ -118,9 +120,11 @@ public class EventRepository implements IEventRepository {
         String title = rs.getString("Title");
         String location = rs.getString("Location");
         LocalDate startDate = LocalDate.parse(rs.getString("StartDate"));
+        String endDateText = rs.getString("EndDate");
+        LocalDate endDate = endDateText == null || endDateText.isBlank() ? startDate : LocalDate.parse(endDateText);
         LocalTime startTime = LocalTime.parse(rs.getString("StartTime"));
         LocalTime endTime = LocalTime.parse(rs.getString("EndTime"));
-        LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
         String description = rs.getString("Description");
         String ownerCoordinatorId = rs.getString("OwnerCoordinatorId");
         String locationGuidance = rs.getString("LocationGuidance");

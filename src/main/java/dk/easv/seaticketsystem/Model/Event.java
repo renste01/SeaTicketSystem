@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Event {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     private final String id;
     private final String title;
     private final String location;
@@ -67,9 +69,9 @@ public class Event {
     }
 
     public String getDateRangeDisplay() {
-        if (endDateTime == null) return date.toString();
+        if (endDateTime == null) return date.format(DATE_FORMATTER);
         DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
-        return date + " → " + endDateTime.toLocalDate() + " " + endDateTime.toLocalTime().format(timeFmt);
+        return date.format(DATE_FORMATTER) + " → " + endDateTime.toLocalDate().format(DATE_FORMATTER) + " " + endDateTime.toLocalTime().format(timeFmt);
     }
 
     public String getTimeRangeDisplay() {

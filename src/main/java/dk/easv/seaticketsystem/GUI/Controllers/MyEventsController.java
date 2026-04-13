@@ -15,11 +15,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MyEventsController implements Initializable {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @FXML private VBox eventCardsContainer;
 
@@ -72,8 +75,12 @@ public class MyEventsController implements Initializable {
         // Meta info
         HBox metaRow = new HBox(24);
         metaRow.setAlignment(Pos.CENTER_LEFT);
+        String startDate = event.getDate() != null ? event.getDate().format(DATE_FORMATTER) : "-";
+        String endDate = event.getEndDateTime() != null
+                ? event.getEndDateTime().toLocalDate().format(DATE_FORMATTER)
+                : "-";
         metaRow.getChildren().addAll(
-                metaLabel("📅  " + event.getDate()),
+                metaLabel("📅  " + startDate + " - " + endDate),
                 metaLabel("⏰  " + event.getTimeRangeDisplay()),
                 metaLabel("📍  " + event.getLocation())
         );

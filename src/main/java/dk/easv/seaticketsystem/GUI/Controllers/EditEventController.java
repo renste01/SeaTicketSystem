@@ -17,6 +17,7 @@ public class EditEventController {
     @FXML private TextField titleField;
     @FXML private TextField locationField;
     @FXML private DatePicker datePicker;
+    @FXML private DatePicker endDatePicker;
     @FXML private TextField startTimeField;
     @FXML private TextField endTimeField;
     @FXML private TextArea descriptionField;
@@ -36,6 +37,9 @@ public class EditEventController {
             titleField.setText(eventToEdit.getTitle());
             locationField.setText(eventToEdit.getLocation());
             datePicker.setValue(eventToEdit.getDate());
+            if (eventToEdit.getEndDateTime() != null) {
+                endDatePicker.setValue(eventToEdit.getEndDateTime().toLocalDate());
+            }
             if (eventToEdit.getStartTime() != null) {
                 startTimeField.setText(eventToEdit.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")));
             }
@@ -52,14 +56,15 @@ public class EditEventController {
     private void handleSave() {
         String title = titleField.getText().trim();
         String location = locationField.getText().trim();
-        LocalDate date = datePicker.getValue();
+        LocalDate startDate = datePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
         String startTimeText = startTimeField.getText().trim();
         String endTimeText = endTimeField.getText().trim();
         String description = descriptionField.getText().trim();
         String locationGuidance = locationGuidanceField.getText().trim();
         boolean vipEnabled = vipEnabledCheckBox.isSelected();
 
-        if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()
+        if (title.isEmpty() || location.isEmpty() || startDate == null || endDate == null || description.isEmpty()
                 || startTimeText.isEmpty() || endTimeText.isEmpty() || locationGuidance.isEmpty()) {
             showError("Udfyld venligst alle felter.");
             return;
@@ -75,10 +80,10 @@ public class EditEventController {
             return;
         }
 
-        LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
-        LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
         if (!endDateTime.isAfter(startDateTime)) {
-            showError("Sluttid skal være efter starttid.");
+            showError("Slutdato/sluttid skal være efter startdato/starttid.");
             return;
         }
 
@@ -87,7 +92,7 @@ public class EditEventController {
                 eventToEdit.getId(),
                 title,
                 location,
-                date,
+                startDate,
                 startTime,
                 description,
                 endDateTime,

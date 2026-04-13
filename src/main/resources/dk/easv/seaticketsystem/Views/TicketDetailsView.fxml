@@ -65,17 +65,20 @@
             <Label text="Titel" styleClass="detail-key" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
             <Label fx:id="eventTitleLabel" styleClass="detail-value" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-            <Label text="Dato" styleClass="detail-key" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <Label fx:id="eventDateLabel" styleClass="detail-value" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Startdato" styleClass="detail-key" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="eventStartDateLabel" styleClass="detail-value" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-            <Label text="Tid" styleClass="detail-key" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <Label fx:id="eventTimeLabel" styleClass="detail-value" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="Slutdato" styleClass="detail-key" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Label fx:id="eventEndDateLabel" styleClass="detail-value" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-            <Label text="Lokation" styleClass="detail-key" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <Label fx:id="eventLocationLabel" styleClass="detail-value" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <Label text="Tid" styleClass="detail-key" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Label fx:id="eventTimeLabel" styleClass="detail-value" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-            <Label text="Beskrivelse" styleClass="detail-key" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-            <Label fx:id="eventDescriptionLabel" styleClass="detail-value" wrapText="true" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            <Label text="Lokation" styleClass="detail-key" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <Label fx:id="eventLocationLabel" styleClass="detail-value" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="Beskrivelse" styleClass="detail-key" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <Label fx:id="eventDescriptionLabel" styleClass="detail-value" wrapText="true" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
         </GridPane>
     </VBox>
 

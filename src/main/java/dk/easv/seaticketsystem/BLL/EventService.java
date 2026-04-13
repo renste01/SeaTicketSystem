@@ -19,10 +19,6 @@ public class EventService {
         this.eventRepository = new EventRepository();
     }
 
-    public EventService(IEventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }
-
     private static final List<Event> offlineEvents = new ArrayList<>(List.of(
             new Event("1", "Koncert i Havnen", "Esbjerg Havn", java.time.LocalDate.of(2025, 6, 12), java.time.LocalTime.of(18, 0), "Live concert at the harbor", java.time.LocalDateTime.of(2025, 6, 12, 22, 0)),
             new Event("2", "Sommerfestival", "Musikhuset", java.time.LocalDate.of(2025, 7, 3), java.time.LocalTime.of(19, 0), "Summer festival with music and food", java.time.LocalDateTime.of(2025, 7, 3, 23, 30))

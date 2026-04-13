@@ -2,7 +2,7 @@
     -fx-background-color: linear-gradient(to bottom right, #002430, #004a5a);
 }
 
-/* Login - card/header/brand */
+/* Login */
 .login-card {
     -fx-background-color: #002430;
     -fx-background-radius: 14;

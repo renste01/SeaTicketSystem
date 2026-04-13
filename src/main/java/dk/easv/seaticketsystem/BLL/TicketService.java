@@ -16,10 +16,6 @@ public class TicketService {
         this.ticketRepository = new TicketRepository();
     }
 
-    public TicketService(ITicketRepository ticketRepository) {
-        this.ticketRepository = ticketRepository;
-    }
-
     public void createTicket(Tickets ticket) {
         ticketRepository.createTicket(ticket);
     }
