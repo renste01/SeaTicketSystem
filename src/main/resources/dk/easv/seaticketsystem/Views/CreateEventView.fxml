@@ -92,10 +92,15 @@
            visible="false"
            managed="false"/>
 
-    <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Annuller" onAction="#handleCancel" styleClass="btn-secondary"/>
-        <Button text="Opret Event" onAction="#handleCreate" styleClass="btn-primary"/>
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 0 0 0 194;">
+        <Button text="Annuller"
+                onAction="#handleCancel"
+                styleClass="btn-secondary"
+                style="-fx-padding: 9 12 9 12;"/>
+        <Button text="Opret Event"
+                onAction="#handleCreate"
+                styleClass="btn-primary"
+                style="-fx-padding: 9 12 9 12;"/>
     </HBox>
 
 </VBox>

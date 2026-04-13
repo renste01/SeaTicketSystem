@@ -1,77 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.ProfileController"
-      spacing="12"
-      styleClass="page-compact">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="12" styleClass="page-compact" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.seaticketsystem.GUI.Controllers.ProfileController">
 
     <padding>
-        <Insets top="16" right="16" bottom="16" left="16"/>
+        <Insets bottom="16" left="16" right="16" top="16" />
     </padding>
 
-    <Label text="Min Profil" styleClass="page-title"/>
+    <Label styleClass="page-title" text="Min Profil" />
 
     <!-- Info sektion -->
     <VBox spacing="8" styleClass="admin-section-card">
-        <Label text="Personlige oplysninger" styleClass="section-title"/>
+        <Label styleClass="section-title" text="Personlige oplysninger" />
 
         <GridPane hgap="12" vgap="10">
             <columnConstraints>
-                <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
-                <ColumnConstraints prefWidth="260"/>
+                <ColumnConstraints halignment="RIGHT" prefWidth="120" />
+                <ColumnConstraints prefWidth="260" />
             </columnConstraints>
 
-            <Label text="Fornavn:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <TextField fx:id="firstNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Fornavn:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <Label text="Efternavn:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextField fx:id="lastNameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Efternavn:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label text="E-mail:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <TextField fx:id="emailField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="E-mail:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-            <Label text="Rolle:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <Label fx:id="roleLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <Label text="Rolle:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Label fx:id="roleLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
 
         <HBox spacing="10">
-            <Button fx:id="saveInfoButton" text="Gem ændringer" onAction="#handleSaveInfo" styleClass="btn-primary"/>
-            <Label fx:id="infoFeedbackLabel" visible="false" managed="false"/>
+            <Label fx:id="infoFeedbackLabel" managed="false" visible="false" />
+            <Button fx:id="saveInfoButton" onAction="#handleSaveInfo" prefHeight="25.0" prefWidth="393.0" styleClass="btn-primary" text="Gem ændringer" />
         </HBox>
     </VBox>
 
-    <Separator/>
+    <Separator />
 
     <!-- Skift adgangskode sektion -->
     <VBox spacing="8" styleClass="admin-section-card">
-        <Label text="Skift adgangskode" styleClass="section-title"/>
+        <Label styleClass="section-title" text="Skift adgangskode" />
 
         <GridPane hgap="12" vgap="10">
             <columnConstraints>
-                <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
-                <ColumnConstraints prefWidth="260"/>
+                <ColumnConstraints halignment="RIGHT" prefWidth="120" />
+                <ColumnConstraints prefWidth="260" />
             </columnConstraints>
 
-            <Label text="Nuværende:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <PasswordField fx:id="currentPasswordField" promptText="Nuværende adgangskode"
-                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Nuværende:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <PasswordField fx:id="currentPasswordField" promptText="Nuværende adgangskode" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <Label text="Ny adgangskode:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <PasswordField fx:id="newPasswordField" promptText="Ny adgangskode"
-                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Ny adgangskode:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <PasswordField fx:id="newPasswordField" promptText="Ny adgangskode" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label text="Bekræft:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <PasswordField fx:id="confirmPasswordField" promptText="Gentag ny adgangskode"
-                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="Bekræft:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <PasswordField fx:id="confirmPasswordField" promptText="Gentag ny adgangskode" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
 
         <HBox spacing="10">
-            <Button text="Skift adgangskode" onAction="#handleChangePassword" styleClass="btn-secondary"/>
-            <Label fx:id="passwordFeedbackLabel" visible="false" managed="false"/>
+            <Button onAction="#handleChangePassword" prefHeight="25.0" prefWidth="393.0" styleClass="btn-secondary" text="Skift adgangskode" />
+            <Label fx:id="passwordFeedbackLabel" managed="false" visible="false" />
         </HBox>
     </VBox>
 
