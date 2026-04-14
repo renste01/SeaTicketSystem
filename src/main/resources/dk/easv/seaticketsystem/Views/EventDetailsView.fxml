@@ -68,6 +68,7 @@
     <!-- Ticket Creation -->
     <HBox spacing="10">
         <TextField fx:id="priceField" promptText="Ticket price" prefWidth="150"/>
+        <ComboBox fx:id="ticketTypeComboBox" prefWidth="150"/>
         <Button text="➕ Opret Ticket" onAction="#handleCreateTicket"/>
     </HBox>
 

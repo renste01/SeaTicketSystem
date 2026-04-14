@@ -1,6 +1,5 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
-// Projekt Imports
 import dk.easv.seaticketsystem.BLL.EventService;
 import dk.easv.seaticketsystem.BLL.TicketService;
 import dk.easv.seaticketsystem.BLL.UserService;
@@ -12,19 +11,22 @@ import dk.easv.seaticketsystem.Model.UserRole;
 import dk.easv.seaticketsystem.Session.SessionManager;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 
-// Java Imports
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class MyTicketsController {
+
+    // === FREE TICKET MODE ===
+    private boolean showOnlyFreeTickets = false;
+    public void setShowOnlyFreeTickets(boolean value) {
+        this.showOnlyFreeTickets = value;
+    }
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -50,7 +52,7 @@ public class MyTicketsController {
     private final EventService eventService = new EventService();
     private final UserService userService = new UserService();
     private User currentUser;
-    private final java.util.Map<Integer, String> eventNameById = new java.util.HashMap<>();
+    private final Map<Integer, String> eventNameById = new HashMap<>();
 
     @FXML
     private void initialize() {
@@ -67,6 +69,7 @@ public class MyTicketsController {
         colPrice.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getPrice()));
         colStatus.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDeliveryStatus()));
         colSentAt.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSentAtDisplay()));
+
         colPrice.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
@@ -99,6 +102,7 @@ public class MyTicketsController {
                 setText(empty || item == null ? null : item.getTitle() + " (" + formattedDate + ")");
             }
         });
+
         eventComboBox.valueProperty().addListener((obs, oldEvent, newEvent) -> updateTicketTypeChoices(newEvent));
 
         receiverUserComboBox.setCellFactory(lv -> new ListCell<>() {
@@ -115,6 +119,7 @@ public class MyTicketsController {
                 setText(empty || item == null ? null : item.getName() + " (" + item.getEmail() + ")");
             }
         });
+
         receiverUserComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null) {
                 customerNameField.setText(newValue.getName());
@@ -122,7 +127,12 @@ public class MyTicketsController {
             }
         });
 
-        ticketTypeComboBox.getItems().setAll(TicketType.STANDARD);
+        ticketTypeComboBox.getItems().setAll(
+                TicketType.STANDARD,
+                TicketType.FREE,
+                TicketType.FREE_BEER,
+                TicketType.FREE_DRINK
+        );
         ticketTypeComboBox.setValue(TicketType.STANDARD);
 
         ticketTable.setRowFactory(tv -> {
@@ -149,14 +159,12 @@ public class MyTicketsController {
         String countText = ticketCountField.getText() == null ? "" : ticketCountField.getText().trim();
         String priceText = priceField.getText() == null ? "" : priceField.getText().trim();
 
-        if (selectedEvent == null || selectedType == null || customerName.isEmpty() || customerEmail.isEmpty() || countText.isEmpty() || priceText.isEmpty()) {
+        if (selectedEvent == null || selectedType == null || customerName.isEmpty() ||
+                customerEmail.isEmpty() || countText.isEmpty() || priceText.isEmpty()) {
             showFeedback("Udfyld event, kundeinfo, antal og pris.", false);
             return;
         }
-        if (selectedType == TicketType.VIP && !selectedEvent.isVipEnabled()) {
-            showFeedback("VIP er ikke tilladt på dette event.", false);
-            return;
-        }
+
         if (!customerEmail.contains("@") || !customerEmail.contains(".")) {
             showFeedback("E-mailen er ikke gyldig.", false);
             return;
@@ -176,14 +184,11 @@ public class MyTicketsController {
             showFeedback("Antal skal være over 0 og pris mindst 0.", false);
             return;
         }
-        if (currentUser == null) {
-            showFeedback("Ingen bruger er logget ind.", false);
-            return;
-        }
 
         try {
             User receiverUser = userService.findOrCreateTicketUser(customerName, customerEmail);
             String batchId = UUID.randomUUID().toString();
+
             for (int i = 0; i < count; i++) {
                 Tickets ticket = new Tickets(
                         batchId + "-" + String.format("%03d", (i + 1)),
@@ -208,10 +213,13 @@ public class MyTicketsController {
             loadReceiverUsers();
             loadTickets();
             showFeedback("Billetter oprettet.", true);
+
         } catch (Exception e) {
             showFeedback("Kunne ikke oprette billetter: " + e.getMessage(), false);
         }
     }
+
+    // === MISSING HANDLERS (used by FXML) ===
 
     @FXML
     private void handleOpenTicket() {
@@ -250,39 +258,28 @@ public class MyTicketsController {
     }
 
     @FXML
-    private void handleMarkAsSent() {
-        Tickets selected = ticketTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showFeedback("Vælg en billet i listen først.", false);
-            return;
-        }
-        if ("SENT".equalsIgnoreCase(selected.getDeliveryStatus())) {
-            showFeedback("Denne billet er allerede markeret som sendt.", false);
-            return;
-        }
-
-        try {
-            ticketService.markTicketAsSent(selected.getTicketId());
-            loadTickets();
-            showFeedback("Billet markeret som sendt.", true);
-        } catch (Exception e) {
-            showFeedback("Kunne ikke opdatere billet: " + e.getMessage(), false);
-        }
+    private void handleClearReceiverSelection() {
+        receiverUserComboBox.getSelectionModel().clearSelection();
     }
+
+    // === SUPPORT METHODS ===
 
     private void loadEvents() {
         List<Event> all = eventService.getAllEvents();
         eventNameById.clear();
+
         for (Event event : all) {
             try {
                 eventNameById.put(Integer.parseInt(event.getId()), event.getTitle());
             } catch (Exception ignored) {}
         }
+
         if (currentUser != null && currentUser.getRole() == UserRole.COORDINATOR) {
             all = all.stream()
                     .filter(e -> e.getOwnerCoordinatorId() == null || e.hasAccess(currentUser.getId()))
                     .toList();
         }
+
         eventComboBox.setItems(FXCollections.observableArrayList(all));
     }
 
@@ -292,6 +289,7 @@ public class MyTicketsController {
                 .toList();
 
         receiverUserComboBox.setItems(FXCollections.observableArrayList(receiverUsers));
+
         if (receiverUsers.isEmpty()) {
             receiverUserComboBox.setPromptText("Ingen bruger fundet - brug manuel");
             receiverUserComboBox.setDisable(true);
@@ -301,35 +299,51 @@ public class MyTicketsController {
         }
     }
 
-    @FXML
-    private void handleClearReceiverSelection() {
-        receiverUserComboBox.getSelectionModel().clearSelection();
-    }
-
     private void loadTickets() {
         try {
+            if (showOnlyFreeTickets) {
+                List<Tickets> freeTickets = ticketService.getAllTickets()
+                        .stream()
+                        .filter(t ->
+                                t.getTicketType() == TicketType.FREE ||
+                                        t.getTicketType() == TicketType.FREE_BEER ||
+                                        t.getTicketType() == TicketType.FREE_DRINK
+                        )
+                        .toList();
+
+                ticketTable.setItems(FXCollections.observableArrayList(freeTickets));
+                return;
+            }
+
             List<Tickets> tickets;
+
             if (currentUser != null && currentUser.getRole() == UserRole.ADMIN) {
                 tickets = ticketService.getAllTickets();
+
             } else if (currentUser != null && currentUser.getRole() == UserRole.COORDINATOR) {
+
                 List<Tickets> allTickets = ticketService.getAllTickets();
                 Set<Integer> allowedEventIds = new HashSet<>();
+
                 for (Event event : eventService.getAllEvents()) {
                     if (event.getOwnerCoordinatorId() == null || event.hasAccess(currentUser.getId())) {
-                        try {
-                            allowedEventIds.add(Integer.parseInt(event.getId()));
-                        } catch (Exception ignored) {}
+                        allowedEventIds.add(Integer.parseInt(event.getId()));
                     }
                 }
+
                 tickets = allTickets.stream()
                         .filter(t -> allowedEventIds.contains(t.getEventId()))
                         .toList();
+
             } else if (currentUser != null) {
                 tickets = ticketService.getTicketsForUser(currentUser.getId());
+
             } else {
                 tickets = List.of();
             }
+
             ticketTable.setItems(FXCollections.observableArrayList(tickets));
+
         } catch (Exception e) {
             showFeedback("Kunne ikke hente billetter: " + e.getMessage(), false);
         }
@@ -350,10 +364,18 @@ public class MyTicketsController {
 
     private void updateTicketTypeChoices(Event selectedEvent) {
         ticketTypeComboBox.getItems().clear();
-        ticketTypeComboBox.getItems().add(TicketType.STANDARD);
+
+        ticketTypeComboBox.getItems().addAll(
+                TicketType.STANDARD,
+                TicketType.FREE,
+                TicketType.FREE_BEER,
+                TicketType.FREE_DRINK
+        );
+
         if (selectedEvent != null && selectedEvent.isVipEnabled()) {
             ticketTypeComboBox.getItems().add(TicketType.VIP);
         }
+
         ticketTypeComboBox.setValue(TicketType.STANDARD);
     }
 }

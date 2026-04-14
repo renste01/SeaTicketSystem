@@ -69,7 +69,7 @@
                     <tooltip><Tooltip text="Opret Event"/></tooltip>
                 </Button>
 
-                <Button text="🎁" styleClass="sidebar-btn-icon">
+                <Button text="🎁" styleClass="sidebar-btn-icon" onAction="#openFreeTickets">
                     <tooltip><Tooltip text="Fribilletter"/></tooltip>
                 </Button>
             </VBox>

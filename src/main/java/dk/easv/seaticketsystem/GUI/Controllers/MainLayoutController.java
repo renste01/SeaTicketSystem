@@ -120,4 +120,12 @@ public class MainLayoutController implements Initializable {
     private void openUserSearch() {
         ViewManager.getInstance().loadView("UserSearchView.fxml");
     }
+
+    @FXML
+    private void openFreeTickets() {
+        MyTicketsController controller =
+                ViewManager.getInstance().navigateToWithController("MyTicketsView");
+
+        controller.setShowOnlyFreeTickets(true);
+    }
 }

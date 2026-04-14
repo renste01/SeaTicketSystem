@@ -300,8 +300,9 @@ public class EventListController implements Initializable {
     }
 
     private void openEvent(Event event) {
-        EventDetailsController.setEvent(event);
-        ViewManager.getInstance().loadView("EventDetailsView.fxml");
+        EventDetailsController controller =
+                ViewManager.getInstance().navigateToWithController("EventDetailsView");
+        controller.setEvent(event);
     }
 
 }
