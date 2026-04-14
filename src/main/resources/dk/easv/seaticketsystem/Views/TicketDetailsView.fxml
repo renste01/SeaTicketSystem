@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.image.ImageView?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="dk.easv.seaticketsystem.GUI.Controllers.TicketDetailsController"
@@ -81,6 +82,11 @@
             <Label fx:id="eventDescriptionLabel" styleClass="detail-value" wrapText="true" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
         </GridPane>
     </VBox>
+
+    <ImageView fx:id="barcodeImageView"
+               fitWidth="260"
+               fitHeight="80"
+               preserveRatio="true"/>
 
     <HBox spacing="10">
         <Button text="← Tilbage" onAction="#handleBack" styleClass="btn-secondary"/>
