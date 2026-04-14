@@ -97,7 +97,8 @@ public class MainLayoutController implements Initializable {
 
     @FXML
     private void openCreateEvent() {
-        ViewManager.getInstance().loadView("CreateEventView.fxml");
+        EventFormController.clearEventToEdit();
+        ViewManager.getInstance().loadView("EventFormView.fxml");
     }
 
     @FXML

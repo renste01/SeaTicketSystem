@@ -83,9 +83,10 @@
     </VBox>
 
     <HBox spacing="10">
-        <Button text="Tilbage" onAction="#handleBack" styleClass="btn-secondary"/>
-        <Button fx:id="sendTicketButton" text="Send billet" onAction="#handleSendTicket" styleClass="btn-teal"/>
-        <Button text="Slet billet" onAction="#handleDeleteTicket" styleClass="btn-danger"/>
+        <Button text="← Tilbage" onAction="#handleBack" styleClass="btn-secondary"/>
+        <Button fx:id="sendTicketButton" text="📤 Send billet" onAction="#handleSendTicket" styleClass="btn-teal"/>
+        <Button text="🖨 Print som PDF" onAction="#handlePrintTicket" styleClass="btn-primary"/>
+        <Button text="🗑 Slet billet" onAction="#handleDeleteTicket" styleClass="btn-danger"/>
         <Label fx:id="detailsFeedbackLabel" visible="false" managed="false"/>
         <Region HBox.hgrow="ALWAYS"/>
     </HBox>
