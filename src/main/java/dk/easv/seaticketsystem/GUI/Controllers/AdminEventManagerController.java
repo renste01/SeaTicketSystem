@@ -2,8 +2,8 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 // Projekt Imports
 import dk.easv.seaticketsystem.BLL.UserService;
-import dk.easv.seaticketsystem.Model.Event;
-import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.BE.Event;
+import dk.easv.seaticketsystem.BE.User;
 import dk.easv.seaticketsystem.Session.SessionManager;
 
 // Java Imports
@@ -116,3 +116,4 @@ public class AdminEventManagerController implements Initializable {
         eventTable.getItems().setAll(EventListController.getEvents());
     }
 }
+

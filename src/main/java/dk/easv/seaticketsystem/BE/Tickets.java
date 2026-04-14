@@ -1,4 +1,4 @@
-package dk.easv.seaticketsystem.Model;
+package dk.easv.seaticketsystem.BE;
 
 // Java Imports
 import java.time.LocalDateTime;
@@ -88,3 +88,4 @@ public class Tickets {
         return ticketType;
     }
 }
+

@@ -1,11 +1,11 @@
 package dk.easv.seaticketsystem.DAL;
 
 // Projekt Imports
-import dk.easv.seaticketsystem.Model.Admin;
-import dk.easv.seaticketsystem.Model.EventCoordinator;
-import dk.easv.seaticketsystem.Model.RegularUser;
-import dk.easv.seaticketsystem.Model.User;
-import dk.easv.seaticketsystem.Model.UserRole;
+import dk.easv.seaticketsystem.BE.Admin;
+import dk.easv.seaticketsystem.BE.EventCoordinator;
+import dk.easv.seaticketsystem.BE.RegularUser;
+import dk.easv.seaticketsystem.BE.User;
+import dk.easv.seaticketsystem.BE.UserRole;
 
 // Java Imports
 import java.util.ArrayList;
@@ -175,3 +175,4 @@ public class UserRepository implements IUserRepository
         }
     }
 }
+

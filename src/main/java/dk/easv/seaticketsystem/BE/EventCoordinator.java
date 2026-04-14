@@ -1,4 +1,4 @@
-package dk.easv.seaticketsystem.Model;
+package dk.easv.seaticketsystem.BE;
 
 // Java Imports
 import java.util.ArrayList;
@@ -24,3 +24,4 @@ public class EventCoordinator extends User
     public void addManagedEvent(String eventId) {managedEventIds.add(eventId);}
     public void removeManagedEvent(String eventId) {managedEventIds.remove(eventId);}
 }
+

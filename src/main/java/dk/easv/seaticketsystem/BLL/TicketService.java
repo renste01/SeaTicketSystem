@@ -3,7 +3,7 @@ package dk.easv.seaticketsystem.BLL;
 // Projekt Imports
 import dk.easv.seaticketsystem.DAL.ITicketRepository;
 import dk.easv.seaticketsystem.DAL.TicketRepository;
-import dk.easv.seaticketsystem.Model.Tickets;
+import dk.easv.seaticketsystem.BE.Tickets;
 
 // Java Imports
 import java.util.List;
@@ -40,3 +40,4 @@ public class TicketService {
         ticketRepository.deleteTicket(ticketId);
     }
 }
+

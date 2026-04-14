@@ -2,7 +2,7 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 // Projekt Imports
 import dk.easv.seaticketsystem.BLL.UserService;
-import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.BE.User;
 import dk.easv.seaticketsystem.Session.SessionManager;
 
 // Java Imports

@@ -3,11 +3,12 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 import dk.easv.seaticketsystem.BLL.EventService;
 import dk.easv.seaticketsystem.BLL.TicketService;
 import dk.easv.seaticketsystem.BLL.UserService;
-import dk.easv.seaticketsystem.Model.Event;
-import dk.easv.seaticketsystem.Model.Tickets;
-import dk.easv.seaticketsystem.Model.TicketType;
-import dk.easv.seaticketsystem.Model.User;
-import dk.easv.seaticketsystem.Model.UserRole;
+import dk.easv.seaticketsystem.BE.Event;
+import dk.easv.seaticketsystem.BE.Tickets;
+import dk.easv.seaticketsystem.BE.TicketType;
+import dk.easv.seaticketsystem.BE.User;
+import dk.easv.seaticketsystem.BE.UserRole;
+import dk.easv.seaticketsystem.Model.TicketFormModel;
 import dk.easv.seaticketsystem.Session.SessionManager;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 
@@ -153,19 +154,20 @@ public class MyTicketsController {
     @FXML
     private void handleIssueTickets() {
         Event selectedEvent = eventComboBox.getValue();
-        String customerName = customerNameField.getText() == null ? "" : customerNameField.getText().trim();
-        String customerEmail = customerEmailField.getText() == null ? "" : customerEmailField.getText().trim();
-        TicketType selectedType = ticketTypeComboBox.getValue();
-        String countText = ticketCountField.getText() == null ? "" : ticketCountField.getText().trim();
-        String priceText = priceField.getText() == null ? "" : priceField.getText().trim();
+        TicketFormModel form = new TicketFormModel();
+        form.setCustomerName(customerNameField.getText() == null ? "" : customerNameField.getText().trim());
+        form.setCustomerEmail(customerEmailField.getText() == null ? "" : customerEmailField.getText().trim());
+        form.setTicketType(ticketTypeComboBox.getValue());
+        form.setCountText(ticketCountField.getText() == null ? "" : ticketCountField.getText().trim());
+        form.setPriceText(priceField.getText() == null ? "" : priceField.getText().trim());
 
-        if (selectedEvent == null || selectedType == null || customerName.isEmpty() ||
-                customerEmail.isEmpty() || countText.isEmpty() || priceText.isEmpty()) {
+        if (selectedEvent == null || form.getTicketType() == null || form.getCustomerName().isEmpty() ||
+                form.getCustomerEmail().isEmpty() || form.getCountText().isEmpty() || form.getPriceText().isEmpty()) {
             showFeedback("Udfyld event, kundeinfo, antal og pris.", false);
             return;
         }
 
-        if (!customerEmail.contains("@") || !customerEmail.contains(".")) {
+        if (!form.getCustomerEmail().contains("@") || !form.getCustomerEmail().contains(".")) {
             showFeedback("E-mailen er ikke gyldig.", false);
             return;
         }
@@ -173,8 +175,8 @@ public class MyTicketsController {
         int count;
         double price;
         try {
-            count = Integer.parseInt(countText);
-            price = Double.parseDouble(priceText);
+            count = Integer.parseInt(form.getCountText());
+            price = Double.parseDouble(form.getPriceText());
         } catch (Exception e) {
             showFeedback("Antal og pris skal være tal.", false);
             return;
@@ -186,7 +188,7 @@ public class MyTicketsController {
         }
 
         try {
-            User receiverUser = userService.findOrCreateTicketUser(customerName, customerEmail);
+            User receiverUser = userService.findOrCreateTicketUser(form.getCustomerName(), form.getCustomerEmail());
             String batchId = UUID.randomUUID().toString();
 
             for (int i = 0; i < count; i++) {
@@ -195,12 +197,12 @@ public class MyTicketsController {
                         Integer.parseInt(selectedEvent.getId()),
                         receiverUser.getId(),
                         price,
-                        customerName,
-                        customerEmail,
+                        form.getCustomerName(),
+                        form.getCustomerEmail(),
                         "PENDING",
                         null,
                         currentUser.getId(),
-                        selectedType
+                        form.getTicketType()
                 );
                 ticketService.createTicket(ticket);
             }
@@ -379,3 +381,4 @@ public class MyTicketsController {
         ticketTypeComboBox.setValue(TicketType.STANDARD);
     }
 }
+

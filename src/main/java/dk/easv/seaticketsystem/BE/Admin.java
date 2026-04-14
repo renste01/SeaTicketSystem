@@ -1,4 +1,4 @@
-package dk.easv.seaticketsystem.Model;
+package dk.easv.seaticketsystem.BE;
 
 // Java Imports
 import java.util.UUID;
@@ -15,3 +15,4 @@ public class Admin extends User
         this(UUID.randomUUID().toString(), firstName, lastName, email, password);
     }
 }
+

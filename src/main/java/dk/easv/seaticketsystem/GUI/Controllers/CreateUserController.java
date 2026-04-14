@@ -2,7 +2,7 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 // Projekt Imports
 import dk.easv.seaticketsystem.BLL.UserService;
-import dk.easv.seaticketsystem.Model.*;
+import dk.easv.seaticketsystem.BE.*;
 
 // Java Imports
 import javafx.fxml.FXML;

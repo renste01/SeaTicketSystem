@@ -71,3 +71,4 @@ public class LogoUtil {
                 (int) (c.getBlue()  * 255));
     }
 }
+

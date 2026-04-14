@@ -1,9 +1,10 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
 import dk.easv.seaticketsystem.BLL.EventService;
-import dk.easv.seaticketsystem.Model.Event;
+import dk.easv.seaticketsystem.BE.Event;
+import dk.easv.seaticketsystem.Model.EventFormModel;
 import dk.easv.seaticketsystem.Session.SessionManager;
-import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.BE.User;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -72,21 +73,25 @@ public class EventFormController implements Initializable {
 
     @FXML
     private void handleSave() {
-        String title = titleField.getText().trim();
-        String location = locationField.getText().trim();
-        LocalDate date = datePicker.getValue();
-        String description = descriptionField.getText().trim();
-        String locationGuidance = locationGuidanceField.getText().trim();
-        boolean vipEnabled = vipCheckBox.isSelected();
+        EventFormModel form = new EventFormModel();
+        form.setTitle(titleField.getText() == null ? "" : titleField.getText().trim());
+        form.setLocation(locationField.getText() == null ? "" : locationField.getText().trim());
+        form.setStartDate(datePicker.getValue());
+        form.setEndDate(endDatePicker.getValue());
+        form.setStartTimeText(startTimeField.getText() == null ? "" : startTimeField.getText().trim());
+        form.setEndTimeText(endTimeField.getText() == null ? "" : endTimeField.getText().trim());
+        form.setDescription(descriptionField.getText() == null ? "" : descriptionField.getText().trim());
+        form.setLocationGuidance(locationGuidanceField.getText() == null ? "" : locationGuidanceField.getText().trim());
+        form.setVipEnabled(vipCheckBox.isSelected());
 
-        if (title.isEmpty() || location.isEmpty() || date == null || description.isEmpty()) {
+        if (form.getTitle().isEmpty() || form.getLocation().isEmpty() || form.getStartDate() == null || form.getDescription().isEmpty()) {
             showError("Udfyld venligst titel, sted, dato og beskrivelse.");
             return;
         }
 
         // Parse start time
         LocalTime startTime = null;
-        String startTimeText = startTimeField.getText().trim();
+        String startTimeText = form.getStartTimeText();
         if (!startTimeText.isEmpty()) {
             try {
                 startTime = LocalTime.parse(startTimeText);
@@ -98,8 +103,8 @@ public class EventFormController implements Initializable {
 
         // Parse end datetime
         LocalDateTime endDateTime = null;
-        LocalDate endDate = endDatePicker.getValue();
-        String endTimeText = endTimeField.getText().trim();
+        LocalDate endDate = form.getEndDate();
+        String endTimeText = form.getEndTimeText();
         if (endDate != null && !endTimeText.isEmpty()) {
             try {
                 endDateTime = LocalDateTime.of(endDate, LocalTime.parse(endTimeText));
@@ -113,14 +118,14 @@ public class EventFormController implements Initializable {
             // Edit mode
             EventListController.updateEvent(
                     eventToEdit.getId(),
-                    title,
-                    location,
-                    date,
+                    form.getTitle(),
+                    form.getLocation(),
+                    form.getStartDate(),
                     startTime,
-                    description,
+                    form.getDescription(),
                     endDateTime,
-                    locationGuidance,
-                    vipEnabled
+                    form.getLocationGuidance(),
+                    form.isVipEnabled()
             );
             eventToEdit = null;
         } else {
@@ -130,15 +135,15 @@ public class EventFormController implements Initializable {
 
             Event newEvent = new Event(
                     UUID.randomUUID().toString(),
-                    title,
-                    location,
-                    date,
+                    form.getTitle(),
+                    form.getLocation(),
+                    form.getStartDate(),
                     startTime,
-                    description,
+                    form.getDescription(),
                     ownerId,
                     endDateTime,
-                    locationGuidance,
-                    vipEnabled
+                    form.getLocationGuidance(),
+                    form.isVipEnabled()
             );
             EventListController.addEvent(newEvent);
         }

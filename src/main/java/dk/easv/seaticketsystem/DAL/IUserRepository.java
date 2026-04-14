@@ -1,7 +1,7 @@
 package dk.easv.seaticketsystem.DAL;
 
 // Projekt Imports
-import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.BE.User;
 
 // Java Imports
 import java.sql.SQLException;
@@ -25,4 +25,5 @@ public interface IUserRepository
     void updateUser(User user);
     void deleteUser(String userId);
 }
+
 

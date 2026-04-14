@@ -4,7 +4,7 @@ package dk.easv.seaticketsystem.BLL;
 import dk.easv.seaticketsystem.DAL.DBConnector;
 import dk.easv.seaticketsystem.DAL.IEventRepository;
 import dk.easv.seaticketsystem.DAL.EventRepository;
-import dk.easv.seaticketsystem.Model.Event;
+import dk.easv.seaticketsystem.BE.Event;
 
 // Java Imports
 import java.sql.Connection;
@@ -83,3 +83,4 @@ public class EventService {
         eventRepository.deleteEvent(eventId);
     }
 }
+

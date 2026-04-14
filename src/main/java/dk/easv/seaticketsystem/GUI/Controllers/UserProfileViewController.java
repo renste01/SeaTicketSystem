@@ -1,7 +1,7 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
 // Projekt Imports
-import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.BE.User;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 
 // Java Imports

@@ -1,4 +1,4 @@
-package dk.easv.seaticketsystem.Model;
+package dk.easv.seaticketsystem.BE;
 
 // Java Imports
 import java.time.LocalDate;
@@ -81,3 +81,4 @@ public class Event {
         return start + " - " + end;
     }
 }
+

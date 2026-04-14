@@ -1,8 +1,8 @@
 package dk.easv.seaticketsystem.DAL;
 
 // Projekt Imports
-import dk.easv.seaticketsystem.Model.Tickets;
-import dk.easv.seaticketsystem.Model.TicketType;
+import dk.easv.seaticketsystem.BE.Tickets;
+import dk.easv.seaticketsystem.BE.TicketType;
 
 // Java Imports
 import java.io.IOException;
@@ -173,3 +173,4 @@ public class TicketRepository implements ITicketRepository {
         );
     }
 }
+

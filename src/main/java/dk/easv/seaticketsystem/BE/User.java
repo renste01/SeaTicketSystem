@@ -1,4 +1,4 @@
-package dk.easv.seaticketsystem.Model;
+package dk.easv.seaticketsystem.BE;
 
 public abstract class User {
 
@@ -44,3 +44,4 @@ public abstract class User {
 
     @Override public String toString()          {return getName() + " (" + email + ")";}
 }
+

@@ -2,9 +2,9 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 import dk.easv.seaticketsystem.BLL.TicketService;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
-import dk.easv.seaticketsystem.Model.Event;
-import dk.easv.seaticketsystem.Model.TicketType;
-import dk.easv.seaticketsystem.Model.Tickets;
+import dk.easv.seaticketsystem.BE.Event;
+import dk.easv.seaticketsystem.BE.TicketType;
+import dk.easv.seaticketsystem.BE.Tickets;
 import dk.easv.seaticketsystem.Session.SessionManager;
 
 import javafx.collections.FXCollections;
@@ -17,8 +17,11 @@ import java.util.UUID;
 
 public class EventDetailsController {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     @FXML private Label titleLabel;
-    @FXML private Label dateLabel;
+    @FXML private Label startDateLabel;
+    @FXML private Label endDateLabel;
     @FXML private Label startTimeLabel;
     @FXML private Label endTimeLabel;
     @FXML private Label locationLabel;
@@ -69,7 +72,12 @@ public class EventDetailsController {
         if (event == null) return;
 
         titleLabel.setText(event.getTitle());
-        dateLabel.setText(event.getDate().toString());
+        startDateLabel.setText(event.getDate() != null ? event.getDate().format(DATE_FORMATTER) : "-");
+        endDateLabel.setText(
+                event.getEndDateTime() != null
+                        ? event.getEndDateTime().toLocalDate().format(DATE_FORMATTER)
+                        : "-"
+        );
 
         startTimeLabel.setText(
                 event.getStartTime() != null
@@ -130,8 +138,8 @@ public class EventDetailsController {
 
     @FXML
     private void handleEdit() {
-        EditEventController.setEvent(event);
-        ViewManager.getInstance().loadView("EditEventView.fxml");
+        EventFormController.setEventToEdit(event);
+        ViewManager.getInstance().loadView("EventFormView.fxml");
     }
 
     @FXML
@@ -139,3 +147,4 @@ public class EventDetailsController {
         ViewManager.getInstance().loadView("EventListView.fxml");
     }
 }
+

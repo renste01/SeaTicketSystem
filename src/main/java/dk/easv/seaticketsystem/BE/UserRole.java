@@ -1,4 +1,4 @@
-package dk.easv.seaticketsystem.Model;
+package dk.easv.seaticketsystem.BE;
 // Decides which user
 public enum UserRole
 {
@@ -12,3 +12,4 @@ public enum UserRole
 
     public String getDisplayName() {return displayName;}
 }
+

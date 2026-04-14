@@ -1,7 +1,7 @@
 package dk.easv.seaticketsystem.DAL;
 
 // Projekt Imports
-import dk.easv.seaticketsystem.Model.Tickets;
+import dk.easv.seaticketsystem.BE.Tickets;
 
 // Java Imports
 import java.util.List;
@@ -18,4 +18,5 @@ public interface ITicketRepository
     void markTicketAsSent(String ticketId);
     void deleteTicket(String ticketId);
 }
+
 

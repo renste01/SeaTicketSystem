@@ -1,7 +1,7 @@
 package dk.easv.seaticketsystem.DAL;
 
 // Projekt Imports
-import dk.easv.seaticketsystem.Model.Event;
+import dk.easv.seaticketsystem.BE.Event;
 
 // Java Imports
 import java.util.List;
@@ -16,4 +16,5 @@ public interface IEventRepository
     void updateEvent(Event event);
     void deleteEvent(String eventId);
 }
+
 

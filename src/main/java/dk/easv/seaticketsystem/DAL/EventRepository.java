@@ -1,7 +1,7 @@
 package dk.easv.seaticketsystem.DAL;
 
 // Projekt Imports
-import dk.easv.seaticketsystem.Model.Event;
+import dk.easv.seaticketsystem.BE.Event;
 
 // Java Imports
 import java.io.IOException;

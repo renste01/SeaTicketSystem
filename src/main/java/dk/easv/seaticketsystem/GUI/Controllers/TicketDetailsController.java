@@ -3,8 +3,8 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 import dk.easv.seaticketsystem.BLL.EventService;
 import dk.easv.seaticketsystem.BLL.TicketService;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
-import dk.easv.seaticketsystem.Model.Event;
-import dk.easv.seaticketsystem.Model.Tickets;
+import dk.easv.seaticketsystem.BE.Event;
+import dk.easv.seaticketsystem.BE.Tickets;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -217,3 +217,4 @@ public class TicketDetailsController {
         detailsFeedbackLabel.setManaged(true);
     }
 }
+

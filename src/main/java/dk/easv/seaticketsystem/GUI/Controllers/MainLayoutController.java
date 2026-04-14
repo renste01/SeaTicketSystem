@@ -3,8 +3,8 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 // Projekt Imports
 import dk.easv.seaticketsystem.MainApp;
 import dk.easv.seaticketsystem.GUI.Util.LogoUtil;
-import dk.easv.seaticketsystem.Model.User;
-import dk.easv.seaticketsystem.Model.UserRole;
+import dk.easv.seaticketsystem.BE.User;
+import dk.easv.seaticketsystem.BE.UserRole;
 import dk.easv.seaticketsystem.Session.SessionManager;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 

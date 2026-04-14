@@ -4,11 +4,11 @@ package dk.easv.seaticketsystem.BLL;
 import dk.easv.seaticketsystem.DAL.UserRepository;
 import dk.easv.seaticketsystem.DAL.DBConnector;
 import dk.easv.seaticketsystem.DAL.IUserRepository;
-import dk.easv.seaticketsystem.Model.Admin;
-import dk.easv.seaticketsystem.Model.EventCoordinator;
-import dk.easv.seaticketsystem.Model.RegularUser;
-import dk.easv.seaticketsystem.Model.User;
-import dk.easv.seaticketsystem.Model.UserRole;
+import dk.easv.seaticketsystem.BE.Admin;
+import dk.easv.seaticketsystem.BE.EventCoordinator;
+import dk.easv.seaticketsystem.BE.RegularUser;
+import dk.easv.seaticketsystem.BE.User;
+import dk.easv.seaticketsystem.BE.UserRole;
 
 // Java Imports
 import java.sql.Connection;
@@ -133,3 +133,4 @@ public class UserService {
         return userRepository.createTicketUser(cleanName, cleanEmail);
     }
 }
+

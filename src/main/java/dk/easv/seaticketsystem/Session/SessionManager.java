@@ -1,7 +1,7 @@
 package dk.easv.seaticketsystem.Session;
 
 // Projekt Imports
-import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.BE.User;
 
 /**
  * Singleton handles user session and navigation
@@ -34,4 +34,5 @@ public class SessionManager {
     public String getSelectedEventId()           {return selectedEventId;}
     public void   setSelectedEventId(String id)  {this.selectedEventId = id;}
 }
+
 

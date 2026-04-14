@@ -2,7 +2,8 @@ package dk.easv.seaticketsystem.GUI.Controllers;
 
 // Projekt Imports
 import dk.easv.seaticketsystem.BLL.UserService;
-import dk.easv.seaticketsystem.Model.User;
+import dk.easv.seaticketsystem.BE.User;
+import dk.easv.seaticketsystem.Model.UserSearchModel;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 
 // Java Imports
@@ -24,6 +25,7 @@ public class UserSearchController implements Initializable {
 
     private final UserService userService = new UserService();
     private List<User> allUsers;
+    private final UserSearchModel searchModel = new UserSearchModel();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -36,12 +38,13 @@ public class UserSearchController implements Initializable {
         resultsContainer.getChildren().clear();
         noResultsLabel.setVisible(false);
         noResultsLabel.setManaged(false);
+        searchModel.setQuery(query);
 
         List<User> results;
-        if (query == null || query.trim().isEmpty()) {
+        if (searchModel.getQuery().isEmpty()) {
             results = allUsers;
         } else {
-            String lower = query.trim().toLowerCase();
+            String lower = searchModel.getQuery().toLowerCase();
             results = allUsers.stream()
                     .filter(u ->
                             u.getName().toLowerCase().contains(lower) ||
@@ -150,3 +153,4 @@ public class UserSearchController implements Initializable {
         return row;
     }
 }
+

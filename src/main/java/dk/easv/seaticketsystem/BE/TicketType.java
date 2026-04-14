@@ -1,4 +1,4 @@
-package dk.easv.seaticketsystem.Model;
+package dk.easv.seaticketsystem.BE;
 
 public enum TicketType {
     STANDARD,
@@ -7,3 +7,4 @@ public enum TicketType {
     FREE_BEER,
     FREE_DRINK
 }
+
