@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class MainApp extends Application {
+public class    MainApp extends Application {
 
     public static Stage primaryStage;
 

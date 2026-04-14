@@ -193,26 +193,33 @@
     -fx-text-fill: #db3629;
     -fx-font-weight: bold;
 }
-.sidebar-separator { -fx-background-color: rgba(255,255,255,0.1); -fx-pref-height: 1; }
 .sidebar-section-label {
-    -fx-font-size: 10px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-text-fill: rgba(255,255,255,0.38);
-    -fx-padding: 10 4 4 4;
     -fx-letter-spacing: 1.5px;
+
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
+    -fx-max-width: Infinity;
+
+    -fx-padding: 8 0 6 0;
 }
-.sidebar-btn {
+.sidebar-btn-icon {
     -fx-background-color: transparent;
     -fx-text-fill: rgba(255,255,255,0.75);
-    -fx-font-size: 13px;
-    -fx-alignment: CENTER_LEFT;
-    -fx-background-radius: 8;
-    -fx-padding: 10 14 10 14;
+    -fx-font-size: 26px;
+    -fx-alignment: CENTER;
+    -fx-background-radius: 10;
+    -fx-padding: 14 14 14 14;
     -fx-cursor: hand;
     -fx-border-width: 0;
+    -fx-min-width: 56px;
+    -fx-max-width: Infinity;
+    -fx-min-height: 56px;
 }
-.sidebar-btn:hover   { -fx-background-color: rgba(219,54,41,0.18); -fx-text-fill: white; }
-.sidebar-btn:pressed { -fx-background-color: rgba(219,54,41,0.32); }
+.sidebar-btn-icon:hover  { -fx-background-color: rgba(219,54,41,0.18); -fx-text-fill: white; }
+.sidebar-btn-icon:pressed { -fx-background-color: rgba(219,54,41,0.32); }
 .sidebar-btn-logout  { -fx-text-fill: rgba(219,54,41,0.8); }
 .sidebar-btn-logout:hover { -fx-background-color: rgba(219,54,41,0.22); -fx-text-fill: #ff8070; }
 
