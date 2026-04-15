@@ -44,20 +44,29 @@ public class AdminDeletedItemsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colDeletedUserName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
-        colDeletedUserEmail.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEmail()));
-        colDeletedUserRole.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getRole().getDisplayName()));
-
-        colDeletedEventTitle.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
-        colDeletedEventDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDate().format(DATE_FORMATTER)));
-        colDeletedEventLocation.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLocation()));
-
-        colDeletedTicketId.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTicketId()));
-        colDeletedTicketEventId.setCellValueFactory(c -> new SimpleStringProperty(String.valueOf(c.getValue().getEventId())));
-        colDeletedTicketCustomer.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getCustomerName()));
-        colDeletedTicketStatus.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDeliveryStatus()));
-
+        setupDeletedUserColumns();
+        setupDeletedEventColumns();
+        setupDeletedTicketColumns();
         loadDeletedItems();
+    }
+
+    private void setupDeletedUserColumns() {
+        colDeletedUserName.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getName()));
+        colDeletedUserEmail.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getEmail()));
+        colDeletedUserRole.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getRole().getDisplayName()));
+    }
+
+    private void setupDeletedEventColumns() {
+        colDeletedEventTitle.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTitle()));
+        colDeletedEventDate.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getDate().format(DATE_FORMATTER)));
+        colDeletedEventLocation.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getLocation()));
+    }
+
+    private void setupDeletedTicketColumns() {
+        colDeletedTicketId.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTicketId()));
+        colDeletedTicketEventId.setCellValueFactory(cell -> new SimpleStringProperty(String.valueOf(cell.getValue().getEventId())));
+        colDeletedTicketCustomer.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCustomerName()));
+        colDeletedTicketStatus.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getDeliveryStatus()));
     }
 
     private void loadDeletedItems() {
