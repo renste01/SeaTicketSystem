@@ -86,6 +86,8 @@ public class TicketDetailsController {
         eventTimeLabel.setText(event.getTimeRangeDisplay());
         eventLocationLabel.setText(event.getLocation());
         eventDescriptionLabel.setText(event.getDescription() == null ? "-" : event.getDescription());
+        qrImageView.setImage(selectedTicket.getQrCodeImage());
+
     }
 
     // NEW: barcode generator
