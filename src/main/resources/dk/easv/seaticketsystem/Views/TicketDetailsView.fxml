@@ -87,6 +87,11 @@
                fitWidth="260"
                fitHeight="80"
                preserveRatio="true"/>
+    <ImageView fx:id="qrImageView"
+               fitWidth="250"
+               fitHeight="250"
+               preserveRatio="true"/>
+
 
     <HBox spacing="10">
         <Button text="← Tilbage" onAction="#handleBack" styleClass="btn-secondary"/>

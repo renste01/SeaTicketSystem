@@ -28,6 +28,7 @@ public class TicketDetailsController {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private static Tickets selectedTicket;
+    public ImageView qrImageView;
 
     @FXML private Label ticketIdLabel;
     @FXML private Label statusLabel;
