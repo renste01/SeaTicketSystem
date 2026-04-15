@@ -10,6 +10,7 @@ public interface ITicketRepository
 {
     // Read
     List<Tickets> getAllTickets();
+    List<Tickets> getDeletedTickets();
     List<Tickets> getTicketsByEvent(int eventId);
     List<Tickets> getTicketsByUser(String id);
 

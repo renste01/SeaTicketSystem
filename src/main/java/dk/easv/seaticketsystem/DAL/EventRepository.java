@@ -20,7 +20,7 @@ public class EventRepository implements IEventRepository {
 
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
-        String sql = "SELECT EventId, Title, Location, StartDate, EndDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled FROM Events";
+        String sql = "SELECT EventId, Title, Location, StartDate, EndDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled FROM Events WHERE IsDeleted = 0";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -36,8 +36,26 @@ public class EventRepository implements IEventRepository {
         return events;
     }
 
+    public List<Event> getDeletedEvents() {
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT EventId, Title, Location, StartDate, EndDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled FROM Events WHERE IsDeleted = 1";
+
+        try (Connection conn = DBConnector.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                events.add(mapEvent(rs));
+            }
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException("Kunne ikke hente slettede events", e);
+        }
+
+        return events;
+    }
+
     public Event createEvent(Event event) {
-        String sql = "INSERT INTO Events (Title, Location, StartDate, EndDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Events (Title, Location, StartDate, EndDate, StartTime, EndTime, Description, OwnerCoordinatorId, LocationGuidance, VipEnabled, IsDeleted) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -52,6 +70,7 @@ public class EventRepository implements IEventRepository {
             stmt.setString(8, event.getOwnerCoordinatorId());
             stmt.setString(9, event.getLocationGuidance());
             stmt.setBoolean(10, event.isVipEnabled());
+            stmt.setBoolean(11, false);
             stmt.executeUpdate();
 
             try (ResultSet keys = stmt.getGeneratedKeys()) {
@@ -104,7 +123,7 @@ public class EventRepository implements IEventRepository {
     }
 
     public void deleteEvent(String eventId) {
-        String sql = "DELETE FROM Events WHERE EventId = ?";
+        String sql = "UPDATE Events SET IsDeleted = 1 WHERE EventId = ?";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

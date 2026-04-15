@@ -224,7 +224,7 @@ public class EventListController implements Initializable {
 
         if (visible.isEmpty()) {
             Label empty = new Label("Ingen events fundet.");
-            empty.setStyle("-fx-text-fill: #888; -fx-font-size: 13px;");
+            empty.getStyleClass().add("muted-label");
             eventCardsContainer.getChildren().add(empty);
             return;
         }

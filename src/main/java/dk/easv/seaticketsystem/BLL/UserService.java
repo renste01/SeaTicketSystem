@@ -68,6 +68,13 @@ public class UserService {
         return userRepository.getAllUsers();
     }
 
+    public List<User> getDeletedUsers() {
+        if (!databaseAvailable()) {
+            return new ArrayList<>();
+        }
+        return userRepository.getDeletedUsers();
+    }
+
     // CREATE USER
     public void createUser(User newUser) {
         if (!databaseAvailable()) {

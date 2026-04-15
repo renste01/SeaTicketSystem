@@ -39,6 +39,13 @@ public class EventService {
         return eventRepository.getAllEvents();
     }
 
+    public List<Event> getDeletedEvents() {
+        if (!databaseAvailable()) {
+            return new ArrayList<>();
+        }
+        return eventRepository.getDeletedEvents();
+    }
+
     public Event createEvent(Event event) {
         if (!databaseAvailable()) {
             String nextId = String.valueOf(offlineEvents.size() + 1);

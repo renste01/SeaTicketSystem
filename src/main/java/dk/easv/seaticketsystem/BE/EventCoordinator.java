@@ -19,9 +19,5 @@ public class EventCoordinator extends User
         this(UUID.randomUUID().toString(), firstName, lastName, email, password);
     }
 
-    public List<String> getManagedEventIds() {return managedEventIds;}
-
-    public void addManagedEvent(String eventId) {managedEventIds.add(eventId);}
-    public void removeManagedEvent(String eventId) {managedEventIds.remove(eventId);}
 }
 

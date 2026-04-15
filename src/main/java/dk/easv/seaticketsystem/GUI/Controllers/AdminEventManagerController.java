@@ -60,7 +60,7 @@ public class AdminEventManagerController implements Initializable {
             private final Button deleteBtn = new Button("🗑 Slet");
 
             {
-                deleteBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand;");
+                deleteBtn.getStyleClass().add("btn-danger-compact");
                 deleteBtn.setOnAction(e -> {
                     Event event = getTableView().getItems().get(getIndex());
                     handleDeleteEvent(event);

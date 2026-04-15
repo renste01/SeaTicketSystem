@@ -65,18 +65,8 @@ public class UserSearchController implements Initializable {
 
     private VBox buildUserCard(User user) {
         VBox card = new VBox(10);
-        card.setStyle(
-                "-fx-background-color: white;" +
-                        "-fx-background-radius: 12;" +
-                        "-fx-border-radius: 12;" +
-                        "-fx-border-color: #e4e8ec;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 2);"
-        );
+        card.getStyleClass().add("user-search-card");
         card.setPadding(new Insets(20));
-        card.setPrefWidth(430);
-        card.setMinWidth(430);
-        card.setMaxWidth(430);
 
         // Avatar
         String initials = "";
@@ -86,25 +76,14 @@ public class UserSearchController implements Initializable {
             initials += user.getLastName().charAt(0);
 
         Label avatar = new Label(initials.toUpperCase());
-        avatar.setStyle(
-                "-fx-background-color: #002430;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-size: 18px;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-min-width: 52px;" +
-                        "-fx-min-height: 52px;" +
-                        "-fx-max-width: 52px;" +
-                        "-fx-max-height: 52px;" +
-                        "-fx-background-radius: 26;" +
-                        "-fx-alignment: center;"
-        );
+        avatar.getStyleClass().add("user-search-avatar");
 
         // Name and role
         Label nameLabel = new Label(user.getName());
-        nameLabel.setStyle("-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #002430;");
+        nameLabel.getStyleClass().add("user-search-name");
 
         Label roleLabel = new Label(user.getRole().getDisplayName());
-        roleLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #db3629;");
+        roleLabel.getStyleClass().add("user-search-role");
 
         VBox nameBox = new VBox(3, nameLabel, roleLabel);
         nameBox.setAlignment(Pos.CENTER_LEFT);
@@ -120,14 +99,7 @@ public class UserSearchController implements Initializable {
 
         // View profile button
         Button viewBtn = new Button("👁  Se profil");
-        viewBtn.setStyle(
-                "-fx-background-color: #002430;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-background-radius: 20;" +
-                        "-fx-padding: 8 20 8 20;" +
-                        "-fx-cursor: hand;"
-        );
+        viewBtn.getStyleClass().add("user-search-btn");
         viewBtn.setOnAction(_ -> {
             UserProfileViewController.setUser(user);
             ViewManager.getInstance().loadView("UserProfileView.fxml");
@@ -142,10 +114,10 @@ public class UserSearchController implements Initializable {
 
     private HBox detailRow(String key, String value) {
         Label keyLabel = new Label(key);
-        keyLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #888; -fx-min-width: 100px;");
+        keyLabel.getStyleClass().add("user-search-detail-key");
 
         Label valueLabel = new Label(value);
-        valueLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #002430;");
+        valueLabel.getStyleClass().add("user-search-detail-value");
         valueLabel.setWrapText(true);
 
         HBox row = new HBox(10, keyLabel, valueLabel);
