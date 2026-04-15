@@ -146,8 +146,10 @@ public class TicketDetailsController {
                     "SENT",
                     java.time.LocalDateTime.now(),
                     selectedTicket.getIssuedByCoordinatorId(),
-                    selectedTicket.getTicketType()
+                    selectedTicket.getTicketType(),
+                    selectedTicket.getQrCodeText() // ← DETTE MANGLEDE
             );
+
             updateStatusUi();
             showFeedback("Billet markeret som sendt.", true);
         } catch (Exception e) {

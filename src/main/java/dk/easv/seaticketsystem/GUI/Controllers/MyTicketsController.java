@@ -23,7 +23,6 @@ import java.util.*;
 
 public class MyTicketsController {
 
-    // === FREE TICKET MODE ===
     private boolean showOnlyFreeTickets = false;
     public void setShowOnlyFreeTickets(boolean value) {
         this.showOnlyFreeTickets = value;
@@ -202,7 +201,8 @@ public class MyTicketsController {
                         "PENDING",
                         null,
                         currentUser.getId(),
-                        form.getTicketType()
+                        form.getTicketType(),
+                        null // QR-kode tekst (Tickets genererer selv en)
                 );
                 ticketService.createTicket(ticket);
             }
@@ -220,8 +220,6 @@ public class MyTicketsController {
             showFeedback("Kunne ikke oprette billetter: " + e.getMessage(), false);
         }
     }
-
-    // === MISSING HANDLERS (used by FXML) ===
 
     @FXML
     private void handleOpenTicket() {
@@ -263,8 +261,6 @@ public class MyTicketsController {
     private void handleClearReceiverSelection() {
         receiverUserComboBox.getSelectionModel().clearSelection();
     }
-
-    // === SUPPORT METHODS ===
 
     private void loadEvents() {
         List<Event> all = eventService.getAllEvents();
@@ -381,4 +377,3 @@ public class MyTicketsController {
         ticketTypeComboBox.setValue(TicketType.STANDARD);
     }
 }
-

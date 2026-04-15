@@ -35,16 +35,11 @@ public class EventDetailsController {
 
     @FXML private TextField priceField;
 
-    // NEW: Ticket type selector
     @FXML private ComboBox<TicketType> ticketTypeComboBox;
 
-    // FIXED: Correct service name
     private final TicketService ticketService = new TicketService();
-
-    // FIXED: Event reference
     private Event event;
 
-    // Called by previous controller
     public void setEvent(Event e) {
         this.event = e;
         loadEventDetails();
@@ -53,12 +48,9 @@ public class EventDetailsController {
 
     @FXML
     private void initialize() {
-
-        // Setup table
         colTicketId.setCellValueFactory(new PropertyValueFactory<>("ticketId"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        // Setup ticket type dropdown
         ticketTypeComboBox.getItems().setAll(
                 TicketType.STANDARD,
                 TicketType.FREE,
@@ -73,23 +65,9 @@ public class EventDetailsController {
 
         titleLabel.setText(event.getTitle());
         startDateLabel.setText(event.getDate() != null ? event.getDate().format(DATE_FORMATTER) : "-");
-        endDateLabel.setText(
-                event.getEndDateTime() != null
-                        ? event.getEndDateTime().toLocalDate().format(DATE_FORMATTER)
-                        : "-"
-        );
-
-        startTimeLabel.setText(
-                event.getStartTime() != null
-                        ? event.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        : "-"
-        );
-
-        endTimeLabel.setText(
-                event.getEndDateTime() != null
-                        ? event.getEndDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        : "-"
-        );
+        endDateLabel.setText(event.getEndDateTime() != null ? event.getEndDateTime().toLocalDate().format(DATE_FORMATTER) : "-");
+        startTimeLabel.setText(event.getStartTime() != null ? event.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) : "-");
+        endTimeLabel.setText(event.getEndDateTime() != null ? event.getEndDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) : "-");
 
         locationLabel.setText(event.getLocation());
         locationGuidanceArea.setText(event.getLocationGuidance() == null ? "" : event.getLocationGuidance());
@@ -125,7 +103,8 @@ public class EventDetailsController {
                     "PENDING",
                     null,
                     SessionManager.getInstance().getCurrentUser().getId(),
-                    type
+                    type,
+                    null
             );
 
             ticketService.createTicket(ticket);
@@ -147,4 +126,3 @@ public class EventDetailsController {
         ViewManager.getInstance().loadView("EventListView.fxml");
     }
 }
-
