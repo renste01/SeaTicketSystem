@@ -11,7 +11,8 @@
     <VBox alignment="CENTER" maxWidth="440" styleClass="login-card" spacing="0">
         <VBox alignment="CENTER" spacing="14" styleClass="login-header">
             <padding><Insets top="36" right="40" bottom="28" left="40"/></padding>
-            <Label text="SEA BILLETSYSTEM" styleClass="login-title"/>
+            <StackPane fx:id="loginLogoPane" prefHeight="22"/>
+            <Label text="BILLETSYSTEM" styleClass="sidebar-logo-sub"/>
         </VBox>
 
         <VBox spacing="14">
