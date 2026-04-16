@@ -188,11 +188,14 @@ public class MyTicketsController {
 
         try {
             User receiverUser = userService.findOrCreateTicketUser(form.getCustomerName(), form.getCustomerEmail());
-            String batchId = UUID.randomUUID().toString();
 
             for (int i = 0; i < count; i++) {
+
+                //  U-GÆTTELIGT, SIKKERT, UNIKT TICKET-ID
+                String ticketId = UUID.randomUUID().toString().replace("-", "");
+
                 Tickets ticket = new Tickets(
-                        batchId + "-" + String.format("%03d", (i + 1)),
+                        ticketId,
                         Integer.parseInt(selectedEvent.getId()),
                         receiverUser.getId(),
                         price,
@@ -204,6 +207,7 @@ public class MyTicketsController {
                         form.getTicketType(),
                         null // QR-kode tekst (Tickets genererer selv en)
                 );
+
                 ticketService.createTicket(ticket);
             }
 
@@ -220,6 +224,7 @@ public class MyTicketsController {
             showFeedback("Kunne ikke oprette billetter: " + e.getMessage(), false);
         }
     }
+
 
     @FXML
     private void handleOpenTicket() {
