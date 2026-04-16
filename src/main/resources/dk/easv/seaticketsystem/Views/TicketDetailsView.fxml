@@ -93,6 +93,7 @@
                preserveRatio="true"/>
 
 
+
     <HBox spacing="10">
         <Button text="← Tilbage" onAction="#handleBack" styleClass="btn-secondary"/>
         <Button fx:id="sendTicketButton" text="📤 Send billet" onAction="#handleSendTicket" styleClass="btn-teal"/>
