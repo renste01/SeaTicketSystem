@@ -1,10 +1,18 @@
-package dk.easv.seaticketsystem.Model;
+package dk.easv.seaticketsystem.BE;
 
-// Java Imports
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TicketsTest {
+
+    @Test
+    void getQrCodeText() {
+    }
+
+    @Test
+    void getQrCodeImage() {
+    }
 
     @Test
     void getTicketId() {
@@ -45,5 +53,8 @@ class TicketsTest {
     @Test
     void getIssuedByCoordinatorId() {
     }
-}
 
+    @Test
+    void getTicketType() {
+    }
+}

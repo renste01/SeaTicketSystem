@@ -1,6 +1,6 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
-// Projekt Imports
+// Project Imports
 import dk.easv.seaticketsystem.BLL.UserService;
 import dk.easv.seaticketsystem.BE.Event;
 import dk.easv.seaticketsystem.BE.User;
@@ -46,7 +46,7 @@ public class MyEventsController implements Initializable {
 
         if (myEvents.isEmpty()) {
             Label empty = new Label("Du har ingen events endnu. Opret et event for at komme i gang.");
-            empty.setStyle("-fx-text-fill: #888; -fx-font-size: 13px;");
+            empty.getStyleClass().add("muted-label");
             eventCardsContainer.getChildren().add(empty);
             return;
         }
@@ -58,19 +58,12 @@ public class MyEventsController implements Initializable {
 
     private VBox buildEventCard(Event event) {
         VBox card = new VBox(12);
-        card.setStyle(
-                "-fx-background-color: white;" +
-                        "-fx-background-radius: 12;" +
-                        "-fx-border-radius: 12;" +
-                        "-fx-border-color: #e4e8ec;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 2);"
-        );
+        card.getStyleClass().add("event-card");
         card.setPadding(new Insets(20));
 
         // Title
         Label titleLabel = new Label(event.getTitle());
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #002430;");
+        titleLabel.getStyleClass().add("event-card-title");
 
         // Meta info
         HBox metaRow = new HBox(24);
@@ -97,19 +90,12 @@ public class MyEventsController implements Initializable {
                         .collect(java.util.stream.Collectors.joining(", "));
 
         Label coLabel = new Label("👥  Ko-koordinatorer: " + coNames);
-        coLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #454b50;");
+        coLabel.getStyleClass().add("event-card-meta");
         coLabel.setWrapText(true);
 
         // Invite button
         Button inviteBtn = new Button("👥  Tilføj koordinator");
-        inviteBtn.setStyle(
-                "-fx-background-color: #3c7d87;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-background-radius: 20;" +
-                        "-fx-padding: 8 20 8 20;" +
-                        "-fx-cursor: hand;"
-        );
+        inviteBtn.getStyleClass().add("btn-teal");
         inviteBtn.setOnAction(_ -> {
             handleInviteCoCoordinator(event);
             int index = eventCardsContainer.getChildren().indexOf(card);
@@ -126,7 +112,7 @@ public class MyEventsController implements Initializable {
 
     private Label metaLabel(String text) {
         Label label = new Label(text);
-        label.setStyle("-fx-font-size: 13px; -fx-text-fill: #454b50;");
+        label.getStyleClass().add("event-card-meta");
         return label;
     }
 

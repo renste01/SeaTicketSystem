@@ -1,8 +1,10 @@
 package dk.easv.seaticketsystem.BE;
 
+// Project Imports
 import dk.easv.seaticketsystem.GUI.Util.QRGenerator;
-import javafx.scene.image.Image;
 
+//Java Imports
+import javafx.scene.image.Image;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -19,22 +21,7 @@ public class Tickets {
     private final LocalDateTime sentAt;
     private final String issuedByCoordinatorId;
     private final TicketType ticketType;
-
     private final String qrCodeText;
-
-    public Tickets(String ticketId, int eventId, String userID, double price) {
-        this(ticketId, eventId, userID, price,
-                null, null, "PENDING", null, null,
-                TicketType.STANDARD, null);
-    }
-
-    public Tickets(String ticketId, int eventId, String userID, double price,
-                   String customerName, String customerEmail, String deliveryStatus,
-                   LocalDateTime sentAt, String issuedByCoordinatorId) {
-        this(ticketId, eventId, userID, price,
-                customerName, customerEmail, deliveryStatus, sentAt,
-                issuedByCoordinatorId, TicketType.STANDARD, null);
-    }
 
     public Tickets(String ticketId, int eventId, String userID, double price,
                    String customerName, String customerEmail, String deliveryStatus,
@@ -51,7 +38,6 @@ public class Tickets {
         this.sentAt = sentAt;
         this.issuedByCoordinatorId = issuedByCoordinatorId;
         this.ticketType = ticketType == null ? TicketType.STANDARD : ticketType;
-
         this.qrCodeText = (qrCodeTextFromDB == null || qrCodeTextFromDB.isBlank())
                 ? generateQrText()
                 : qrCodeTextFromDB;

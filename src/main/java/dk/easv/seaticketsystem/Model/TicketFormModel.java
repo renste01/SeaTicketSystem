@@ -1,6 +1,6 @@
 package dk.easv.seaticketsystem.Model;
 
-// Projekt Imports
+// Project Imports
 import dk.easv.seaticketsystem.BE.TicketType;
 
 public class TicketFormModel {

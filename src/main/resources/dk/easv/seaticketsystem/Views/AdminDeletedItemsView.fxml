@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.seaticketsystem.GUI.Controllers.AdminDeletedItemsController"
+      spacing="12"
+      styleClass="page-compact">
+
+    <padding>
+        <Insets top="14" right="16" bottom="14" left="16"/>
+    </padding>
+
+    <Label text="Slettede data" styleClass="page-title"/>
+
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <tabs>
+            <Tab text="Slettede brugere">
+                <content>
+                    <TableView fx:id="deletedUsersTable" styleClass="sea-table">
+                        <columns>
+                            <TableColumn fx:id="colDeletedUserName" text="Navn" prefWidth="260"/>
+                            <TableColumn fx:id="colDeletedUserEmail" text="Email" prefWidth="280"/>
+                            <TableColumn fx:id="colDeletedUserRole" text="Rolle" prefWidth="180"/>
+                        </columns>
+                    </TableView>
+                </content>
+            </Tab>
+            <Tab text="Slettede events">
+                <content>
+                    <TableView fx:id="deletedEventsTable" styleClass="sea-table">
+                        <columns>
+                            <TableColumn fx:id="colDeletedEventTitle" text="Titel" prefWidth="300"/>
+                            <TableColumn fx:id="colDeletedEventDate" text="Dato" prefWidth="180"/>
+                            <TableColumn fx:id="colDeletedEventLocation" text="Sted" prefWidth="260"/>
+                        </columns>
+                    </TableView>
+                </content>
+            </Tab>
+            <Tab text="Slettede billetter">
+                <content>
+                    <TableView fx:id="deletedTicketsTable" styleClass="sea-table">
+                        <columns>
+                            <TableColumn fx:id="colDeletedTicketId" text="Ticket ID" prefWidth="250"/>
+                            <TableColumn fx:id="colDeletedTicketEventId" text="Event ID" prefWidth="140"/>
+                            <TableColumn fx:id="colDeletedTicketCustomer" text="Køber" prefWidth="260"/>
+                            <TableColumn fx:id="colDeletedTicketStatus" text="Status" prefWidth="170"/>
+                        </columns>
+                    </TableView>
+                </content>
+            </Tab>
+        </tabs>
+    </TabPane>
+
+</VBox>
+

@@ -10,6 +10,7 @@ public interface IEventRepository
 {
     // Read
     List<Event> getAllEvents();
+    List<Event> getDeletedEvents();
 
     // Write
     Event createEvent(Event event);

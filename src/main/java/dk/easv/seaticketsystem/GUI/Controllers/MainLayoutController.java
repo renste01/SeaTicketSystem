@@ -1,6 +1,6 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
-// Projekt Imports
+// Project Imports
 import dk.easv.seaticketsystem.MainApp;
 import dk.easv.seaticketsystem.GUI.Util.LogoUtil;
 import dk.easv.seaticketsystem.BE.User;
@@ -11,7 +11,12 @@ import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 // Java Imports
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -56,7 +61,7 @@ public class MainLayoutController implements Initializable {
             setVisible(userMenu, true);
         }
 
-        contentArea.getChildren().setAll(new Label("Homepage klar. Vælg en menu-side."));
+        openHomepage();
     }
 
     private void setVisible(VBox node, boolean v) {
@@ -66,7 +71,66 @@ public class MainLayoutController implements Initializable {
 
     @FXML
     private void openHomepage() {
-        MainApp.setRoot("/dk/easv/seaticketsystem/Views/MainPageView.fxml", 1280, 800);
+        VBox page = new VBox(12);
+        page.getStyleClass().add("page-compact");
+        page.setPadding(new Insets(18, 20, 18, 20));
+
+        Label title = new Label("Homepage");
+        title.getStyleClass().add("page-title");
+
+        Label subtitle = new Label("Vælg en menu direkte herfra.");
+        subtitle.getStyleClass().add("info-label");
+
+        TilePane tiles = new TilePane();
+        tiles.setPrefColumns(2);
+        tiles.setHgap(16);
+        tiles.setVgap(16);
+
+        tiles.getChildren().addAll(
+                createHomeTile("🎟", "Mine Billetter", this::openMyTickets),
+                createHomeTile("📅", "Events", this::openEvents),
+                createHomeTile("👤", "Min Profil", this::handleProfile)
+        );
+
+        User user = SessionManager.getInstance().getCurrentUser();
+        if (user != null) {
+            if (user.getRole() == UserRole.COORDINATOR || user.getRole() == UserRole.ADMIN) {
+                tiles.getChildren().add(createHomeTile("🔍", "Søg Bruger", this::openUserSearch));
+            }
+            if (user.getRole() == UserRole.COORDINATOR) {
+                tiles.getChildren().addAll(
+                        createHomeTile("📋", "Mine Events", this::openMyEvents),
+                        createHomeTile("➕", "Opret Event", this::openCreateEvent),
+                        createHomeTile("🎁", "Fribilletter", this::openFreeTickets)
+                );
+            }
+            if (user.getRole() == UserRole.ADMIN) {
+                tiles.getChildren().addAll(
+                        createHomeTile("📊", "Dashboard", this::openDashboard),
+                        createHomeTile("👥", "Administrer Brugere", this::openUserAdmin),
+                        createHomeTile("📂", "Administrer Events", this::openAdminEvents),
+                        createHomeTile("🗃", "Slettede data", this::openDeletedItems)
+                );
+            }
+        }
+
+        page.getChildren().addAll(title, subtitle, tiles);
+        contentArea.getChildren().setAll(page);
+    }
+
+    private Button createHomeTile(String icon, String text, Runnable onClick) {
+        Label iconLabel = new Label(icon);
+        iconLabel.getStyleClass().add("home-tile-icon");
+
+        Button tile = new Button(text);
+        tile.getStyleClass().add("home-tile");
+        tile.setGraphic(iconLabel);
+        tile.setContentDisplay(ContentDisplay.TOP);
+        tile.setGraphicTextGap(10);
+        tile.setWrapText(true);
+        tile.setAlignment(Pos.CENTER);
+        tile.setOnAction(e -> onClick.run());
+        return tile;
     }
 
     @FXML
@@ -109,6 +173,11 @@ public class MainLayoutController implements Initializable {
     @FXML
     private void openAdminEvents() {
         ViewManager.getInstance().loadView("AdminEventManager.fxml");
+    }
+
+    @FXML
+    private void openDeletedItems() {
+        ViewManager.getInstance().loadView("AdminDeletedItemsView.fxml");
     }
 
     @FXML

@@ -1,8 +1,10 @@
 package dk.easv.seaticketsystem.DAL;
 
+// Porject Imports
 import dk.easv.seaticketsystem.BE.Tickets;
 import dk.easv.seaticketsystem.BE.TicketType;
 
+// Java Imports
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,8 +19,8 @@ public class TicketRepository implements ITicketRepository {
 
     public void createTicket(Tickets tickets) {
         String sql = "INSERT INTO Tickets " +
-                "(TicketId, EventID, UserId, Price, CustomerName, CustomerEmail, DeliveryStatus, SentAt, IssuedByCoordinatorId, TicketType, QrCodeText) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "(TicketId, EventID, UserId, Price, CustomerName, CustomerEmail, DeliveryStatus, SentAt, IssuedByCoordinatorId, TicketType, QrCodeText, IsDeleted) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -40,6 +42,7 @@ public class TicketRepository implements ITicketRepository {
             stmt.setString(9, tickets.getIssuedByCoordinatorId());
             stmt.setString(10, tickets.getTicketType().name());
             stmt.setString(11, tickets.getQrCodeText());
+            stmt.setBoolean(12, false);
 
             stmt.executeUpdate();
 
@@ -50,7 +53,7 @@ public class TicketRepository implements ITicketRepository {
 
     public List<Tickets> getTicketsByEvent(int eventId) {
         List<Tickets> tickets = new ArrayList<>();
-        String sql = "SELECT * FROM Tickets WHERE EventId = ? ORDER BY TicketId DESC";
+        String sql = "SELECT * FROM Tickets WHERE EventId = ? AND IsDeleted = 0 ORDER BY TicketId DESC";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -71,7 +74,7 @@ public class TicketRepository implements ITicketRepository {
 
     public List<Tickets> getTicketsByUser(String id) {
         List<Tickets> tickets = new ArrayList<>();
-        String sql = "SELECT * FROM Tickets WHERE UserId = ? ORDER BY TicketId DESC";
+        String sql = "SELECT * FROM Tickets WHERE UserId = ? AND IsDeleted = 0 ORDER BY TicketId DESC";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -92,7 +95,7 @@ public class TicketRepository implements ITicketRepository {
 
     public List<Tickets> getAllTickets() {
         List<Tickets> tickets = new ArrayList<>();
-        String sql = "SELECT * FROM Tickets ORDER BY TicketId DESC";
+        String sql = "SELECT * FROM Tickets WHERE IsDeleted = 0 ORDER BY TicketId DESC";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -104,6 +107,25 @@ public class TicketRepository implements ITicketRepository {
 
         } catch (SQLException | IOException e) {
             throw new RuntimeException("Kunne ikke hente tickets", e);
+        }
+
+        return tickets;
+    }
+
+    public List<Tickets> getDeletedTickets() {
+        List<Tickets> tickets = new ArrayList<>();
+        String sql = "SELECT * FROM Tickets WHERE IsDeleted = 1 ORDER BY TicketId DESC";
+
+        try (Connection conn = DBConnector.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                tickets.add(mapTicket(rs));
+            }
+
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException("Kunne ikke hente slettede tickets", e);
         }
 
         return tickets;
@@ -125,7 +147,7 @@ public class TicketRepository implements ITicketRepository {
     }
 
     public void deleteTicket(String ticketId) {
-        String sql = "DELETE FROM Tickets WHERE TicketId = ?";
+        String sql = "UPDATE Tickets SET IsDeleted = 1 WHERE TicketId = ?";
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

@@ -1,11 +1,17 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
+// Project Imports
 import dk.easv.seaticketsystem.BLL.EventService;
 import dk.easv.seaticketsystem.BLL.TicketService;
 import dk.easv.seaticketsystem.GUI.Util.ViewManager;
 import dk.easv.seaticketsystem.BE.Event;
 import dk.easv.seaticketsystem.BE.Tickets;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
 
+// Java Import
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,12 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.time.format.DateTimeFormatter;

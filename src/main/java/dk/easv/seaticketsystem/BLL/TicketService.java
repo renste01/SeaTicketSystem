@@ -12,9 +12,7 @@ public class TicketService {
 
     private final ITicketRepository ticketRepository;
 
-    public TicketService() {
-        this.ticketRepository = new TicketRepository();
-    }
+    public TicketService() { this.ticketRepository = new TicketRepository(); }
 
     public void createTicket(Tickets ticket) {
         ticketRepository.createTicket(ticket);
@@ -30,6 +28,10 @@ public class TicketService {
 
     public List<Tickets> getAllTickets() {
         return ticketRepository.getAllTickets();
+    }
+
+    public List<Tickets> getDeletedTickets() {
+        return ticketRepository.getDeletedTickets();
     }
 
     public void markTicketAsSent(String ticketId) {

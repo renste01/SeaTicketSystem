@@ -22,7 +22,7 @@ public class UserRepository implements IUserRepository
                 """
                 SELECT UserId, FirstName, LastName, Email, [Password], UserRole
                 From dbo.Users
-                WHERE Email = ? AND UserRole IN ('ADMIN', 'COORDINATOR')
+                WHERE Email = ? AND UserRole IN ('ADMIN', 'COORDINATOR') AND IsDeleted = 0
                 """;
         try
         {
@@ -44,7 +44,7 @@ public class UserRepository implements IUserRepository
     }
 
     public void createUser(User user) throws SQLException {
-        String sql = "INSERT INTO Users (UserId, FirstName, LastName, Email, Password, UserRole) Values(?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users (UserId, FirstName, LastName, Email, Password, UserRole, IsDeleted) Values(?,?,?,?,?,?,?)";
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -58,6 +58,7 @@ public class UserRepository implements IUserRepository
                 stmt.setString(5, user.getPassword());
             }
             stmt.setString(6, user.getRole().name());
+            stmt.setBoolean(7, false);
 
             stmt.executeUpdate();
         } catch (IOException e) {
@@ -70,7 +71,7 @@ public class UserRepository implements IUserRepository
                 """
                 SELECT UserId, FirstName, LastName, Email, [Password], UserRole
                 FROM dbo.Users
-                WHERE Email = ? AND UserRole = 'USER'
+                WHERE Email = ? AND UserRole = 'USER' AND IsDeleted = 0
                 """;
         try (Connection con = DBConnector.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -85,7 +86,7 @@ public class UserRepository implements IUserRepository
     }
 
     public User createTicketUser(String fullName, String email) {
-        String sql = "INSERT INTO Users (UserId, FirstName, LastName, Email, Password, UserRole) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users (UserId, FirstName, LastName, Email, Password, UserRole, IsDeleted) VALUES (?,?,?,?,?,?,?)";
         String userId = java.util.UUID.randomUUID().toString();
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -95,6 +96,7 @@ public class UserRepository implements IUserRepository
             stmt.setString(4, email);
             stmt.setNull(5, Types.NVARCHAR);
             stmt.setString(6, "USER");
+            stmt.setBoolean(7, false);
             stmt.executeUpdate();
             return new RegularUser(userId, fullName, email);
         } catch (SQLException | IOException e) {
@@ -122,7 +124,27 @@ public class UserRepository implements IUserRepository
     }
 
     public List<User> getAllUsers() {
-        String sql = "SELECT UserId, FirstName, LastName, Email, Password, UserRole FROM Users";
+        String sql = "SELECT UserId, FirstName, LastName, Email, Password, UserRole FROM Users WHERE IsDeleted = 0";
+
+        List<User> users = new ArrayList<>();
+
+        try (Connection con = DBConnector.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    public List<User> getDeletedUsers() {
+        String sql = "SELECT UserId, FirstName, LastName, Email, Password, UserRole FROM Users WHERE IsDeleted = 1";
 
         List<User> users = new ArrayList<>();
 
@@ -142,7 +164,7 @@ public class UserRepository implements IUserRepository
     }
 
     public void deleteUser(String userId) {
-        String sql = "DELETE FROM Users WHERE UserId = ?";
+        String sql = "UPDATE Users SET IsDeleted = 1 WHERE UserId = ?";
 
         try (Connection con = DBConnector.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

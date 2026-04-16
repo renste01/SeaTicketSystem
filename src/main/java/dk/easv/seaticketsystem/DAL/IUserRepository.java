@@ -16,6 +16,7 @@ public interface IUserRepository
 
     // Read all
     List<User> getAllUsers();
+    List<User> getDeletedUsers();
 
     // Create
     void createUser(User user) throws SQLException;

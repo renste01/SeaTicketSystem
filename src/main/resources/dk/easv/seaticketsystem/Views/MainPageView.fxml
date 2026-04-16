@@ -10,6 +10,8 @@
 
     <!-- ======= SIDEBAR (venstre) ======= -->
     <left>
+        <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="sidebar-scroll">
+        <content>
         <VBox styleClass="sidebar" prefWidth="245" spacing="0">
 
             <!-- Logo sektion -->
@@ -32,6 +34,10 @@
             <VBox styleClass="sidebar-nav" spacing="6">
                 <padding><Insets top="10" right="10" bottom="0" left="10"/></padding>
                 <Label text="MENU" styleClass="sidebar-section-label"/>
+
+                <Button text="🏠" styleClass="sidebar-btn-icon" onAction="#openHomepage">
+                    <tooltip><Tooltip text="Homepage"/></tooltip>
+                </Button>
 
                 <Button text="🎟" styleClass="sidebar-btn-icon" onAction="#openMyTickets">
                     <tooltip><Tooltip text="Mine Billetter"/></tooltip>
@@ -79,7 +85,7 @@
                 <padding><Insets top="10" right="10" bottom="0" left="10"/></padding>
                 <Label text="ADMINISTRATOR" styleClass="sidebar-section-label"/>
 
-                <Button text="🏠" styleClass="sidebar-btn-icon" onAction="#openDashboard">
+                <Button text="📊" styleClass="sidebar-btn-icon" onAction="#openDashboard">
                     <tooltip><Tooltip text="Dashboard"/></tooltip>
                 </Button>
 
@@ -89,6 +95,10 @@
 
                 <Button text="📂" styleClass="sidebar-btn-icon" onAction="#openAdminEvents">
                     <tooltip><Tooltip text="Administrer Events"/></tooltip>
+                </Button>
+
+                <Button text="🗃" styleClass="sidebar-btn-icon" onAction="#openDeletedItems">
+                    <tooltip><Tooltip text="Slettede data"/></tooltip>
                 </Button>
             </VBox>
 
@@ -104,6 +114,8 @@
             </VBox>
 
         </VBox>
+        </content>
+        </ScrollPane>
     </left>
 
     <!-- ======= INDHOLD (midt) ======= -->
