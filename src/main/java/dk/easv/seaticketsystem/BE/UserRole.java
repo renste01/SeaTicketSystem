@@ -1,5 +1,5 @@
 package dk.easv.seaticketsystem.BE;
-// Decides which user
+// Decides user role
 public enum UserRole
 {
     USER("Bruger"),

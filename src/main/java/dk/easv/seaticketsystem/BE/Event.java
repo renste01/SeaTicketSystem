@@ -68,12 +68,6 @@ public class Event {
         return isOwnedBy(userId) || coCoordinatorIds.contains(userId);
     }
 
-    public String getDateRangeDisplay() {
-        if (endDateTime == null) return date.format(DATE_FORMATTER);
-        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
-        return date.format(DATE_FORMATTER) + " → " + endDateTime.toLocalDate().format(DATE_FORMATTER) + " " + endDateTime.toLocalTime().format(timeFmt);
-    }
-
     public String getTimeRangeDisplay() {
         DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
         String start = startTime != null ? startTime.format(timeFmt) : "-";

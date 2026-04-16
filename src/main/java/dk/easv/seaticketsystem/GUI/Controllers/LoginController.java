@@ -33,7 +33,6 @@ public class LoginController {
 
         userService.authenticateStaff(email, password).ifPresentOrElse(user -> {
 
-            // ⭐ IMPORTANT CHANGE ⭐
             // Save the logged-in user so other controllers can check the role
             SessionManager.getInstance().login(user);
 

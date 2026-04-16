@@ -66,7 +66,7 @@ public class TicketDetailsController {
         buyerNameLabel.setText(selectedTicket.getCustomerName());
         buyerEmailLabel.setText(selectedTicket.getCustomerEmail());
 
-        // NEW: generate barcode
+        // Generate barcode
         generateBarcode(selectedTicket.getTicketId());
 
         Event event = findEventById(selectedTicket.getEventId());
@@ -90,7 +90,7 @@ public class TicketDetailsController {
 
     }
 
-    // NEW: barcode generator
+    // Barcode generator
     private void generateBarcode(String value) {
         try {
             int width = 260;
@@ -186,8 +186,6 @@ public class TicketDetailsController {
     }
 
     private String generateTicketHtml(Tickets ticket, Event event) {
-        // unchanged — your existing HTML generator
-        // (kept exactly as you wrote it)
         return "..."; // shortened here for readability
     }
 
