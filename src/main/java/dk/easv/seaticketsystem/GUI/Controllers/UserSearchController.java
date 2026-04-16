@@ -1,6 +1,6 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
-// Projekt Imports
+// Project Imports
 import dk.easv.seaticketsystem.BLL.UserService;
 import dk.easv.seaticketsystem.BE.User;
 import dk.easv.seaticketsystem.Model.UserSearchModel;

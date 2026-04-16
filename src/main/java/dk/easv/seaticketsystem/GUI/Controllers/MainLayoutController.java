@@ -1,6 +1,6 @@
 package dk.easv.seaticketsystem.GUI.Controllers;
 
-// Projekt Imports
+// Project Imports
 import dk.easv.seaticketsystem.MainApp;
 import dk.easv.seaticketsystem.GUI.Util.LogoUtil;
 import dk.easv.seaticketsystem.BE.User;

@@ -1,10 +1,12 @@
 package dk.easv.seaticketsystem.GUI.Util;
 
+// Project Imports
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 
+// Java Imports
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 

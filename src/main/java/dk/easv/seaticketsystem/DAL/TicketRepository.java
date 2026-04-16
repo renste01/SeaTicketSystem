@@ -1,8 +1,10 @@
 package dk.easv.seaticketsystem.DAL;
 
+// Porject Imports
 import dk.easv.seaticketsystem.BE.Tickets;
 import dk.easv.seaticketsystem.BE.TicketType;
 
+// Java Imports
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
