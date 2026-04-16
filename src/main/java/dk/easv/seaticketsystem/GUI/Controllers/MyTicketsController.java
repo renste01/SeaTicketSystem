@@ -39,7 +39,6 @@ public class MyTicketsController {
     @FXML private TextField ticketCountField;
     @FXML private TextField priceField;
     @FXML private Label ticketFeedbackLabel;
-
     @FXML private TableView<Tickets> ticketTable;
     @FXML private TableColumn<Tickets, String> colEvent;
     @FXML private TableColumn<Tickets, String> colCustomer;
@@ -192,7 +191,7 @@ public class MyTicketsController {
 
             for (int i = 0; i < count; i++) {
 
-                //  U-GÆTTELIGT, SIKKERT, UNIKT TICKET-ID
+                //  Unguessable ID
                 String ticketId = UUID.randomUUID().toString().replace("-", "");
 
                 Tickets ticket = new Tickets(
@@ -206,7 +205,7 @@ public class MyTicketsController {
                         null,
                         currentUser.getId(),
                         form.getTicketType(),
-                        null // QR-kode tekst (Tickets genererer selv en)
+                        null // QR-code text (Tickets generate itself)
                 );
 
                 ticketService.createTicket(ticket);
