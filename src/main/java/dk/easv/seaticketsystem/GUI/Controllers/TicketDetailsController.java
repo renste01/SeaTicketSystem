@@ -17,10 +17,23 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+// Apache PDFBox imports
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -28,7 +41,9 @@ public class TicketDetailsController {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private static Tickets selectedTicket;
-    @FXML ImageView qrImageView;
+
+    @FXML private ImageView qrImageView;
+    @FXML private ImageView barcodeImageView;
 
     @FXML private Label ticketIdLabel;
     @FXML private Label statusLabel;
@@ -44,9 +59,6 @@ public class TicketDetailsController {
     @FXML private Label buyerEmailLabel;
     @FXML private Label detailsFeedbackLabel;
     @FXML private Button sendTicketButton;
-
-    // NEW: barcode image
-    @FXML private ImageView barcodeImageView;
 
     private final EventService eventService = new EventService();
     private final TicketService ticketService = new TicketService();
@@ -66,7 +78,6 @@ public class TicketDetailsController {
         buyerNameLabel.setText(selectedTicket.getCustomerName());
         buyerEmailLabel.setText(selectedTicket.getCustomerEmail());
 
-        // Generate barcode
         generateBarcode(selectedTicket.getTicketId());
 
         Event event = findEventById(selectedTicket.getEventId());
@@ -87,10 +98,8 @@ public class TicketDetailsController {
         eventLocationLabel.setText(event.getLocation());
         eventDescriptionLabel.setText(event.getDescription() == null ? "-" : event.getDescription());
         qrImageView.setImage(selectedTicket.getQrCodeImage());
-
     }
 
-    // Barcode generator
     private void generateBarcode(String value) {
         try {
             int width = 260;
@@ -99,9 +108,8 @@ public class TicketDetailsController {
             BitMatrix matrix = new MultiFormatWriter()
                     .encode(value, BarcodeFormat.CODE_128, width, height);
 
-            var bufferedImage = MatrixToImageWriter.toBufferedImage(matrix);
+            BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(matrix);
             Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
-
             barcodeImageView.setImage(fxImage);
 
         } catch (Exception e) {
@@ -147,10 +155,10 @@ public class TicketDetailsController {
                     selectedTicket.getCustomerName(),
                     selectedTicket.getCustomerEmail(),
                     "SENT",
-                    java.time.LocalDateTime.now(),
+                    LocalDateTime.now(),
                     selectedTicket.getIssuedByCoordinatorId(),
                     selectedTicket.getTicketType(),
-                    selectedTicket.getQrCodeText() // ← DETTE MANGLEDE
+                    selectedTicket.getQrCodeText()
             );
 
             updateStatusUi();
@@ -168,25 +176,263 @@ public class TicketDetailsController {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Gem billet som PDF");
-        fileChooser.setInitialFileName("billet-" + selectedTicket.getTicketId() + ".html");
+        fileChooser.setInitialFileName("billet-" + selectedTicket.getTicketId() + ".pdf");
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("HTML fil (åbn i browser og print som PDF)", "*.html")
+                new FileChooser.ExtensionFilter("PDF fil", "*.pdf")
         );
 
         Stage stage = (Stage) ticketIdLabel.getScene().getWindow();
         File file = fileChooser.showSaveDialog(stage);
         if (file == null) return;
 
-        try (FileWriter writer = new FileWriter(file)) {
-            writer.write(generateTicketHtml(selectedTicket, event));
-            showFeedback("Billet gemt! Åbn filen i din browser og tryk Ctrl+P for at printe som PDF.", true);
+        try {
+            createRealPdf(file, selectedTicket, event);
+            showFeedback("PDF gemt: " + file.getName(), true);
         } catch (Exception e) {
-            showFeedback("Kunne ikke gemme billet: " + e.getMessage(), false);
+            showFeedback("Kunne ikke gemme PDF: " + e.getMessage(), false);
+            e.printStackTrace();
         }
     }
 
-    private String generateTicketHtml(Tickets ticket, Event event) {
-        return "..."; // shortened here for readability
+    private void createRealPdf(File file, Tickets ticket, Event event) throws Exception {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage(PDRectangle.A4);
+            document.addPage(page);
+
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                float margin = 50;
+                float yStart = page.getMediaBox().getHeight() - margin;
+                float yPosition = yStart;
+                float lineHeight = 20;
+
+                // Header
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("SEA BILLETSYSTEM");
+                contentStream.endText();
+                yPosition -= lineHeight * 1.5f;
+
+                // Line separator
+                contentStream.setStrokingColor(200, 200, 200);
+                contentStream.moveTo(margin, yPosition);
+                contentStream.lineTo(page.getMediaBox().getWidth() - margin, yPosition);
+                contentStream.stroke();
+                yPosition -= lineHeight;
+
+                // Ticket section
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                contentStream.setNonStrokingColor(219, 54, 41);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Billet detaljer");
+                contentStream.endText();
+                yPosition -= lineHeight;
+
+                // Ticket details
+                contentStream.setNonStrokingColor(0, 0, 0);
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Billet ID:");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 11);
+                contentStream.newLineAtOffset(margin + 100, yPosition);
+                contentStream.showText(ticket.getTicketId());
+                contentStream.endText();
+                yPosition -= lineHeight;
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Pris:");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 11);
+                contentStream.newLineAtOffset(margin + 100, yPosition);
+                contentStream.showText(String.format("%.2f kr", ticket.getPrice()));
+                contentStream.endText();
+                yPosition -= lineHeight;
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Type:");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 11);
+                contentStream.newLineAtOffset(margin + 100, yPosition);
+                contentStream.showText(ticket.getTicketType().name());
+                contentStream.endText();
+                yPosition -= lineHeight;
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Status:");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 11);
+                contentStream.newLineAtOffset(margin + 100, yPosition);
+                contentStream.showText(ticket.getDeliveryStatus());
+                contentStream.endText();
+                yPosition -= lineHeight;
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Køber:");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 11);
+                contentStream.newLineAtOffset(margin + 100, yPosition);
+                contentStream.showText(ticket.getCustomerName());
+                contentStream.endText();
+                yPosition -= lineHeight;
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("E-mail:");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 11);
+                contentStream.newLineAtOffset(margin + 100, yPosition);
+                contentStream.showText(ticket.getCustomerEmail());
+                contentStream.endText();
+                yPosition -= lineHeight * 1.5f;
+
+                // Event section
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                contentStream.setNonStrokingColor(219, 54, 41);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Event information");
+                contentStream.endText();
+                yPosition -= lineHeight;
+
+                if (event != null) {
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText("Event titel:");
+                    contentStream.endText();
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA, 11);
+                    contentStream.newLineAtOffset(margin + 100, yPosition);
+                    contentStream.showText(event.getTitle());
+                    contentStream.endText();
+                    yPosition -= lineHeight;
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText("Dato:");
+                    contentStream.endText();
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA, 11);
+                    contentStream.newLineAtOffset(margin + 100, yPosition);
+                    contentStream.showText(event.getDate() != null ? event.getDate().format(DATE_FORMATTER) : "-");
+                    contentStream.endText();
+                    yPosition -= lineHeight;
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText("Tid:");
+                    contentStream.endText();
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA, 11);
+                    contentStream.newLineAtOffset(margin + 100, yPosition);
+                    contentStream.showText(event.getTimeRangeDisplay());
+                    contentStream.endText();
+                    yPosition -= lineHeight;
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText("Sted:");
+                    contentStream.endText();
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA, 11);
+                    contentStream.newLineAtOffset(margin + 100, yPosition);
+                    contentStream.showText(event.getLocation());
+                    contentStream.endText();
+                    yPosition -= lineHeight;
+                }
+
+                yPosition -= lineHeight;
+
+                // Add barcode image
+                if (barcodeImageView.getImage() != null) {
+                    BufferedImage barcodeImage = convertToBufferedImage(barcodeImageView.getImage());
+                    if (barcodeImage != null) {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(barcodeImage, "PNG", baos);
+                        PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, baos.toByteArray(), "barcode");
+                        contentStream.drawImage(pdImage, margin, yPosition - 80, 260, 80);
+                        yPosition -= 90;
+                    }
+                }
+
+                // Add QR code image
+                if (qrImageView.getImage() != null) {
+                    BufferedImage qrImage = convertToBufferedImage(qrImageView.getImage());
+                    if (qrImage != null) {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(qrImage, "PNG", baos);
+                        PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, baos.toByteArray(), "qrcode");
+                        contentStream.drawImage(pdImage, margin + 50, yPosition - 150, 150, 150);
+                        yPosition -= 160;
+                    }
+                }
+
+                // Footer
+                yPosition -= lineHeight * 2;
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_OBLIQUE, 9);
+                contentStream.setNonStrokingColor(100, 100, 100);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Gyldig ved fremvisning ved indgangen. Billetten er personlig og kan ikke overdrages.");
+                contentStream.endText();
+                yPosition -= lineHeight;
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_OBLIQUE, 8);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("SEA Ticket System - " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+                contentStream.endText();
+            }
+
+            document.save(file);
+        }
+    }
+
+    private BufferedImage convertToBufferedImage(Image fxImage) {
+        if (fxImage == null) return null;
+        try {
+            int width = (int) fxImage.getWidth();
+            int height = (int) fxImage.getHeight();
+            WritableImage writableImage = new WritableImage(width, height);
+            javafx.scene.canvas.Canvas canvas = new javafx.scene.canvas.Canvas(width, height);
+            canvas.getGraphicsContext2D().drawImage(fxImage, 0, 0);
+            javafx.scene.SnapshotParameters params = new javafx.scene.SnapshotParameters();
+            return SwingFXUtils.fromFXImage(canvas.snapshot(params, null), null);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private Event findEventById(int eventId) {
@@ -220,4 +466,3 @@ public class TicketDetailsController {
         detailsFeedbackLabel.setManaged(true);
     }
 }
-

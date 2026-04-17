@@ -30,7 +30,9 @@ public class UserSearchController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allUsers = userService.getAllUsers();
-        searchField.textProperty().addListener((_, _, newVal) -> performSearch(newVal));
+
+        // Use regular parameter names instead of unnamed variables
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> performSearch(newValue));
         performSearch("");
     }
 
@@ -100,7 +102,9 @@ public class UserSearchController implements Initializable {
         // View profile button
         Button viewBtn = new Button("👁  Se profil");
         viewBtn.getStyleClass().add("user-search-btn");
-        viewBtn.setOnAction(_ -> {
+
+        // Use regular parameter name
+        viewBtn.setOnAction(event -> {
             UserProfileViewController.setUser(user);
             ViewManager.getInstance().loadView("UserProfileView.fxml");
         });
@@ -125,4 +129,3 @@ public class UserSearchController implements Initializable {
         return row;
     }
 }
-
